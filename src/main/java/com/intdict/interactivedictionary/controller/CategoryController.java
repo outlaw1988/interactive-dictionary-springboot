@@ -12,15 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
+import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.service.CategoryRepository;
+import com.intdict.interactivedictionary.service.LanguageRepository;
 
 @Controller
 public class CategoryController {
 
 	@Autowired
 	CategoryRepository repository;
+	
+	@Autowired
+	LanguageRepository languageRepository;
 
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public String index(ModelMap model) {
 
 		List<Category> categories = repository.findAll();
@@ -31,7 +36,12 @@ public class CategoryController {
 
 	@RequestMapping(value = "/add-category", method = RequestMethod.GET)
 	public String addCategoryShow(ModelMap model) {
-		model.addAttribute("category", new Category("Category name"));
+		
+		model.addAttribute("category", new Category(""));
+		
+		List<Language> languages = languageRepository.findAll();
+		model.put("languages", languages);
+		
 		return "add-category";
 	}
 
