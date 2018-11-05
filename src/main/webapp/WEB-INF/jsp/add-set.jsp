@@ -2,31 +2,50 @@
 <%@ include file="common/navigation.jspf"%>
 
 <div class="container">
-
-	<form:form method="post" modelAttribute="set">
+		
+	<form action="" method="post">
+	
 		<form:hidden path="id" />
-		<%-- <fieldset class="form-group">
-			<form:label path="name">Set name:</form:label>
-			<form:input path="name" type="text" class="form-control"
-				required="required" />
-			<form:errors path="name" cssClass="text-warning" />
-		</fieldset>
+		
+		<spring:bind path="set.name">
+			<span>Set name:</span>
+			<input type="text" name="${status.expression}" value="${status.value}">
+		</spring:bind>
 		
 		<br/><br/>
 		
-		<form:label path="defaultSrcLanguage">Target language:</form:label>
-		<form:select path="defaultSrcLanguage">
-		    <option value="None">--SELECT--</option>
-		    <c:forEach items="${languages}" var="language"> 
-            	<option value="${language.getId()}">${language.getName()}</option> 
-            </c:forEach>
-		</form:select>
+		<spring:bind path="setup.targetLanguage">
+			<span>Target language:</span>
+			<form:select path="setup.targetLanguage">
+				<option value="${category.defaultTargetLanguage.id}" selected="selected">${category.defaultTargetLanguage}</option>
+				<option value="${category.defaultSrcLanguage.id}">${category.defaultSrcLanguage}</option>
+			</form:select>
+		</spring:bind>
 		
-		<button type="submit" class="btn btn-success">Add</button> --%>
+		<spring:bind path="setup.targetSide">
+			<span>Target side:</span>
+			<form:select path="setup.targetSide">
+				<option value="${targetSide}" selected="selected">${targetSide}</option>
+				<option value="${srcSide}">${srcSide}</option>
+			</form:select>
+		</spring:bind>
 		
+		<spring:bind path="setup.countdownDuration">
+			<span>Target side:</span>
+			<form:select path="setup.countdownDuration">
+				<option value="30" <c:if test="${category.defaultCountdownDuration == '30'}"> selected="selected" </c:if> >30</option>
+				<option value="20" <c:if test="${category.defaultCountdownDuration == '20'}"> selected="selected" </c:if> >20</option>
+				<option value="10" <c:if test="${category.defaultCountdownDuration == '10'}"> selected="selected" </c:if> >10</option>
+				<option value="5"  <c:if test="${category.defaultCountdownDuration == '5'}">  selected="selected" </c:if> >5</option>
+			</form:select>
+		</spring:bind>
 		
+		<br/><br/>
 		
-	</form:form>
+		<button type="submit" class="btn btn-success">Add</button>
+	</form>
+		
+	
 
 </div>
 

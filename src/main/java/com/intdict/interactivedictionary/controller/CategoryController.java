@@ -51,6 +51,8 @@ public class CategoryController {
 		if (result.hasErrors()) {
 			return "add-category";
 		}
+		
+		// System.out.println("Category id: " + category.getId() + " name: " + category.getName());
 
 		repository.save(category);
 		return "redirect:/index";

@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.Set;
+import com.intdict.interactivedictionary.model.Setup;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
+import com.intdict.interactivedictionary.service.SetupRepository;
+import com.intdict.interactivedictionary.service.WordRepository;
 
 @Controller
 public class SetController {
@@ -25,6 +28,12 @@ public class SetController {
 	
 	@Autowired
 	CategoryRepository categoryRepository;
+	
+	@Autowired
+	SetupRepository setupRepository;
+	
+	@Autowired
+	WordRepository wordRepository;
 	
 	@RequestMapping(value = "/category-{id}", method=RequestMethod.GET)
 	public String showSets(ModelMap model, @PathVariable(value="id") int categoryId) {
@@ -39,30 +48,50 @@ public class SetController {
 		return "category-sets-list";
 	}
 	
-	// TODO Consider passing by session
 	@RequestMapping(value = "/add-set-{id}", method = RequestMethod.GET)
 	public String addSetShow(ModelMap model, @PathVariable(value="id") int categoryId) {
 		
 		Category category = categoryRepository.findById(categoryId).get();
 		model.addAttribute("set", new Set("", category));
+		model.addAttribute("setup", new Setup());
+//		model.addAttribute("word", new Word());
 		
 		model.put("category", category);
+		model.put("targetSide", category.getDefaultTargetSide());
+		if (category.getDefaultTargetSide().equals("left")) {
+			model.put("srcSide", "right");
+		} else {
+			model.put("srcSide", "left");
+		}
 		
 		return "add-set";
 	}
 	
 	@RequestMapping(value = "/add-set-{id}", method = RequestMethod.POST)
 	public String addSetPost(ModelMap model, @PathVariable(value="id") int categoryId, 
-							@Valid Set set, BindingResult result) {
+							@Valid Set set, BindingResult resultSet, 
+							@Valid Setup setup, BindingResult resultSetup) {
 
-		if (result.hasErrors()) {
+		if (resultSet.hasErrors() || resultSetup.hasErrors()) {
 			return "add-set";
 		}
-
+		
 		Category category = categoryRepository.findById(categoryId).get();
 		set.setCategory(category);
+		Set setReturned = setRepository.save(set);
 		
-		setRepository.save(set);
+		setup.setSet(setReturned);
+		
+		// case when target language has changed
+		if (setup.getTargetLanguage().getId() != category.getDefaultTargetLanguage().getId()) {
+			setup.setSrcLanguage(category.getDefaultTargetLanguage());
+		} else {
+			// target language not changed
+			setup.setSrcLanguage(category.getDefaultSrcLanguage());
+		}
+		
+		setupRepository.save(setup);
+		
 		return "redirect:/category-" + categoryId;
 	}
 }
