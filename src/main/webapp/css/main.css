@@ -2,7 +2,7 @@ h1{
 	text-align:center;
 }
 
-.categories {
+.boxes {
 	margin: auto;
 	/* background: #00ff00; */
 	width: 60%;
@@ -11,7 +11,7 @@ h1{
   	align-items: center;
 }
 
-.category {
+.box {
     border: 1px solid #000;
     margin-bottom: 10px;
     margin-right: 10px;
@@ -23,7 +23,7 @@ h1{
     position: relative; */
 }
 
-.category-name {
+.box-name {
     display: inline-block;
     margin: 0 auto;
     width: 100px;

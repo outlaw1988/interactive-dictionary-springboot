@@ -1,15 +1,15 @@
 <%@ include file="common/header.jspf"%>
 <%@ include file="common/navigation.jspf"%>
 
-<h1>Categories available:</h1>
+<h1>Sets list for category: ${category.name}</h1>
 
 <div class="boxes">
 
-	<c:forEach items="${categories}" var="category">
+	<c:forEach items="${sets}" var="set">
 	
 		<div class="box">
 			<div class="box-name">
-				<a href="/category-${category.id}">${category.name}</a>
+				<a href="">${set.name}</a>
 			</div>
 			
 			<div class="dropdown">
@@ -24,17 +24,17 @@
 	            <!-- It should be empty -->
 	        </div>
 			
-			<br><span>sets:</span>
-	        <br><span>words:</span>
-	        <br><span>${category.defaultSrcLanguage} <-> ${category.defaultTargetLanguage}</span>
+			<br><span>words:</span>
+	        <br><span>last result:</span>
+	        <br><span>best result:</span>
 		</div>
 	
 	</c:forEach>
 
 </div>
-
+s
 <div style="text-align:center;">
-	<a type="button" class="btn btn-success" href="/add-category">Add a category</a>
+	<a type="button" class="btn btn-success" href="/add-set-${category.id}">Add a set</a>
 </div>
 
 <%@ include file="common/footer.jspf"%>

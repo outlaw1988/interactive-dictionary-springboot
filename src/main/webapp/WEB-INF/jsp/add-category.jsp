@@ -5,7 +5,7 @@
 	<form:form method="post" modelAttribute="category">
 		<form:hidden path="id" />
 		<fieldset class="form-group">
-			<form:label path="name">Category name</form:label>
+			<form:label path="name">Category name:</form:label>
 			<form:input path="name" type="text" class="form-control"
 				required="required" />
 			<form:errors path="name" cssClass="text-warning" />
@@ -15,8 +15,6 @@
 		<form:label path="defaultSrcLanguage">Default source language:</form:label>
 		<br/>
 		<form:select path="defaultSrcLanguage">
-		    <%-- <form:option value="NONE">--SELECT--</form:option>
-		    <form:options items="${languages}"></form:options> --%>
 		    <option value="None">--SELECT--</option>
 		    <c:forEach items="${languages}" var="language"> 
             	<option value="${language.getId()}">${language.getName()}</option> 
@@ -26,12 +24,30 @@
 		<form:label path="defaultTargetLanguage">Default target language:</form:label>
 		<br/>
 		<form:select  path="defaultTargetLanguage">
-		    <%-- <form:option value="NONE">--SELECT--</form:option>
-		    <form:options items="${languages}"></form:options> --%>
 		    <option value="None">--SELECT--</option>
 		    <c:forEach items="${languages}" var="language"> 
             	<option value="${language.getId()}">${language.getName()}</option> 
             </c:forEach> 
+		</form:select>
+		
+		<br/><br/>
+		
+		<form:label path="defaultTargetSide">Default target side:</form:label>
+		<br/>
+		<form:select path="defaultTargetSide">
+			<option value="left">left</option>
+			<option value="right">right</option>
+		</form:select>
+		
+		<br/><br/>
+		
+		<form:label path="defaultCountdownDuration">Default countdown duration:</form:label>
+		<br/>
+		<form:select path="defaultCountdownDuration">
+			<option value="30">30</option>
+			<option value="20" selected="selected">20</option>
+			<option value="10">10</option>
+			<option value="5">5</option>
 		</form:select>
 		
 		<br/><br/>
