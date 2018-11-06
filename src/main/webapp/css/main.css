@@ -68,3 +68,17 @@ h1{
     height: 20px;
     /* background: #ff0000; */
 }
+
+.table-add-set {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.table-headers {
+    text-align: center;
+}
+
+.table-words {
+    text-align: center;
+}
