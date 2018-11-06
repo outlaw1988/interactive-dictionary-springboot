@@ -54,6 +54,9 @@
 		
 		<button type="submit" class="btn btn-success">Add</button>
 	</form:form>
+	
+	<a type="button" class="btn btn-success" href="/index">Go back</a>
+	
 </div>
 
 <%@ include file="common/footer.jspf"%>

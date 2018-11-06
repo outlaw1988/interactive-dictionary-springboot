@@ -2,6 +2,7 @@ package com.intdict.interactivedictionary.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.Set;
 import com.intdict.interactivedictionary.model.Setup;
+import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
 import com.intdict.interactivedictionary.service.SetupRepository;
 import com.intdict.interactivedictionary.service.WordRepository;
+import com.intdict.interactivedictionary.utils.Utils;
 
 @Controller
 public class SetController {
@@ -54,7 +57,6 @@ public class SetController {
 		Category category = categoryRepository.findById(categoryId).get();
 		model.addAttribute("set", new Set("", category));
 		model.addAttribute("setup", new Setup());
-//		model.addAttribute("word", new Word());
 		
 		model.put("category", category);
 		model.put("targetSide", category.getDefaultTargetSide());
@@ -68,7 +70,7 @@ public class SetController {
 	}
 	
 	@RequestMapping(value = "/add-set-{id}", method = RequestMethod.POST)
-	public String addSetPost(ModelMap model, @PathVariable(value="id") int categoryId, 
+	public String addSetPost(HttpServletRequest request, ModelMap model, @PathVariable(value="id") int categoryId, 
 							@Valid Set set, BindingResult resultSet, 
 							@Valid Setup setup, BindingResult resultSetup) {
 
@@ -90,8 +92,44 @@ public class SetController {
 			setup.setSrcLanguage(category.getDefaultSrcLanguage());
 		}
 		
+		int highestWordIdx = Utils.findHighestWordIdxFromRequest(request.getParameterMap().keySet());
+		
+		for (int i = 1; i <= highestWordIdx; i++) {
+			
+			String srcWord = "";
+			String targetWord = "";
+			
+			if (setup.getTargetSide().equals("left")) {
+				srcWord = request.getParameter("right_field_" + i);
+				targetWord = request.getParameter("left_field_" + i);
+			} else if (setup.getTargetSide().equals("right")) {
+				srcWord = request.getParameter("left_field_" + i);
+				targetWord = request.getParameter("right_field_" + i);
+			}
+			
+			if (srcWord.equals("") || targetWord.equals("")) continue;
+			
+			Word word = new Word(setReturned, srcWord, targetWord);
+			wordRepository.save(word);
+		}
+		
 		setupRepository.save(setup);
 		
 		return "redirect:/category-" + categoryId;
+	}
+	
+	@RequestMapping(value = "/preview-{setId}", method = RequestMethod.GET)
+	public String wordsPreview(ModelMap model, @PathVariable(value="setId") int setId) {
+		
+		Set set = setRepository.findById(setId).get();
+		model.put("set", set);
+		
+		Setup setup = setupRepository.findBySet(set);
+		model.put("setup", setup);
+		
+		List<Word> words = wordRepository.findBySet(set);
+		model.put("words", words);
+		
+		return "words-preview";
 	}
 }
