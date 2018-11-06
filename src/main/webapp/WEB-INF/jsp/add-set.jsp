@@ -112,6 +112,10 @@
 			</c:forEach>
 
 	    </table>
+	    
+	    <%-- <%
+        	request.setAttribute("insert","insert");  
+		%> --%>
     
     	<br><br>
     
@@ -122,8 +126,6 @@
 		<button type="submit" class="btn btn-success">Add</button>
 	</form>
 		
-	
-
 </div>
 
 <script language="javascript" type="text/javascript">
