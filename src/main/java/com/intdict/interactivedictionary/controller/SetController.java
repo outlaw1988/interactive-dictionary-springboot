@@ -117,4 +117,19 @@ public class SetController {
 		
 		return "redirect:/category-" + categoryId;
 	}
+	
+	@RequestMapping(value = "/preview-{setId}", method = RequestMethod.GET)
+	public String wordsPreview(ModelMap model, @PathVariable(value="setId") int setId) {
+		
+		Set set = setRepository.findById(setId).get();
+		model.put("set", set);
+		
+		Setup setup = setupRepository.findBySet(set);
+		model.put("setup", setup);
+		
+		List<Word> words = wordRepository.findBySet(set);
+		model.put("words", words);
+		
+		return "words-preview";
+	}
 }

@@ -117,13 +117,17 @@
         	request.setAttribute("insert","insert");  
 		%> --%>
     
-    	<br><br>
+    	<br/><br/>
     
     	<button type="button" class="btn btn-success" onclick="addWord()">Add word</button>
     	
-    	<br><br>
+    	<br/><br/>
 
 		<button type="submit" class="btn btn-success">Add</button>
+		
+		<br/><br/>
+		
+		<a type="button" class="btn btn-success" href="/category-${category.id}">Go back</a>
 	</form>
 		
 </div>

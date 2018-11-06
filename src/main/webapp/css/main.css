@@ -82,3 +82,7 @@ h1{
 .table-words {
     text-align: center;
 }
+
+.words-list-header {
+    text-align: left;
+}

@@ -9,7 +9,7 @@
 	
 		<div class="box">
 			<div class="box-name">
-				<a href="">${set.name}</a>
+				<a href="/preview-${set.id}">${set.name}</a>
 			</div>
 			
 			<div class="dropdown">
@@ -32,9 +32,11 @@
 	</c:forEach>
 
 </div>
-s
+
 <div style="text-align:center;">
 	<a type="button" class="btn btn-success" href="/add-set-${category.id}">Add a set</a>
+	<br/><br/>
+	<a type="button" class="btn btn-success" href="/index">Go back</a>
 </div>
 
 <%@ include file="common/footer.jspf"%>
