@@ -148,4 +148,36 @@ public class SetController {
 		
 		return "words-preview";
 	}
+	
+	@RequestMapping(value = "/remove-set-{setId}", method = RequestMethod.GET)
+	public String removeSet(ModelMap model, @PathVariable(value="setId") int setId) {
+		
+		Set set = setRepository.findById(setId).get();
+		model.put("set", set);
+		
+		return "remove-set";
+	}
+	
+	@RequestMapping(value = "/remove-set-{setId}", method = RequestMethod.POST)
+	public String removeSetPost(HttpServletRequest request, 
+									@PathVariable(value="setId") int setId) {
+		
+		java.util.Set<String> params = request.getParameterMap().keySet();
+		Set set = setRepository.findById(setId).get();
+		
+		if (params.contains("yes")) {
+			
+			Setup setup = setupRepository.findBySet(set);
+			setupRepository.delete(setup);
+			
+			List<Word> words = wordRepository.findBySet(set);
+			for (Word word : words) {
+				wordRepository.delete(word);
+			}
+			
+			setRepository.delete(set);
+		}
+		
+		return "redirect:/category-" + set.getCategory().getId();
+	}
 }
