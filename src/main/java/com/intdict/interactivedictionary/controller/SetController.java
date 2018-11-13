@@ -1,5 +1,6 @@
 package com.intdict.interactivedictionary.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +46,23 @@ public class SetController {
 		Category category = categoryRepository.findById(categoryId).get();
 		List<Set> sets = setRepository.findByCategory(category);
 		
+		List<Integer> wordCounters = new ArrayList<>();
+		List<Integer> lastResults = new ArrayList<>();
+		List<Integer> bestResults = new ArrayList<>();
+		
+		for (Set set : sets) {
+			wordCounters.add(wordRepository.findBySet(set).size());
+			Setup setup = setupRepository.findBySet(set);
+			lastResults.add(setup.getLastResult());
+			bestResults.add(setup.getBestResult());
+		}
+		
 		model.put("sets", sets);
 		model.put("category", category);
+		
+		model.put("wordCounters", wordCounters);
+		model.put("lastResults", lastResults);
+		model.put("bestResults", bestResults);
 		
 		return "category-sets-list";
 	}
@@ -131,5 +147,37 @@ public class SetController {
 		model.put("words", words);
 		
 		return "words-preview";
+	}
+	
+	@RequestMapping(value = "/remove-set-{setId}", method = RequestMethod.GET)
+	public String removeSet(ModelMap model, @PathVariable(value="setId") int setId) {
+		
+		Set set = setRepository.findById(setId).get();
+		model.put("set", set);
+		
+		return "remove-set";
+	}
+	
+	@RequestMapping(value = "/remove-set-{setId}", method = RequestMethod.POST)
+	public String removeSetPost(HttpServletRequest request, 
+									@PathVariable(value="setId") int setId) {
+		
+		java.util.Set<String> params = request.getParameterMap().keySet();
+		Set set = setRepository.findById(setId).get();
+		
+		if (params.contains("yes")) {
+			
+			Setup setup = setupRepository.findBySet(set);
+			setupRepository.delete(setup);
+			
+			List<Word> words = wordRepository.findBySet(set);
+			for (Word word : words) {
+				wordRepository.delete(word);
+			}
+			
+			setRepository.delete(set);
+		}
+		
+		return "redirect:/category-" + set.getCategory().getId();
 	}
 }

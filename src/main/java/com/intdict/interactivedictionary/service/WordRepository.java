@@ -10,5 +10,4 @@ import com.intdict.interactivedictionary.model.Word;
 public interface WordRepository extends JpaRepository<Word, Integer> {
 
 	List<Word> findBySet(Set set);
-	
 }
