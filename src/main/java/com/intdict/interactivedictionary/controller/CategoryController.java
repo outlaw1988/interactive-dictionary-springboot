@@ -3,22 +3,26 @@ package com.intdict.interactivedictionary.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.model.Set;
+import com.intdict.interactivedictionary.model.Setup;
 import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.LanguageRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
+import com.intdict.interactivedictionary.service.SetupRepository;
 import com.intdict.interactivedictionary.service.WordRepository;
 
 @Controller
@@ -35,6 +39,9 @@ public class CategoryController {
 	
 	@Autowired
 	WordRepository wordRepository;
+	
+	@Autowired
+	SetupRepository setupRepository;
 
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public String index(ModelMap model) {
@@ -79,10 +86,46 @@ public class CategoryController {
 		if (result.hasErrors()) {
 			return "add-category";
 		}
-		
-		// System.out.println("Category id: " + category.getId() + " name: " + category.getName());
 
 		repository.save(category);
+		return "redirect:/index";
+	}
+	
+	@RequestMapping(value = "/remove-category-{categoryId}", method = RequestMethod.GET)
+	public String removeCategory(ModelMap model, @PathVariable(value="categoryId") int categoryId) {
+		
+		Category category = repository.findById(categoryId).get();
+		model.put("category", category);
+		
+		return "remove-category";
+	}
+	
+	@RequestMapping(value = "/remove-category-{categoryId}", method = RequestMethod.POST)
+	public String removeCategoryPost(HttpServletRequest request, 
+									@PathVariable(value="categoryId") int categoryId) {
+		
+		java.util.Set<String> params = request.getParameterMap().keySet();
+		
+		if (params.contains("yes")) {
+			Category category = repository.findById(categoryId).get();
+			List<Set> sets = setRepository.findByCategory(category);
+			
+			for (Set set : sets) {
+				
+				Setup setup = setupRepository.findBySet(set);
+				setupRepository.delete(setup);
+				
+				List<Word> words = wordRepository.findBySet(set);
+				for (Word word : words) {
+					wordRepository.delete(word);
+				}
+				
+				setRepository.delete(set);
+			}
+			
+			repository.deleteById(categoryId);
+		}
+		
 		return "redirect:/index";
 	}
 

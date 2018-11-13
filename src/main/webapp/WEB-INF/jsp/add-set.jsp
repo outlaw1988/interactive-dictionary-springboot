@@ -112,10 +112,6 @@
 			</c:forEach>
 
 	    </table>
-	    
-	    <%-- <%
-        	request.setAttribute("insert","insert");  
-		%> --%>
     
     	<br/><br/>
     

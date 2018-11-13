@@ -1,5 +1,6 @@
 package com.intdict.interactivedictionary.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +46,23 @@ public class SetController {
 		Category category = categoryRepository.findById(categoryId).get();
 		List<Set> sets = setRepository.findByCategory(category);
 		
+		List<Integer> wordCounters = new ArrayList<>();
+		List<Integer> lastResults = new ArrayList<>();
+		List<Integer> bestResults = new ArrayList<>();
+		
+		for (Set set : sets) {
+			wordCounters.add(wordRepository.findBySet(set).size());
+			Setup setup = setupRepository.findBySet(set);
+			lastResults.add(setup.getLastResult());
+			bestResults.add(setup.getBestResult());
+		}
+		
 		model.put("sets", sets);
 		model.put("category", category);
+		
+		model.put("wordCounters", wordCounters);
+		model.put("lastResults", lastResults);
+		model.put("bestResults", bestResults);
 		
 		return "category-sets-list";
 	}
