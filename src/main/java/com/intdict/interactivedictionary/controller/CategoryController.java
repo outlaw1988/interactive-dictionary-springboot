@@ -1,5 +1,6 @@
 package com.intdict.interactivedictionary.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.Language;
+import com.intdict.interactivedictionary.model.Set;
+import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.LanguageRepository;
+import com.intdict.interactivedictionary.service.SetRepository;
+import com.intdict.interactivedictionary.service.WordRepository;
 
 @Controller
 public class CategoryController {
@@ -24,12 +29,35 @@ public class CategoryController {
 	
 	@Autowired
 	LanguageRepository languageRepository;
+	
+	@Autowired
+	SetRepository setRepository;
+	
+	@Autowired
+	WordRepository wordRepository;
 
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public String index(ModelMap model) {
 
 		List<Category> categories = repository.findAll();
 		model.put("categories", categories);
+		
+		List<Integer> setCounters = new ArrayList<>();
+		List<Integer> wordCounters = new ArrayList<>();
+		
+		for (Category category : categories) {
+			List<Set> sets = setRepository.findByCategory(category);
+			setCounters.add(sets.size());
+			
+			Integer wordCount = 0;
+			for (Set set : sets) {
+				wordCount += wordRepository.findBySet(set).size();
+			}
+			wordCounters.add(wordCount);
+		}
+		
+		model.put("setCounters", setCounters);
+		model.put("wordCounters", wordCounters);
 
 		return "index";
 	}

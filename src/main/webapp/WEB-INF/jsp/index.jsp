@@ -5,7 +5,7 @@
 
 <div class="boxes">
 
-	<c:forEach items="${categories}" var="category">
+	<c:forEach items="${categories}" var="category" varStatus="loop">
 	
 		<div class="box">
 			<div class="box-name">
@@ -24,8 +24,8 @@
 	            <!-- It should be empty -->
 	        </div>
 			
-			<br><span>sets:</span>
-	        <br><span>words:</span>
+			<br><span>sets: ${setCounters[loop.index]}</span>
+	        <br><span>words: ${wordCounters[loop.index]}</span>
 	        <br><span>${category.defaultSrcLanguage} <-> ${category.defaultTargetLanguage}</span>
 		</div>
 	
