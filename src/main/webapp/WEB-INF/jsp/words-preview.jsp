@@ -25,13 +25,13 @@
 <br>
 
 <div style="text-align:center;">
-	<a type="button" class="btn btn-success" href="">Perform exam</a>
+	<a type="button" class="btn btn-success" href="/exam-${set.id}">Perform exam</a>
 </div>
 
 <br>
 
 <div style="text-align:center;">
-	<a type="button" class="btn btn-success" href="category-${set.category.id}">Go back</a>
+	<a type="button" class="btn btn-success" href="/category-${set.category.id}">Go back</a>
 </div>
 
 <%@ include file="common/footer.jspf"%>
