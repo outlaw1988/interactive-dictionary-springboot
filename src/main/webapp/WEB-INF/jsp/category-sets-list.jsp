@@ -26,6 +26,7 @@
 			<br><span>words: ${wordCounters[loop.index]}</span>
 	        <br><span>last result: ${lastResults[loop.index]}%</span>
 	        <br><span>best result: ${bestResults[loop.index]}%</span>
+	        <br><span>${srcLanguages[loop.index]} -> ${targetLanguages[loop.index]}</span>
 		</div>
 	
 	</c:forEach>

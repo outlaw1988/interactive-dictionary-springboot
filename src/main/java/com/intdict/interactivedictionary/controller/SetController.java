@@ -49,13 +49,20 @@ public class SetController {
 		List<Integer> wordCounters = new ArrayList<>();
 		List<Integer> lastResults = new ArrayList<>();
 		List<Integer> bestResults = new ArrayList<>();
+		List<String> srcLanguages = new ArrayList<>();
+		List<String> targetLanguages = new ArrayList<>();
 		
 		for (Set set : sets) {
 			wordCounters.add(wordRepository.findBySet(set).size());
 			Setup setup = setupRepository.findBySet(set);
 			lastResults.add(setup.getLastResult());
 			bestResults.add(setup.getBestResult());
+			srcLanguages.add(setup.getSrcLanguage().getName());
+			targetLanguages.add(setup.getTargetLanguage().getName());
 		}
+		
+		model.put("srcLanguages", srcLanguages);
+		model.put("targetLanguages", targetLanguages);
 		
 		model.put("sets", sets);
 		model.put("category", category);
