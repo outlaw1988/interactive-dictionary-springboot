@@ -7,17 +7,14 @@
 			<tr>
 				<th>Language name</th>
 				<th></th>
-				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${languages}" var="language">
 				<tr>
 					<td>${language.name}</td>
-					<td><a type="button" class="btn btn-success"
-						href="">Update</a></td>
-					<td><a type="button" class="btn btn-warning"
-						href="">Delete</a></td>
+					<td><a type="button" class="btn btn-warning" 
+					href="/remove-language-${language.id}">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
