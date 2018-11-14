@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -20,13 +21,34 @@ public class Category {
 	@Column(name = "name")
 	private String name;
 	
+	@OneToOne
+	private Language defaultSrcLanguage;
+	
+	@OneToOne
+	private Language defaultTargetLanguage;
+	
+	private String defaultTargetSide;
+	
+	private int defaultCountdownDuration;
+	
 	public Category() {
 		//empty
+		//System.out.println("Empty constructor called!!");
 	}
 
 	public Category(String name) {
 		super();
+		//System.out.println("Name constructor called!!");
 		this.name = name;
+	}
+	
+	public Category(String name, Language defaultSrcLanguage, Language defaultTargetLanguage) {
+		super();
+		//System.out.println("Three elements constructor called!!");
+		this.name = name;
+		this.defaultSrcLanguage = defaultSrcLanguage;
+		this.defaultTargetLanguage = defaultTargetLanguage;
+
 	}
 
 	public int getId() {
@@ -43,6 +65,38 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Language getDefaultSrcLanguage() {
+		return defaultSrcLanguage;
+	}
+
+	public void setDefaultSrcLanguage(Language defaultSrcLanguage) {
+		this.defaultSrcLanguage = defaultSrcLanguage;
+	}
+
+	public Language getDefaultTargetLanguage() {
+		return defaultTargetLanguage;
+	}
+
+	public void setDefaultTargetLanguage(Language defaultTargetLanguage) {
+		this.defaultTargetLanguage = defaultTargetLanguage;
+	}
+
+	public String getDefaultTargetSide() {
+		return defaultTargetSide;
+	}
+
+	public void setDefaultTargetSide(String defaultTargetSide) {
+		this.defaultTargetSide = defaultTargetSide;
+	}
+
+	public int getDefaultCountdownDuration() {
+		return defaultCountdownDuration;
+	}
+
+	public void setDefaultCountdownDuration(int defaultCountdownDuration) {
+		this.defaultCountdownDuration = defaultCountdownDuration;
 	}
 
 	@Override
