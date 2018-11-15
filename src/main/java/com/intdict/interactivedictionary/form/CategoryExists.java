@@ -18,8 +18,7 @@ public @interface CategoryExists {
 	String message() default "Category already exists";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-    String first();
-    String second();
+    String category();
 
     @Target({TYPE, ANNOTATION_TYPE})
     @Retention(RUNTIME)

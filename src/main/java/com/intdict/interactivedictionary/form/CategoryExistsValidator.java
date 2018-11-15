@@ -1,32 +1,42 @@
 package com.intdict.interactivedictionary.form;
 
-import org.apache.commons.beanutils.BeanUtils;
+import com.intdict.interactivedictionary.service.CategoryRepository;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class CategoryExistsValidator implements ConstraintValidator<CategoryExists, Object> {
 
-	private String firstFieldName;
-    private String secondFieldName;
+	private String category;
     private String message;
+    
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public void initialize(final CategoryExists constraintAnnotation) {
-        firstFieldName = constraintAnnotation.first();
-        secondFieldName = constraintAnnotation.second();
+        category = constraintAnnotation.category();
         message = constraintAnnotation.message();
     }
 
     @Override
     public boolean isValid(final Object value, final ConstraintValidatorContext context) {
         boolean valid = true;
+        System.out.println("isValid called!!!!");
+        
         try
         {
-            final Object firstObj = BeanUtils.getProperty(value, firstFieldName);
-            final Object secondObj = BeanUtils.getProperty(value, secondFieldName);
+            final Object categoryObj = BeanUtils.getProperty(value, category);
+            int size = categoryRepository.findByName((String)categoryObj).size();
+            //System.out.println("Size: " + size);
             
-            valid =  firstObj == null && secondObj == null || firstObj != null && !firstObj.equals(secondObj);
+            if (size > 0) {
+            	valid = false;
+            }
+            
         }
         catch (final Exception ignore)
         {
@@ -35,7 +45,7 @@ public class CategoryExistsValidator implements ConstraintValidator<CategoryExis
 
         if (!valid){
             context.buildConstraintViolationWithTemplate(message)
-                    .addPropertyNode(firstFieldName)
+                    .addPropertyNode(category)
                     .addConstraintViolation()
                     .disableDefaultConstraintViolation();
         }
