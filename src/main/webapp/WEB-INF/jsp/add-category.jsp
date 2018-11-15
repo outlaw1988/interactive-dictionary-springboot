@@ -15,22 +15,28 @@
 		<form:label path="defaultSrcLanguage">Default source language:</form:label>
 		<br/>
 		<form:select path="defaultSrcLanguage">
-		    <option value="None">--SELECT--</option>
+		    <option value="">--SELECT--</option>
 		    <c:forEach items="${languages}" var="language"> 
             	<option value="${language.getId()}">${language.getName()}</option> 
             </c:forEach>
 		</form:select>
-		<br/><br/>
+		
+		<p><form:errors class="error" path="defaultSrcLanguage"/></p>
+		
+		<br/>
+		
 		<form:label path="defaultTargetLanguage">Default target language:</form:label>
 		<br/>
 		<form:select  path="defaultTargetLanguage">
-		    <option value="None">--SELECT--</option>
+		    <option value="">--SELECT--</option>
 		    <c:forEach items="${languages}" var="language"> 
             	<option value="${language.getId()}">${language.getName()}</option> 
             </c:forEach> 
 		</form:select>
 		
-		<br/><br/>
+		<p><form:errors class="error" path="defaultTargetLanguage"/></p>
+		
+		<br/>
 		
 		<form:label path="defaultTargetSide">Default target side:</form:label>
 		<br/>

@@ -74,6 +74,10 @@ h1{
     display: block;
 }
 
+.error {
+	color: red;
+}
+
 .left-side {
     float: left;
     width: 20px;
