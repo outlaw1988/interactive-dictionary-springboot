@@ -84,6 +84,9 @@ public class CategoryController {
 	public String addCategoryPost(ModelMap model, @Valid Category category, BindingResult result) {
 
 		if (result.hasErrors()) {
+			List<Language> languages = languageRepository.findAll();
+			model.put("languages", languages);
+			
 			return "add-category";
 		}
 

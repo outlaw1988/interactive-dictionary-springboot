@@ -98,6 +98,18 @@ public class SetController {
 							@Valid Setup setup, BindingResult resultSetup) {
 
 		if (resultSet.hasErrors() || resultSetup.hasErrors()) {
+			Category category = categoryRepository.findById(categoryId).get();
+			model.addAttribute("set", new Set("", category));
+			model.addAttribute("setup", new Setup());
+			
+			model.put("category", category);
+			model.put("targetSide", category.getDefaultTargetSide());
+			if (category.getDefaultTargetSide().equals("left")) {
+				model.put("srcSide", "right");
+			} else {
+				model.put("srcSide", "left");
+			}
+			
 			return "add-set";
 		}
 		
