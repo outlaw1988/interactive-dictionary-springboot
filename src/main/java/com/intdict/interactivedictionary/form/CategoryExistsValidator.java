@@ -25,7 +25,6 @@ public class CategoryExistsValidator implements ConstraintValidator<CategoryExis
     @Override
     public boolean isValid(final Object value, final ConstraintValidatorContext context) {
         boolean valid = true;
-        System.out.println("isValid called!!!!");
         
         try
         {
