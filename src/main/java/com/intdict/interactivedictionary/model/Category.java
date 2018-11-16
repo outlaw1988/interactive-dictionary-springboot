@@ -7,10 +7,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.intdict.interactivedictionary.form.CategoryExists;
+import com.intdict.interactivedictionary.form.FieldMatch;
 
 @Entity
 @Table(name = "Category")
+@FieldMatch(first = "defaultSrcLanguage", second = "defaultTargetLanguage", message = "Languages must be different")
+@CategoryExists(category="name", message="Category already exists", groups={CreateGroup.class})
 public class Category {
 	
 	@Id
@@ -22,9 +28,11 @@ public class Category {
 	private String name;
 	
 	@OneToOne
+	@NotNull
 	private Language defaultSrcLanguage;
 	
 	@OneToOne
+	@NotNull
 	private Language defaultTargetLanguage;
 	
 	private String defaultTargetSide;

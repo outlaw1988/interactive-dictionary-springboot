@@ -1,15 +1,31 @@
-h1{
+h1 {
+	text-align:center;
+}
+
+h3 {
 	text-align:center;
 }
 
 .boxes {
+    display: flex;
+    display: -webkit-flex;
+    display: -moz-flex;
+    flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
+    -moz-flex-flow: row wrap;
+    width: 60%;
+    margin: auto;
+    justify-content: center;
+}
+
+/* .boxes {
 	margin: auto;
-	/* background: #00ff00; */
+	background: #00ff00;
 	width: 60%;
 	display: flex;
   	justify-content: center;
   	align-items: center;
-}
+} */
 
 .box {
     border: 1px solid #000;
@@ -18,9 +34,9 @@ h1{
     width: 200px;
     text-align: center;
     display: inline-block;
-    /* display: block;
+    display: block;
     text-align: center;
-    position: relative; */
+    position: relative;
 }
 
 .box-name {
@@ -62,11 +78,19 @@ h1{
     display: block;
 }
 
+.error {
+	color: red;
+}
+
 .left-side {
     float: left;
     width: 20px;
     height: 20px;
     /* background: #ff0000; */
+}
+
+.center {
+	text-align: center;
 }
 
 .table-add-set {
