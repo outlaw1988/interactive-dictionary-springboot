@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
+import com.intdict.interactivedictionary.model.CreateGroup;
 import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.model.Set;
 import com.intdict.interactivedictionary.model.Setup;
@@ -81,7 +83,7 @@ public class CategoryController {
 	}
 
 	@RequestMapping(value = "/add-category", method = RequestMethod.POST)
-	public String addCategoryPost(ModelMap model, @Valid Category category, BindingResult result) {
+	public String addCategoryPost(ModelMap model, @Validated({CreateGroup.class}) Category category, BindingResult result) {
 
 		if (result.hasErrors()) {
 			List<Language> languages = languageRepository.findAll();

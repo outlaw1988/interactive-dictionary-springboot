@@ -16,7 +16,7 @@ import com.intdict.interactivedictionary.form.FieldMatch;
 @Entity
 @Table(name = "Category")
 @FieldMatch(first = "defaultSrcLanguage", second = "defaultTargetLanguage", message = "Languages must be different")
-//@CategoryExists(category="name", message="Category already exists")
+@CategoryExists(category="name", message="Category already exists", groups={CreateGroup.class})
 public class Category {
 	
 	@Id
