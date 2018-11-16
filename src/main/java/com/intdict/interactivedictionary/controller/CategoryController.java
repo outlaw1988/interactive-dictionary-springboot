@@ -131,5 +131,34 @@ public class CategoryController {
 		
 		return "redirect:/index";
 	}
+	
+	@RequestMapping(value = "/update-category-{categoryId}", method = RequestMethod.GET)
+	public String updateCategoryGet(ModelMap model, @PathVariable(value="categoryId") int categoryId) {
+		
+		Category category = repository.findById(categoryId).get();
+		model.addAttribute("category", category);
+		
+		List<Language> languages = languageRepository.findAll();
+		model.put("languages", languages);
+		
+		return "update-category";
+	}
+	
+	@RequestMapping(value = "/update-category-{categoryId}", method = RequestMethod.POST)
+	public String updateCategoryPost(ModelMap model, @Valid Category category, BindingResult result) {
+		
+		//System.out.println("Category id: " + category.getId());
+		
+		if (result.hasErrors()) {
+			List<Language> languages = languageRepository.findAll();
+			model.put("languages", languages);
+			
+			return "update-category";
+		}
+		
+		repository.save(category);
+		
+		return "redirect:/index";
+	}
 
 }
