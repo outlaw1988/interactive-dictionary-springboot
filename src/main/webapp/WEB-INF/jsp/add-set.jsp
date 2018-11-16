@@ -10,6 +10,7 @@
 		<spring:bind path="set.name">
 			<span>Set name:</span>
 			<input type="text" name="${status.expression}" value="${status.value}" required="required">
+			<form:errors path="set.name" />
 		</spring:bind>
 		
 		<br/><br/>

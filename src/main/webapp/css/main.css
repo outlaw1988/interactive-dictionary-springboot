@@ -1,4 +1,8 @@
-h1{
+h1 {
+	text-align:center;
+}
+
+h3 {
 	text-align:center;
 }
 
@@ -83,6 +87,10 @@ h1{
     width: 20px;
     height: 20px;
     /* background: #ff0000; */
+}
+
+.center {
+	text-align: center;
 }
 
 .table-add-set {

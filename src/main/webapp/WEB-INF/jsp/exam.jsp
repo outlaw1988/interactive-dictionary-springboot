@@ -2,40 +2,43 @@
 <%@ include file="common/navigation.jspf"%>
 
 <h3>Exam is performing for category: ${sessionScope.category.name}, set: ${sessionScope.set.name}</h3>
+<div class="container">
+	<br><br>
 
-<br><br>
+	<div class="progress">
+	  <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+	    <span class="sr-only">70% Complete</span>
+	  </div>
+	</div>
+	
+	<div class="center">
+	    <span id="secs-left">5 second(s) left</span>
+	
+		<br><br>
+		
+		<span id="curr_word_num">${sessionScope.currWordIdxToShow}</span>/${sessionScope.size}
+		
+		<br><br>
+		
+		Translate word: <span id="src_word">${srcWord}</span>
+		
+		<br><br>
+		
+		<input type="text" name="answer" id="answer" autofocus/>
+		<button type="button" onclick="checkWord()" id="check-button">Check</button>
+		<button type="button" onclick="nextWord()" id="next-button">Next</button>
+		
+		<br><br>
+		
+		<div id="succ_or_fail" class="answer_list" ></div>
+		
+		<br><br>
+		
+		<a type="button" class="btn btn-success" href="/category-${sessionScope.category.id}">Cancel</a>
+	
+	</div>
 
-<div class="progress">
-  <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-    <span class="sr-only">70% Complete</span>
-  </div>
 </div>
-
-<div class="secs-left-div">
-    <span id="secs-left">5 second(s) left</span>
-</div>
-
-<br><br>
-
-<span id="curr_word_num">${sessionScope.currWordIdxToShow}</span>/${sessionScope.size}
-
-<br><br>
-
-Translate word: <span id="src_word">${srcWord}</span>
-
-<br><br>
-
-<input type="text" name="answer" id="answer" autofocus/>
-<button type="button" onclick="checkWord()" id="check-button">Check</button>
-<button type="button" onclick="nextWord()" id="next-button">Next</button>
-
-<br><br>
-
-<div id="succ_or_fail" class="answer_list" ></div>
-
-<br><br>
-
-<a type="button" class="btn btn-success" href="/category-${sessionScope.category.id}">Cancel</a>
 
 <script type="text/javascript"> 
 
