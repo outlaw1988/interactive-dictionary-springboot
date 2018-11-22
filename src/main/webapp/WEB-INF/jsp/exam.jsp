@@ -84,7 +84,7 @@ var checkWord = function () {
 }
 
 var nextWord = function() {
-    //console.log("Next word called from javascript...");
+    console.log("Next word called from javascript...");
     stopTimeout();
     progress(countdownDuration, countdownDuration);
 
