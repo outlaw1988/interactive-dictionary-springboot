@@ -1,5 +1,11 @@
 # Changelog - Interactive dictionary Spring Boot App
 
+## [0.3.0] - 2018-11-23
+
+### Added
+- User authentication
+- User registration
+
 ## [0.2.0] - 2018-11-16
 
 ### Added
