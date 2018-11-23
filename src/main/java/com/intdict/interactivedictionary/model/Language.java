@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -19,6 +20,9 @@ public class Language {
 	@Size(min=2, message="Enter at least 2 characters...")
 	@Column(name = "name")
 	private String name;
+	
+	@OneToOne
+	private User user;
 
 	public Language() {
 		//empty
@@ -48,6 +52,14 @@ public class Language {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 }

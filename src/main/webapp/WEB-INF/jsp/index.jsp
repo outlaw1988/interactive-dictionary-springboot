@@ -1,6 +1,7 @@
 <%@ include file="common/header.jspf"%>
 <%@ include file="common/navigation.jspf"%>
 
+<h1>Hello ${name}!</h1>
 <h1>Categories available:</h1>
 
 <div class="boxes">

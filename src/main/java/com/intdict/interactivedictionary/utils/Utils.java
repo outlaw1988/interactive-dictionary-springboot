@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.ModelMap;
+
 public class Utils {
 
 	public static int findHighestWordIdxFromRequest(Set<String> keys) {
@@ -50,6 +54,16 @@ public class Utils {
 		
 		answersList.set(idx, value);
 		return answersList;
+	}
+
+	public static String getLoggedInUserName(ModelMap model) {
+		Object principal = SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails)
+			return ((UserDetails) principal).getUsername();
+
+		return principal.toString();
 	}
 
 }
