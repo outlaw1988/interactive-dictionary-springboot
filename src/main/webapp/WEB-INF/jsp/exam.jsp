@@ -47,6 +47,14 @@ var size = ${sessionScope.size};
 var timeOutControl;
 var countdownDuration = "${sessionScope.countdownDuration}";
 
+$(function () {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+});
+
 var checkWord = function () {
 	 //console.log("Check word called from javascript...");
 	 stopTimeout();
@@ -127,7 +135,13 @@ var nextWord = function() {
         $.ajax ({
             url: "/exam-next",
             type: "POST",
-            data: json,
+            data: json$(function () {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                $(document).ajaxSend(function (e, xhr, options) {
+                    xhr.setRequestHeader(header, token);
+                });
+            });,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             /*success: function(response){
