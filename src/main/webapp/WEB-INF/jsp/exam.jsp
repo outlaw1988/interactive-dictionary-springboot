@@ -47,6 +47,14 @@ var size = ${sessionScope.size};
 var timeOutControl;
 var countdownDuration = "${sessionScope.countdownDuration}";
 
+$(function () {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+});
+
 var checkWord = function () {
 	 //console.log("Check word called from javascript...");
 	 stopTimeout();
@@ -84,7 +92,7 @@ var checkWord = function () {
 }
 
 var nextWord = function() {
-    //console.log("Next word called from javascript...");
+    console.log("Next word called from javascript...");
     stopTimeout();
     progress(countdownDuration, countdownDuration);
 

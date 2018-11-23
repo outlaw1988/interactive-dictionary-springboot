@@ -39,14 +39,15 @@ public class Category {
 	
 	private int defaultCountdownDuration;
 	
+	@OneToOne
+	private User user;
+	
 	public Category() {
 		//empty
-		//System.out.println("Empty constructor called!!");
 	}
 
 	public Category(String name) {
 		super();
-		//System.out.println("Name constructor called!!");
 		this.name = name;
 	}
 	
@@ -110,6 +111,14 @@ public class Category {
 	@Override
 	public String toString() {
 		return "Category [id=" + id + ", name=" + name + "]";
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 }
