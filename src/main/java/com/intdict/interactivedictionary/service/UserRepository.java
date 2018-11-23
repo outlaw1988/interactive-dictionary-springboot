@@ -8,7 +8,6 @@ import com.intdict.interactivedictionary.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-	List<User> findByLogin(String login);
-	List<User> findByEmail(String email);
+	List<User> findByUsername(String username);
 	
 }

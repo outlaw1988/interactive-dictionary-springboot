@@ -35,19 +35,19 @@ public class AuthenticationController {
     public String registrationPost(ModelMap model, @Valid User user, 
     		BindingResult bindingResult){
 	
-		int loginSize = userService.findUserByLogin(user.getLogin()).size();
+		int loginSize = userService.findUserByUsername(user.getUsername()).size();
 		
 		if (loginSize > 0) {
-			bindingResult.rejectValue("login", "error.login",
-                    "This login already exists");
+			bindingResult.rejectValue("username", "error.username",
+                    "This user name already exists");
 		}
 		
-		int emailSize = userService.findUserByEmail(user.getEmail()).size();
-		
-		if (emailSize > 0) {
-			bindingResult.rejectValue("email", "error.email",
-                    "This email already exists");
-		}
+//		int emailSize = userService.findUserByEmail(user.getEmail()).size();
+//		
+//		if (emailSize > 0) {
+//			bindingResult.rejectValue("email", "error.email",
+//                    "This email already exists");
+//		}
 		
 		if (bindingResult.hasErrors()) {
 					
@@ -61,11 +61,6 @@ public class AuthenticationController {
 		
         return "registration";
     }
-	
-	@RequestMapping(value="/login", method=RequestMethod.GET)
-	public String login() {
-		return "login";
-	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request,

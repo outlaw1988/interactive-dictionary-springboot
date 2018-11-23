@@ -1,5 +1,6 @@
 package com.intdict.interactivedictionary.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
 	@Id
@@ -20,21 +21,16 @@ public class User {
     @Column(name = "user_id")
     private int id;
 	
-	@Column(name = "email")
-	@NotNull
-    private String email;
+	@Column(name = "username")
+    @NotNull
+    private String username;
 	
     @Column(name = "password")
     @NotNull
     private String password;
     
-    @Column(name = "password_confirm")
-    @NotNull
-    private String passwordConfirm;
-    
-    @Column(name = "login")
-    @NotNull
-    private String login;
+    @Column(name = "enabled")
+    private int enable;
     
     public User() {
     	// empty
@@ -42,18 +38,9 @@ public class User {
     
     public User(User user) {
     	this.id = user.getId();
-    	this.email = user.getEmail();
-    	this.login = user.getLogin();
+    	this.username = user.getUsername();
     	this.password = user.getPassword();
     }
-
-	public String getPasswordConfirm() {
-		return passwordConfirm;
-	}
-
-	public void setPasswordConfirm(String passwordConfirm) {
-		this.passwordConfirm = passwordConfirm;
-	}
 
 	public int getId() {
 		return id;
@@ -61,14 +48,6 @@ public class User {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getPassword() {
@@ -79,14 +58,20 @@ public class User {
 		this.password = password;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public int getEnable() {
+		return enable;
+	}
+
+	public void setEnable(int enable) {
+		this.enable = enable;
 	}
     
-    
-	
 }
