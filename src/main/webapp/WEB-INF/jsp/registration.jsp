@@ -17,10 +17,24 @@
 		</fieldset>
 		
 		<fieldset class="form-group">
+			<form:label path="email">Email:</form:label>
+			<form:input path="email" type="text" class="form-control"
+				required="required" />
+			<form:errors path="email" class="error" />
+		</fieldset>
+		
+		<fieldset class="form-group">
 			<form:label path="password">Password:</form:label>
 			<form:input path="password" type="password" class="form-control"
 				required="required" />
 			<form:errors path="password" class="error" />
+		</fieldset>
+		
+		<fieldset class="form-group">
+			<form:label path="passwordConfirm">Confirm password:</form:label>
+			<form:input path="passwordConfirm" type="password" class="form-control"
+				required="required" />
+			<form:errors path="passwordConfirm" class="error" />
 		</fieldset>
 		
 		<br/><br/>

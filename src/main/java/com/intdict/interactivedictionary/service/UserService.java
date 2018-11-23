@@ -27,18 +27,19 @@ public class UserService {
     	return userRepository.findByUsername(login);
     }
     
+    public List<User> findUserByEmail(String email) {
+    	return userRepository.findByEmail(email);
+    }
+    
     public void saveUser(User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPasswordConfirm(new BCryptPasswordEncoder().encode(user.getPasswordConfirm()));
         user.setEnable(1);
         User userReturned = userRepository.save(user);
-        
-        //System.out.println("User name: " + userReturned.getUsername());
         
         Role role = new Role();
         role.setUsername(userReturned.getUsername());
         role.setAuthority("ROLE_USER");
-        
-        //System.out.println("Role username: " + role.getUsername());
         
         roleRepository.save(role);
     }
