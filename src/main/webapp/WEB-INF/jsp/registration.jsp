@@ -10,17 +10,10 @@
 		<form:hidden path="id" />
 		
 		<fieldset class="form-group">
-			<form:label path="email">Email:</form:label>
-			<form:input path="email" type="text" class="form-control"
+			<form:label path="username">User name:</form:label>
+			<form:input path="username" type="text" class="form-control"
 				required="required" />
-			<form:errors path="email" class="error" />
-		</fieldset>
-		
-		<fieldset class="form-group">
-			<form:label path="login">Login:</form:label>
-			<form:input path="login" type="text" class="form-control"
-				required="required" />
-			<form:errors path="login" class="error" />
+			<form:errors path="username" class="error" />
 		</fieldset>
 		
 		<fieldset class="form-group">
@@ -28,13 +21,6 @@
 			<form:input path="password" type="password" class="form-control"
 				required="required" />
 			<form:errors path="password" class="error" />
-		</fieldset>
-		
-		<fieldset class="form-group">
-			<form:label path="passwordConfirm">Confirm password:</form:label>
-			<form:input path="passwordConfirm" type="password" class="form-control"
-				required="required" />
-			<form:errors path="passwordConfirm" class="error" />
 		</fieldset>
 		
 		<br/><br/>
