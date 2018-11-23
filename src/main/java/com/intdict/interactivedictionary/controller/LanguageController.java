@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.Language;
+import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.LanguageRepository;
+import com.intdict.interactivedictionary.service.UserRepository;
+import com.intdict.interactivedictionary.utils.Utils;
 
 @Controller
 public class LanguageController {
@@ -27,9 +30,17 @@ public class LanguageController {
 	@Autowired
 	CategoryRepository categoryRepository;
 	
+	@Autowired
+	UserRepository userRepository;
+	
 	@RequestMapping(value = "/languages", method = RequestMethod.GET)
 	public String showLanguages(ModelMap model) {
-		List<Language> languages = repository.findAll();
+		
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		
+//		List<Language> languages = repository.findAll();
+		List<Language> languages = repository.findByUser(user);
+		
 		model.put("languages", languages);
 		
 		return "languages";
@@ -48,6 +59,9 @@ public class LanguageController {
 			return "add-language";
 		}
 
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		language.setUser(user);
+		
 		repository.save(language);
 		return "redirect:/languages";
 	}
