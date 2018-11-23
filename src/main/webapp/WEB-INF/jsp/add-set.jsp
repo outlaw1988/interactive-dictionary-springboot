@@ -3,7 +3,7 @@
 
 <div class="container">
 		
-	<form action="?${_csrf.parameterName}=${_csrf.token}" method="post">
+	<form action="" method="post">
 	
 		<form:hidden path="id" />
 		
