@@ -22,12 +22,15 @@ import com.intdict.interactivedictionary.model.CreateGroup;
 import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.model.Set;
 import com.intdict.interactivedictionary.model.Setup;
+import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.LanguageRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
 import com.intdict.interactivedictionary.service.SetupRepository;
+import com.intdict.interactivedictionary.service.UserRepository;
 import com.intdict.interactivedictionary.service.WordRepository;
+import com.intdict.interactivedictionary.utils.Utils;
 
 @Controller
 public class CategoryController {
@@ -46,11 +49,18 @@ public class CategoryController {
 	
 	@Autowired
 	SetupRepository setupRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public String index(ModelMap model) {
 
-		List<Category> categories = repository.findAll();
+		// TODO Change finding by user
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		
+		List<Category> categories = repository.findByUser(user);
+//		List<Category> categories = repository.findAll();
 		model.put("categories", categories);
 		
 		List<Integer> setCounters = new ArrayList<>();
@@ -69,7 +79,7 @@ public class CategoryController {
 		
 		model.put("setCounters", setCounters);
 		model.put("wordCounters", wordCounters);
-		model.put("name", getLoggedInUserName(model));
+		model.put("name", Utils.getLoggedInUserName(model));
 
 		return "index";
 	}
@@ -79,7 +89,9 @@ public class CategoryController {
 		
 		model.addAttribute("category", new Category(""));
 		
-		List<Language> languages = languageRepository.findAll();
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		List<Language> languages = languageRepository.findByUser(user);
+		
 		model.put("languages", languages);
 		
 		return "add-category";
@@ -89,11 +101,16 @@ public class CategoryController {
 	public String addCategoryPost(ModelMap model, @Validated({CreateGroup.class}) Category category, BindingResult result) {
 
 		if (result.hasErrors()) {
-			List<Language> languages = languageRepository.findAll();
+			User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+			List<Language> languages = languageRepository.findByUser(user);
+			
 			model.put("languages", languages);
 			
 			return "add-category";
 		}
+		
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		category.setUser(user);
 
 		repository.save(category);
 		return "redirect:/index";
@@ -143,7 +160,9 @@ public class CategoryController {
 		Category category = repository.findById(categoryId).get();
 		model.addAttribute("category", category);
 		
-		List<Language> languages = languageRepository.findAll();
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		List<Language> languages = languageRepository.findByUser(user);
+		
 		model.put("languages", languages);
 		
 		return "update-category";
@@ -152,28 +171,21 @@ public class CategoryController {
 	@RequestMapping(value = "/update-category-{categoryId}", method = RequestMethod.POST)
 	public String updateCategoryPost(ModelMap model, @Valid Category category, BindingResult result) {
 		
-		//System.out.println("Category id: " + category.getId());
-		
 		if (result.hasErrors()) {
-			List<Language> languages = languageRepository.findAll();
+			User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+			List<Language> languages = languageRepository.findByUser(user);
+			
 			model.put("languages", languages);
 			
 			return "update-category";
 		}
 		
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		category.setUser(user);
+		
 		repository.save(category);
 		
 		return "redirect:/index";
-	}
-	
-	private String getLoggedInUserName(ModelMap model) {
-		Object principal = SecurityContextHolder.getContext()
-				.getAuthentication().getPrincipal();
-
-		if (principal instanceof UserDetails)
-			return ((UserDetails) principal).getUsername();
-
-		return principal.toString();
 	}
 
 }
