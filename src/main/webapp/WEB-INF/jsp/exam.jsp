@@ -47,6 +47,14 @@ var size = ${sessionScope.size};
 var timeOutControl;
 var countdownDuration = "${sessionScope.countdownDuration}";
 
+$(function () {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+});
+
 var checkWord = function () {
 	 //console.log("Check word called from javascript...");
 	 stopTimeout();
