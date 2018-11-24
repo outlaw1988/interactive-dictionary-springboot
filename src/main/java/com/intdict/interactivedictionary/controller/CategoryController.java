@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class CategoryController {
 	UserRepository userRepository;
 
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
-	public String index(ModelMap model) {
+	public String index(ModelMap model, HttpServletRequest request) {
 
 		// TODO Change finding by user
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
@@ -77,7 +78,9 @@ public class CategoryController {
 		
 		model.put("setCounters", setCounters);
 		model.put("wordCounters", wordCounters);
-		model.put("name", Utils.getLoggedInUserName(model));
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("username", Utils.getLoggedInUserName(model));
 
 		return "index";
 	}
