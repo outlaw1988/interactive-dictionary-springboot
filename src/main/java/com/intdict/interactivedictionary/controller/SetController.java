@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.Set;
-import com.intdict.interactivedictionary.model.Setup;
 import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
-import com.intdict.interactivedictionary.service.SetupRepository;
 import com.intdict.interactivedictionary.service.WordRepository;
 import com.intdict.interactivedictionary.utils.Utils;
 
@@ -32,9 +30,6 @@ public class SetController {
 	
 	@Autowired
 	CategoryRepository categoryRepository;
-	
-	@Autowired
-	SetupRepository setupRepository;
 	
 	@Autowired
 	WordRepository wordRepository;
@@ -54,11 +49,11 @@ public class SetController {
 		
 		for (Set set : sets) {
 			wordCounters.add(wordRepository.findBySet(set).size());
-			Setup setup = setupRepository.findBySet(set);
-			lastResults.add(setup.getLastResult());
-			bestResults.add(setup.getBestResult());
-			srcLanguages.add(setup.getSrcLanguage().getName());
-			targetLanguages.add(setup.getTargetLanguage().getName());
+			//Setup setup = setupRepository.findBySet(set);
+			lastResults.add(set.getLastResult());
+			bestResults.add(set.getBestResult());
+			srcLanguages.add(set.getSrcLanguage().getName());
+			targetLanguages.add(set.getTargetLanguage().getName());
 		}
 		
 		model.put("srcLanguages", srcLanguages);
@@ -78,8 +73,7 @@ public class SetController {
 	public String addSetShow(ModelMap model, @PathVariable(value="id") int categoryId) {
 		
 		Category category = categoryRepository.findById(categoryId).get();
-		model.addAttribute("set", new Set("", category));
-		model.addAttribute("setup", new Setup());
+		model.addAttribute("set", new Set());
 		
 		model.put("category", category);
 		model.put("targetSide", category.getDefaultTargetSide());
@@ -94,13 +88,11 @@ public class SetController {
 	
 	@RequestMapping(value = "/add-set-{id}", method = RequestMethod.POST)
 	public String addSetPost(HttpServletRequest request, ModelMap model, @PathVariable(value="id") int categoryId, 
-							@Valid Set set, BindingResult resultSet, 
-							@Valid Setup setup, BindingResult resultSetup) {
+							@Valid Set set, BindingResult result) {
 
-		if (resultSet.hasErrors() || resultSetup.hasErrors()) {
+		if (result.hasErrors()) {
 			Category category = categoryRepository.findById(categoryId).get();
-			model.addAttribute("set", new Set("", category));
-			model.addAttribute("setup", new Setup());
+			model.addAttribute("set", new Set());
 			
 			model.put("category", category);
 			model.put("targetSide", category.getDefaultTargetSide());
@@ -115,40 +107,40 @@ public class SetController {
 		
 		Category category = categoryRepository.findById(categoryId).get();
 		set.setCategory(category);
-		Set setReturned = setRepository.save(set);
-		
-		setup.setSet(setReturned);
 		
 		// case when target language has changed
-		if (setup.getTargetLanguage().getId() != category.getDefaultTargetLanguage().getId()) {
-			setup.setSrcLanguage(category.getDefaultTargetLanguage());
+		if (set.getTargetLanguage().getId() != category.getDefaultTargetLanguage().getId()) {
+			set.setSrcLanguage(category.getDefaultTargetLanguage());
 		} else {
 			// target language not changed
-			setup.setSrcLanguage(category.getDefaultSrcLanguage());
+			set.setSrcLanguage(category.getDefaultSrcLanguage());
 		}
 		
 		int highestWordIdx = Utils.findHighestWordIdxFromRequest(request.getParameterMap().keySet());
+		
+		setRepository.save(set);
 		
 		for (int i = 1; i <= highestWordIdx; i++) {
 			
 			String srcWord = "";
 			String targetWord = "";
 			
-			if (setup.getTargetSide().equals("left")) {
+			if (set.getTargetSide().equals("left")) {
 				srcWord = request.getParameter("right_field_" + i);
 				targetWord = request.getParameter("left_field_" + i);
-			} else if (setup.getTargetSide().equals("right")) {
+			} else if (set.getTargetSide().equals("right")) {
 				srcWord = request.getParameter("left_field_" + i);
 				targetWord = request.getParameter("right_field_" + i);
 			}
 			
 			if (srcWord.equals("") || targetWord.equals("")) continue;
 			
-			Word word = new Word(setReturned, srcWord, targetWord);
+			Word word = new Word(set, srcWord, targetWord);
 			wordRepository.save(word);
 		}
 		
-		setupRepository.save(setup);
+		//setupRepository.save(setup);
+		
 		
 		return "redirect:/category-" + categoryId;
 	}
@@ -158,9 +150,6 @@ public class SetController {
 		
 		Set set = setRepository.findById(setId).get();
 		model.put("set", set);
-		
-		Setup setup = setupRepository.findBySet(set);
-		model.put("setup", setup);
 		
 		List<Word> words = wordRepository.findBySet(set);
 		model.put("words", words);
@@ -185,9 +174,6 @@ public class SetController {
 		Set set = setRepository.findById(setId).get();
 		
 		if (params.contains("yes")) {
-			
-			Setup setup = setupRepository.findBySet(set);
-			setupRepository.delete(setup);
 			
 			List<Word> words = wordRepository.findBySet(set);
 			for (Word word : words) {

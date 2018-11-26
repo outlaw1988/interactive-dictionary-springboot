@@ -17,11 +17,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.Set;
-import com.intdict.interactivedictionary.model.Setup;
 import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
-import com.intdict.interactivedictionary.service.SetupRepository;
 import com.intdict.interactivedictionary.service.WordRepository;
 import com.intdict.interactivedictionary.utils.Utils;
 
@@ -33,9 +31,6 @@ public class ExamController {
 	
 	@Autowired
 	CategoryRepository categoryRepository;
-	
-	@Autowired
-	SetupRepository setupRepository;
 	
 	@Autowired
 	WordRepository wordRepository;
@@ -76,8 +71,7 @@ public class ExamController {
 		session.setAttribute("setId", setId);
 		session.setAttribute("isCheckClicked", false);
 		
-		Setup setup = setupRepository.findBySet(set);
-		session.setAttribute("countdownDuration", setup.getCountdownDuration());
+		session.setAttribute("countdownDuration", set.getCountdownDuration());
 		
 		return "exam";
 	}
@@ -87,13 +81,13 @@ public class ExamController {
 	public String examSummary(HttpServletRequest request, ModelMap model) {
 		
 		HttpSession session = request.getSession();
-		Set set = (Set) session.getAttribute("set");
-		Setup setup = setupRepository.findBySet(set);
 		
-		model.put("lastResult", setup.getLastResult());
-		model.put("bestResult", setup.getBestResult());
-		model.put("srcLanguage", setup.getSrcLanguage());
-		model.put("targetLanguage", setup.getTargetLanguage());
+		Set set = setRepository.findById((int) session.getAttribute("setId")).get();
+		
+		model.put("lastResult", set.getLastResult());
+		model.put("bestResult", set.getBestResult());
+		model.put("srcLanguage", set.getSrcLanguage());
+		model.put("targetLanguage", set.getTargetLanguage());
 		
 		ArrayList<Integer> answersList = (ArrayList<Integer>) session.getAttribute("answersList");
 		

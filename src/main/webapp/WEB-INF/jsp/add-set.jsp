@@ -3,43 +3,38 @@
 
 <div class="container">
 		
-	<form action="?${_csrf.parameterName}=${_csrf.token}" method="post">
+	<form:form method="post" modelAttribute="set">
 	
 		<form:hidden path="id" />
 		
-		<spring:bind path="set.name">
-			<span>Set name:</span>
-			<input type="text" name="${status.expression}" value="${status.value}" required="required">
-			<form:errors path="set.name" />
-		</spring:bind>
+		<fieldset class="form-group">
+			<form:label path="name">Set name:</form:label>
+			<form:input path="name" type="text" class="form-control"
+				required="required" />
+			<form:errors path="name" class="error" />
+		</fieldset>
 		
-		<br/><br/>
+		<br/>
 		
-		<spring:bind path="setup.targetLanguage">
-			<span>Target language:</span>
-			<form:select id="target-language" path="setup.targetLanguage" >
-				<option value="${category.defaultTargetLanguage.id}" selected="selected">${category.defaultTargetLanguage}</option>
-				<option value="${category.defaultSrcLanguage.id}">${category.defaultSrcLanguage}</option>
-			</form:select>
-		</spring:bind>
+		<span>Target language:</span>
+		<form:select id="target-language" path="targetLanguage" >
+			<option value="${category.defaultTargetLanguage.id}" selected="selected">${category.defaultTargetLanguage}</option>
+			<option value="${category.defaultSrcLanguage.id}">${category.defaultSrcLanguage}</option>
+		</form:select>
 		
-		<spring:bind path="setup.targetSide">
-			<span>Target side:</span>
-			<form:select id="target-side" path="setup.targetSide">
-				<option value="${targetSide}" selected="selected">${targetSide}</option>
-				<option value="${srcSide}">${srcSide}</option>
-			</form:select>
-		</spring:bind>
+		<span>Target side:</span>
+		<form:select id="target-side" path="targetSide">
+			<option value="${targetSide}" selected="selected">${targetSide}</option>
+			<option value="${srcSide}">${srcSide}</option>
+		</form:select>
 		
-		<spring:bind path="setup.countdownDuration">
-			<span>Countdown duration:</span>
-			<form:select path="setup.countdownDuration">
-				<option value="30" <c:if test="${category.defaultCountdownDuration == '30'}"> selected="selected" </c:if> >30</option>
-				<option value="20" <c:if test="${category.defaultCountdownDuration == '20'}"> selected="selected" </c:if> >20</option>
-				<option value="10" <c:if test="${category.defaultCountdownDuration == '10'}"> selected="selected" </c:if> >10</option>
-				<option value="5"  <c:if test="${category.defaultCountdownDuration == '5'}">  selected="selected" </c:if> >5</option>
-			</form:select>
-		</spring:bind>
+		<span>Countdown duration:</span>
+		<form:select path="countdownDuration">
+			<option value="30" <c:if test="${category.defaultCountdownDuration == '30'}"> selected="selected" </c:if> >30</option>
+			<option value="20" <c:if test="${category.defaultCountdownDuration == '20'}"> selected="selected" </c:if> >20</option>
+			<option value="10" <c:if test="${category.defaultCountdownDuration == '10'}"> selected="selected" </c:if> >10</option>
+			<option value="5"  <c:if test="${category.defaultCountdownDuration == '5'}">  selected="selected" </c:if> >5</option>
+		</form:select>
 				
 		<br/><br/>
 		
@@ -125,7 +120,7 @@
 		<br/><br/>
 		
 		<a type="button" class="btn btn-success" href="/category-${category.id}">Go back</a>
-	</form>
+	</form:form>
 		
 </div>
 

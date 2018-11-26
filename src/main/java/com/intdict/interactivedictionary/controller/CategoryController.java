@@ -20,13 +20,11 @@ import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.CreateGroup;
 import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.model.Set;
-import com.intdict.interactivedictionary.model.Setup;
 import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.LanguageRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
-import com.intdict.interactivedictionary.service.SetupRepository;
 import com.intdict.interactivedictionary.service.UserRepository;
 import com.intdict.interactivedictionary.service.WordRepository;
 import com.intdict.interactivedictionary.utils.Utils;
@@ -45,9 +43,6 @@ public class CategoryController {
 	
 	@Autowired
 	WordRepository wordRepository;
-	
-	@Autowired
-	SetupRepository setupRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -137,9 +132,6 @@ public class CategoryController {
 			List<Set> sets = setRepository.findByCategory(category);
 			
 			for (Set set : sets) {
-				
-				Setup setup = setupRepository.findBySet(set);
-				setupRepository.delete(setup);
 				
 				List<Word> words = wordRepository.findBySet(set);
 				for (Word word : words) {
