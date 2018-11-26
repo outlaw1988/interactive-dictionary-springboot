@@ -52,7 +52,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/**")
 			.access("hasRole('ROLE_USER')")
 			.and()
-			.formLogin();
+			.formLogin()
+			.loginPage("/login")
+			.defaultSuccessUrl("/index")
+			.usernameParameter("username")
+			.passwordParameter("password");
+//			.and().csrf().disable();
 	}
 
 }

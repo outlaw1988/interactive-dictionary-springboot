@@ -48,7 +48,7 @@ public class LanguageController {
 	
 	@RequestMapping(value = "/add-language", method = RequestMethod.GET)
 	public String addLanguageShow(ModelMap model) {
-		model.addAttribute("language", new Language("Language name"));
+		model.addAttribute("language", new Language());
 		return "add-language";
 	}
 
