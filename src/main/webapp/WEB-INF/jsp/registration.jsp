@@ -45,6 +45,8 @@
 	
 	<span>${successMessage}</span>
 	
+	<a type="button" href="/login" class="btn btn-success">Go to login page</a>
+	
 </div>
 
 <%@ include file="common/footer.jspf"%>

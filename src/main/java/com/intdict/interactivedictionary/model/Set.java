@@ -23,15 +23,38 @@ public class Set {
 	
 	@OneToOne
 	private Category category;
+	
+	@OneToOne
+	private Language srcLanguage;
+	
+	@OneToOne
+	private Language targetLanguage;
+	
+	private String targetSide;
+	
+	private int lastResult;
+	
+	private int bestResult;
+	
+	private int countdownDuration;
 
 	public Set() {
 		//empty
 	}
 	
-	public Set(@Size(min = 2, message = "Enter at least 2 characters...") String name, Category category) {
+	public Set(int id, @Size(min = 2, message = "Enter at least 2 characters...") String name, Category category,
+			Language srcLanguage, Language targetLanguage, String targetSide, int lastResult, int bestResult,
+			int countdownDuration) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.category = category;
+		this.srcLanguage = srcLanguage;
+		this.targetLanguage = targetLanguage;
+		this.targetSide = targetSide;
+		this.lastResult = lastResult;
+		this.bestResult = bestResult;
+		this.countdownDuration = countdownDuration;
 	}
 
 	public int getId() {
@@ -57,5 +80,55 @@ public class Set {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
+	public Language getSrcLanguage() {
+		return srcLanguage;
+	}
+
+	public void setSrcLanguage(Language srcLanguage) {
+		this.srcLanguage = srcLanguage;
+	}
+
+	public Language getTargetLanguage() {
+		return targetLanguage;
+	}
+
+	public void setTargetLanguage(Language targetLanguage) {
+		this.targetLanguage = targetLanguage;
+	}
+
+	public String getTargetSide() {
+		return targetSide;
+	}
+
+	public void setTargetSide(String targetSide) {
+		this.targetSide = targetSide;
+	}
+
+	public int getLastResult() {
+		return lastResult;
+	}
+
+	public void setLastResult(int lastResult) {
+		this.lastResult = lastResult;
+	}
+
+	public int getBestResult() {
+		return bestResult;
+	}
+
+	public void setBestResult(int bestResult) {
+		this.bestResult = bestResult;
+	}
+
+	public int getCountdownDuration() {
+		return countdownDuration;
+	}
+
+	public void setCountdownDuration(int countdownDuration) {
+		this.countdownDuration = countdownDuration;
+	}
+	
+	
 	
 }
