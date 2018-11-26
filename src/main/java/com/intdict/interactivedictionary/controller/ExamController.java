@@ -48,7 +48,7 @@ public class ExamController {
 		//model.put("category", category);
 		session.setAttribute("category", category);
 		
-		List<Word> words = wordRepository.findBySet(set);
+		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		int size = words.size();
 		session.setAttribute("words", words);
 		session.setAttribute("size", size);
