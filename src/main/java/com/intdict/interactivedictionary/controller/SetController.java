@@ -163,7 +163,7 @@ public class SetController {
 		Set set = setRepository.findById(setId).get();
 		model.put("set", set);
 		
-		List<Word> words = wordRepository.findBySet(set);
+		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		model.put("words", words);
 		
 		return "words-preview";
@@ -202,7 +202,7 @@ public class SetController {
 	public String updateSetGet(ModelMap model, @PathVariable(value = "setId") int setId) {
 		
 		Set set = setRepository.findById(setId).get();
-		List<Word> words = wordRepository.findBySet(set);
+		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		
 		model.put("size", words.size());
 		model.put("words", words);
