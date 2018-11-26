@@ -103,7 +103,7 @@
 			<c:forEach begin="1" end="10" varStatus="loop">
 			    <tr>
 			    	<%-- <td>${loop.index}</td> --%>
-	                <td class="table-words">${loop.index} <input type="text" name="left_field_${loop.index}" id="left_field_${loop.index}"/></td>
+	                <td class="table-words"><input type="text" name="left_field_${loop.index}" id="left_field_${loop.index}"/></td>
 	                <td class="table-words"><input type="text" name="right_field_${loop.index}" id="right_field_${loop.index}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 	            </tr>
 			</c:forEach>

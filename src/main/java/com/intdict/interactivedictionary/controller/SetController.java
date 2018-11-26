@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,7 +200,8 @@ public class SetController {
 	}
 	
 	@RequestMapping(value = "update-set-{setId}", method = RequestMethod.GET)
-	public String updateSetGet(ModelMap model, @PathVariable(value = "setId") int setId) {
+	public String updateSetGet(HttpServletRequest request, ModelMap model, 
+								@PathVariable(value = "setId") int setId) {
 		
 		Set set = setRepository.findById(setId).get();
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
@@ -207,6 +209,9 @@ public class SetController {
 		model.put("size", words.size());
 		model.put("words", words);
 		model.addAttribute("set", set);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("currentSetName", set.getName());
 		
 		if (set.getTargetSide().equals("left")) {
 			model.put("targetSide", "left");
@@ -224,13 +229,19 @@ public class SetController {
 			@Valid Set set, BindingResult result, @PathVariable(value = "setId") int setId) {
 		
 		Category category = setRepository.findById(setId).get().getCategory();
-		//List<Set> sets = setRepository.findByCategory(category);
+		List<Set> sets = setRepository.findByCategory(category);
 		
-//		for (Set setIter : sets) {
-//			if (setIter.getName().equals(set.getName())) {
-//				result.rejectValue("name", "error.name", "This set already exists");
-//			}
-//		}
+		HttpSession session = request.getSession();
+		String currentSetName = (String) session.getAttribute("currentSetName");
+		
+		// Prevents set name duplication, but allows to edit set
+		for (Set setIter : sets) {
+			if (setIter.getName().equals(set.getName())) {
+				if (!set.getName().equals(currentSetName)) {
+					result.rejectValue("name", "error.name", "This set already exists");
+				}
+			}
+		}
 			
 		if (Utils.isSetEmpty(request)) {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
