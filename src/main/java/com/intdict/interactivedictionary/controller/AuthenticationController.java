@@ -42,12 +42,17 @@ public class AuthenticationController {
                     "This user name already exists");
 		}
 		
-//		int emailSize = userService.findUserByEmail(user.getEmail()).size();
-//		
-//		if (emailSize > 0) {
-//			bindingResult.rejectValue("email", "error.email",
-//                    "This email already exists");
-//		}
+		int emailSize = userService.findUserByEmail(user.getEmail()).size();
+		
+		if (emailSize > 0) {
+			bindingResult.rejectValue("email", "error.email",
+                    "This email already exists");
+		}
+		
+		if (!user.getPassword().equals(user.getPasswordConfirm())) {
+			bindingResult.rejectValue("passwordConfirm", "error.passwordConfirm", 
+					"Password confirmation does not match to password");
+		}
 		
 		if (bindingResult.hasErrors()) {
 					
@@ -71,6 +76,11 @@ public class AuthenticationController {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public String login() {
+		return "login";
 	}
 	
 }

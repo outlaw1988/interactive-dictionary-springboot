@@ -1,5 +1,17 @@
 # Changelog - Interactive dictionary Spring Boot App
 
+## [0.4.0] - 2018-11-26
+
+### Added
+- Set update
+- Set validation
+- Setup and set etities merged
+- Custom login page with sign up link
+
+### Changed
+- User registration - password confirm and email
+- Words ordering method
+
 ## [0.3.0] - 2018-11-23
 
 ### Added

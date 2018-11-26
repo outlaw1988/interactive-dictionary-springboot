@@ -13,13 +13,13 @@
 				required="required" />
 			<form:errors path="name" class="error" />
 		</fieldset>
-		
+	
 		<br/>
 		
 		<span>Target language:</span>
 		<form:select id="target-language" path="targetLanguage" >
-			<option value="${category.defaultTargetLanguage.id}" selected="selected">${category.defaultTargetLanguage}</option>
-			<option value="${category.defaultSrcLanguage.id}">${category.defaultSrcLanguage}</option>
+			<option value="${set.targetLanguage.id}" selected="selected">${set.targetLanguage}</option>
+			<option value="${set.srcLanguage.id}">${set.srcLanguage}</option>
 		</form:select>
 		
 		<span>Target side:</span>
@@ -30,12 +30,12 @@
 		
 		<span>Countdown duration:</span>
 		<form:select path="countdownDuration">
-			<option value="30" <c:if test="${category.defaultCountdownDuration == '30'}"> selected="selected" </c:if> >30</option>
-			<option value="20" <c:if test="${category.defaultCountdownDuration == '20'}"> selected="selected" </c:if> >20</option>
-			<option value="10" <c:if test="${category.defaultCountdownDuration == '10'}"> selected="selected" </c:if> >10</option>
-			<option value="5"  <c:if test="${category.defaultCountdownDuration == '5'}">  selected="selected" </c:if> >5</option>
+			<option value="30" <c:if test="${set.countdownDuration == '30'}"> selected="selected" </c:if> >30</option>
+			<option value="20" <c:if test="${set.countdownDuration == '20'}"> selected="selected" </c:if> >20</option>
+			<option value="10" <c:if test="${set.countdownDuration == '10'}"> selected="selected" </c:if> >10</option>
+			<option value="5"  <c:if test="${set.countdownDuration == '5'}">  selected="selected" </c:if> >5</option>
 		</form:select>
-				
+		
 		<br/><br/>
 		
 		<table id="set_def_table" class="table-add-set">
@@ -74,11 +74,11 @@
 			        <span id="left-lan">
 		          		<c:choose>
 						    <c:when test="${targetSide == 'left'}">
-						        ${category.defaultTargetLanguage}
+						        ${set.targetLanguage}
 						        <br />
 						    </c:when>    
 						    <c:otherwise>
-						        ${category.defaultSrcLanguage}
+						        ${set.srcLanguage}
 						        <br />
 						    </c:otherwise>
 						</c:choose>
@@ -88,29 +88,40 @@
 		        	<span id="right-lan">
 		          		<c:choose>
 						    <c:when test="${targetSide == 'left'}">
-						        ${category.defaultSrcLanguage}
+						        ${set.srcLanguage}
 						        <br />
 						    </c:when>    
 						    <c:otherwise>
-						        ${category.defaultTargetLanguage}
+						        ${set.targetLanguage}
 						        <br />
 						    </c:otherwise>
 						</c:choose>
 	          		</span>
 		        </th>
 		    </tr>
-	
-			<c:forEach begin="1" end="10" varStatus="loop">
-			    <tr>
-			    	<%-- <td>${loop.index}</td> --%>
-	                <td class="table-words"><input type="text" name="left_field_${loop.index}" id="left_field_${loop.index}"/></td>
-	                <td class="table-words"><input type="text" name="right_field_${loop.index}" id="right_field_${loop.index}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
-	            </tr>
-			</c:forEach>
+		    
+		    <c:forEach items="${words}" var="word" varStatus="loop">
+		    
+		    	<c:choose>
+		    		<c:when test="${targetSide == 'left'}">
+		    			<tr>
+		    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.targetWord}"/></td>
+                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.srcWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+		    			</tr>
+		    		</c:when>
+		    		<c:otherwise>
+		    			<tr>
+		    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.srcWord}"/></td>
+                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.targetWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+		    			</tr>
+		    		</c:otherwise>
+		    	</c:choose>
+		    
+		    </c:forEach>
 
-	    </table>
-    
-    	<br/><br/>
+		</table>
+		
+		<br/><br/>
     
     	<button type="button" class="btn btn-success" onclick="addWord()">Add word</button>
     	
@@ -120,14 +131,15 @@
 		
 		<br/><br/>
 		
-		<a type="button" class="btn btn-success" href="/category-${category.id}">Go back</a>
+		<a type="button" class="btn btn-success" href="/category-${set.category.id}">Go back</a>
+	
 	</form:form>
-		
+	
 </div>
 
 <script language="javascript" type="text/javascript">
 
-	var idx = 10;
+	var idx = ${size};
 	var currTargetSide = "${targetSide}";
     var currTargetLan = "${category.defaultTargetLanguage}";
     var currSourceLan = "${category.defaultSrcLanguage}";

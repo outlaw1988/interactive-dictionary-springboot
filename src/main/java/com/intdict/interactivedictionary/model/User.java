@@ -25,9 +25,17 @@ public class User {
     @NotNull
     private String username;
 	
+	@Column(name = "email")
+	@NotNull
+	private String email;
+	
     @Column(name = "password")
     @NotNull
     private String password;
+    
+    @Column(name = "password_confirm")
+    @NotNull
+    private String passwordConfirm;
     
     @Column(name = "enabled")
     private int enable;
@@ -72,6 +80,22 @@ public class User {
 
 	public void setEnable(int enable) {
 		this.enable = enable;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
 	}
     
 }

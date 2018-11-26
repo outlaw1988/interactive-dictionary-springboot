@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intdict.interactivedictionary.model.Set;
-import com.intdict.interactivedictionary.model.Setup;
 import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.SetRepository;
-import com.intdict.interactivedictionary.service.SetupRepository;
 import com.intdict.interactivedictionary.utils.Utils;
 
 @RestController
@@ -24,9 +22,6 @@ public class ExamRestController {
 
 	@Autowired
 	SetRepository setRepository;
-	
-	@Autowired
-	SetupRepository setupRepository;
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/exam-check", method = RequestMethod.POST)
@@ -138,17 +133,16 @@ public class ExamRestController {
 			//System.out.println("Result is: " + result);
 			
 			Set set = setRepository.findById((int) session.getAttribute("setId")).get();
-			Setup setup = setupRepository.findBySet(set);
 			
-			if (result > setup.getBestResult()) {
-				setup.setBestResult(result);
+			if (result > set.getBestResult()) {
+				set.setBestResult(result);
 				session.setAttribute("bestResult", result);
 			}
 			
-			setup.setLastResult(result);
-			session.setAttribute("result", result);
+			set.setLastResult(result);
+			session.setAttribute("lastResult", result);
 			
-			setupRepository.save(setup);
+			setRepository.save(set);
 			
 			// dummy
 			ResponseNextWord response = new ResponseNextWord();

@@ -15,6 +15,7 @@
 			<div class="dropdown" onclick="dropDown(${loop.index})">
 	            <img id="three-dots" class="three-dots" src="images/three_dots_res_2.png" alt="Three dots">
 	            <div id="my-dropdown-${loop.index}" class="dropdown-content">
+	            	<a href="/update-set-${set.id}">edit</a>
 	                <a href="/remove-set-${set.id}">remove</a>
 	            </div>
 	        </div>

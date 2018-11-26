@@ -4,26 +4,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
 
 public class Utils {
 
-	public static int findHighestWordIdxFromRequest(Set<String> keys) {
+	public static boolean isSetEmpty(HttpServletRequest request) {
 		
-		int highestIdx = 0;
+		boolean isEmpty = true;
 		
-		for (String key : keys) {
+		java.util.Set<String>  params = request.getParameterMap().keySet();
+		
+		for (String param : params) {
 			
-			if (key.startsWith("left_field_")) {
-				int number = Integer.parseInt(key.substring(11));
+			if (param.startsWith("left_field_")) {
+				int number = Integer.parseInt(param.substring(11));
+				String word1 = request.getParameter("left_field_" + number);
+				String word2 = request.getParameter("right_field_" + number);
 				
-				if (number > highestIdx) highestIdx = number;
+				if (!word1.equals("") || !word2.equals("")) {
+					isEmpty = false;
+				}
 			}
 		}
 		
-		return highestIdx;
+		return isEmpty;
 	}
 	
 	public static ArrayList<Integer> createShuffleList(int size) {

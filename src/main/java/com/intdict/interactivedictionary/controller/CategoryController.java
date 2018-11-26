@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -21,13 +20,11 @@ import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.CreateGroup;
 import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.model.Set;
-import com.intdict.interactivedictionary.model.Setup;
 import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.LanguageRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
-import com.intdict.interactivedictionary.service.SetupRepository;
 import com.intdict.interactivedictionary.service.UserRepository;
 import com.intdict.interactivedictionary.service.WordRepository;
 import com.intdict.interactivedictionary.utils.Utils;
@@ -48,13 +45,10 @@ public class CategoryController {
 	WordRepository wordRepository;
 	
 	@Autowired
-	SetupRepository setupRepository;
-	
-	@Autowired
 	UserRepository userRepository;
 
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
-	public String index(ModelMap model) {
+	public String index(ModelMap model, HttpServletRequest request) {
 
 		// TODO Change finding by user
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
@@ -79,7 +73,9 @@ public class CategoryController {
 		
 		model.put("setCounters", setCounters);
 		model.put("wordCounters", wordCounters);
-		model.put("name", Utils.getLoggedInUserName(model));
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("username", Utils.getLoggedInUserName(model));
 
 		return "index";
 	}
@@ -136,9 +132,6 @@ public class CategoryController {
 			List<Set> sets = setRepository.findByCategory(category);
 			
 			for (Set set : sets) {
-				
-				Setup setup = setupRepository.findBySet(set);
-				setupRepository.delete(setup);
 				
 				List<Word> words = wordRepository.findBySet(set);
 				for (Word word : words) {
