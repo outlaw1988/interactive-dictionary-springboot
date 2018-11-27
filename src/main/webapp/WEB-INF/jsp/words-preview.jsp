@@ -11,8 +11,8 @@
     	<th class="table-headers">Target language</th>
   	</tr>
     <tr>
-    	<th class="table-headers">${setup.srcLanguage}</th>
-    	<th class="table-headers">${setup.targetLanguage}</th>
+    	<th class="table-headers">${set.srcLanguage}</th>
+    	<th class="table-headers">${set.targetLanguage}</th>
   	</tr>
   	
   	<c:forEach items="${words}" var="word">

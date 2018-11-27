@@ -35,6 +35,15 @@
 			<option value="10" <c:if test="${category.defaultCountdownDuration == '10'}"> selected="selected" </c:if> >10</option>
 			<option value="5"  <c:if test="${category.defaultCountdownDuration == '5'}">  selected="selected" </c:if> >5</option>
 		</form:select>
+		
+		<input type="file" id="upload" name="upload" onchange='openFile(event)' style="visibility: hidden; width: 1px; height: 1px" multiple />
+		<a href="" onclick="document.getElementById('upload').click(); return false">Import words from txt</a>
+				
+		<span>Separator:</span>
+		<select id="separator">
+		    <option value=";">;</option>
+		    <option value=",">,</option>
+		</select>
 				
 		<br/><br/>
 		
@@ -99,9 +108,9 @@
 	          		</span>
 		        </th>
 		    </tr>
-	
+			
 			<c:forEach begin="1" end="10" varStatus="loop">
-			    <tr>
+			    <tr class="words-row">
 			    	<%-- <td>${loop.index}</td> --%>
 	                <td class="table-words"><input type="text" name="left_field_${loop.index}" id="left_field_${loop.index}"/></td>
 	                <td class="table-words"><input type="text" name="right_field_${loop.index}" id="right_field_${loop.index}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
@@ -206,6 +215,36 @@
 
         swapFields();
     });
+    
+    var openFile = function(event) {
+        var input = event.target;
+
+        var reader = new FileReader();
+        reader.onload = function(){
+          var text = reader.result;        
+          var lines = text.split('\n');
+          
+          $('.words-row').remove();
+          idx = 0;
+          var separator = document.getElementById("separator").value;
+
+          for(var line = 0; line < lines.length; line++){
+              //console.log("The line: " + lines[line]);
+              addWord();
+             
+        	  var arr = lines[line].split(separator);
+        	  var srcWord = arr[0];
+        	  var targetWord = arr[1];
+        	  //console.log("srcWord: " + srcWord + " targetWord: " + targetWord);
+        	  
+        	  //console.log("Line + 1: " + (line + 1));
+        	  
+        	  document.getElementById("left_field_" + (line + 1)).value = srcWord;
+        	  document.getElementById("right_field_" + (line + 1)).value = targetWord;
+          }
+        };
+        reader.readAsText(input.files[0]);
+      };
 	
 </script>
 

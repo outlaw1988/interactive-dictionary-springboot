@@ -32,3 +32,4 @@ bin/
 mvnw
 mvnw.cmd
 target/
+src/main/resources/*.txt
