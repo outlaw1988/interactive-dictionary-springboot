@@ -24,7 +24,6 @@
 	
 	    var answersList = ${sessionScope.answersList};
 	    var arrayLength = answersList.length;
-	    console.log("Answers list: " + answersList);
 	    
 	    var srcWords = ${srcWords};
 	    var targetWords = ${targetWords};

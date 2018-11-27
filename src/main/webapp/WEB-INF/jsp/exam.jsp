@@ -73,7 +73,6 @@ var checkWord = function () {
 	     dataType: "json",
 	     contentType: "application/json; charset=utf-8",
 	     success: function(response){
-	         console.log("Response message is: " + response.message);
 	         
 	         if (response.message == "OK") {
 	             document.getElementById("succ_or_fail").innerHTML = response.message;
@@ -92,7 +91,6 @@ var checkWord = function () {
 }
 
 var nextWord = function() {
-    console.log("Next word called from javascript...");
     stopTimeout();
     progress(countdownDuration, countdownDuration);
 
@@ -107,8 +105,6 @@ var nextWord = function() {
     }
 
     var json = JSON.stringify(data);
-    
-    console.log("Current word number: " + currWordNum);
 
 	if (currWordNum < (size - 1)) {
         
@@ -129,8 +125,6 @@ var nextWord = function() {
         });
         
     } else if (currWordNum == (size - 1)) {
-    	
-    	console.log("Last word called...");
         
         $.ajax ({
             url: "/exam-next",
