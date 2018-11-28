@@ -108,7 +108,7 @@ public class SetController {
 		if (Utils.isSetEmpty(request)) {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
 		}
- 		
+		
 		if (result.hasErrors()) {
 			
 			model.put("category", category);
@@ -260,20 +260,6 @@ public class SetController {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
 		}
  		
-		if (result.hasErrors()) {
-			
-			model.put("category", category);
-			model.put("targetSide", category.getDefaultTargetSide());
-			if (category.getDefaultTargetSide().equals("left")) {
-				model.put("srcSide", "right");
-			} else {
-				model.put("srcSide", "left");
-			}
-				
-			// TODO update-set????
-			return "add-set";
-		}
-		
 		set.setCategory(category);
 		
 		// case when target language has changed
@@ -282,6 +268,24 @@ public class SetController {
 		} else {
 			// target language not changed
 			set.setSrcLanguage(category.getDefaultSrcLanguage());
+		}
+		
+		if (result.hasErrors()) {
+			
+			List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
+			
+			model.put("size", words.size());
+			model.put("words", words);
+			model.addAttribute("set", set);
+			
+			if (set.getTargetSide().equals("left")) {
+				model.put("targetSide", "left");
+				model.put("srcSide", "right");
+			} else {
+				model.put("srcSide", "left");
+				model.put("targetSide", "right");
+			}
+			return "update-set";
 		}
 		
 		setRepository.save(set);

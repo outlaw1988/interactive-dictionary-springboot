@@ -135,8 +135,8 @@
 
 	var idx = 10;
 	var currTargetSide = "${targetSide}";
-    var currTargetLan = "${category.defaultTargetLanguage}";
-    var currSourceLan = "${category.defaultSrcLanguage}";
+    var currTargetLan = "${set.targetLanguage}";
+    var currSourceLan = "${set.srcLanguage}";
 
 	function addWord() {
 	    idx += 1;

@@ -141,8 +141,8 @@
 
 	var idx = ${size};
 	var currTargetSide = "${targetSide}";
-    var currTargetLan = "${category.defaultTargetLanguage}";
-    var currSourceLan = "${category.defaultSrcLanguage}";
+    var currTargetLan = "${set.targetLanguage}";
+    var currSourceLan = "${set.srcLanguage}";
 
 	function addWord() {
 	    idx += 1;
@@ -176,9 +176,7 @@
     }
 
     $('#target-language').on('change', function (e) {
-    	
-        console.log("Target language changed!!");
-        
+    	   
         var temp = currTargetLan;
         currTargetLan = currSourceLan;
         currSourceLan = temp;
@@ -196,8 +194,6 @@
     });
 
     $('#target-side').on('change', function (e) {
-    	
-    	console.log("Target side changed!!");
     	
         currTargetSide = this.value;
 

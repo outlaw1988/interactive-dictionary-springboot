@@ -104,11 +104,17 @@ public class FreeSetsController {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
 		}
 		
+		if (set.getSrcLanguage() == null) {
+			result.rejectValue("srcLanguage", "error.srcLanguage", "must not be null");
+		}
+		
 		if (set.getSrcLanguage() != null && set.getTargetLanguage() != null) {
 			if (set.getSrcLanguage().equals(set.getTargetLanguage())) {
 				result.rejectValue("targetLanguage", "error.targetLanguage", "Languages must be different");
 			}
 		}
+		
+		// TODO check source language is not empty cause not possible to validate in entity
 				
 		if (result.hasErrors()) {
 					
@@ -204,6 +210,10 @@ public class FreeSetsController {
 		
 		if (Utils.isSetEmpty(request)) {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
+		}
+		
+		if (set.getSrcLanguage() == null) {
+			result.rejectValue("srcLanguage", "error.srcLanguage", "must not be null");
 		}
 		
 		if (set.getSrcLanguage() != null && set.getTargetLanguage() != null) {
