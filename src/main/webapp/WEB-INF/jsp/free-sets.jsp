@@ -1,7 +1,7 @@
 <%@ include file="common/header.jspf"%>
 <%@ include file="common/navigation.jspf"%>
 
-<h1>Sets list for category: ${category.name}</h1>
+<h1>Free sets list</h1>
 
 <div class="boxes">
 
@@ -15,7 +15,7 @@
 			<div class="dropdown" onclick="dropDown(${loop.index})">
 	            <img id="three-dots" class="three-dots" src="images/three_dots_res_2.png" alt="Three dots">
 	            <div id="my-dropdown-${loop.index}" class="dropdown-content">
-	            	<a href="/update-set-${set.id}">edit</a>
+	            	<a href="/update-free-set-${set.id}">edit</a>
 	                <a href="/remove-set-${set.id}">remove</a>
 	            </div>
 	        </div>
@@ -35,7 +35,7 @@
 </div>
 
 <div style="text-align:center;">
-	<a type="button" class="btn btn-success" href="/add-set-${category.id}">Add a set</a>
+	<a type="button" class="btn btn-success" href="/add-free-set">Add a free set</a>
 	<br/><br/>
 	<a type="button" class="btn btn-success" href="/index">Go back</a>
 </div>
@@ -45,7 +45,9 @@
     var currCounter = "";
 
     function dropDown(counter) {
+        //console.log("Dropdown clicked... " + counter);
         currCounter = counter;
+        //console.log("my-dropdown-" + counter);
         document.getElementById("my-dropdown-" + counter).style.display = "block";
     }
 

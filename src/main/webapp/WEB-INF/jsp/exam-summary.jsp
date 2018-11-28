@@ -1,7 +1,16 @@
 <%@ include file="common/header.jspf"%>
 <%@ include file="common/navigation.jspf"%>
 
-<h3>Exam summary for category: ${sessionScope.category.name}, set: ${sessionScope.set.name}</h3>
+<c:choose>
+		<c:when test="${set.isFree == 1}">
+			<h3>Exam summary for set: ${sessionScope.set.name}</h3>
+		</c:when>
+		<c:otherwise>
+			<h3>Exam summary for category: ${sessionScope.category.name}, set: ${sessionScope.set.name}</h3>
+		</c:otherwise>
+	</c:choose>
+
+
 
 <div class="container">
 
@@ -50,7 +59,14 @@
 	
 	<br> <br>
 	
-	<a type="button" class="btn btn-success" href="/category-${sessionScope.category.id}">Go back</a>
+	<c:choose>
+		<c:when test="${set.isFree == 1}">
+			<a type="button" class="btn btn-success" href="/free-sets">Go back</a>
+		</c:when>
+		<c:otherwise>
+			<a type="button" class="btn btn-success" href="/category-${sessionScope.category.id}">Go back</a>
+		</c:otherwise>
+	</c:choose>
 
 </div>
 
