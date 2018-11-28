@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -25,9 +26,11 @@ public class Set {
 	private Category category;
 	
 	@OneToOne
+	@NotNull
 	private Language srcLanguage;
 	
 	@OneToOne
+	@NotNull
 	private Language targetLanguage;
 	
 	private String targetSide;

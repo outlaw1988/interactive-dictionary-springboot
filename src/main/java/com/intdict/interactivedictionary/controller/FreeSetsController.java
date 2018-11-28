@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -102,7 +104,11 @@ public class FreeSetsController {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
 		}
 		
-		// TODO target lan != src lan
+		if (set.getSrcLanguage() != null && set.getTargetLanguage() != null) {
+			if (set.getSrcLanguage().equals(set.getTargetLanguage())) {
+				result.rejectValue("targetLanguage", "error.targetLanguage", "Languages must be different");
+			}
+		}
 				
 		if (result.hasErrors()) {
 					
@@ -113,13 +119,131 @@ public class FreeSetsController {
 			
 			model.put("languages", languages);
 			
-			return "add-set";
+			return "add-free-set";
 		}
 		
 		set.setUser(user);
 		set.setIsFree(1);
 		
 		setRepository.save(set);
+		
+		java.util.Set<String>  params = request.getParameterMap().keySet();
+		
+		for (String param : params) {
+			
+			if (param.startsWith("left_field_")) {
+				int number = Integer.parseInt(param.substring(11));
+				
+				String srcWord = "";
+				String targetWord = "";
+				
+				if (set.getTargetSide().equals("left")) {
+					srcWord = request.getParameter("right_field_" + number);
+					targetWord = request.getParameter("left_field_" + number);
+				} else if (set.getTargetSide().equals("right")) {
+					srcWord = request.getParameter("left_field_" + number);
+					targetWord = request.getParameter("right_field_" + number);
+				}
+				
+				if (srcWord.equals("") || targetWord.equals("")) continue;
+				
+				Word word = new Word(set, srcWord, targetWord);
+				wordRepository.save(word);
+			}
+		}
+		
+		return "redirect:/free-sets";
+	}
+	
+	@RequestMapping(value = "update-free-set-{setId}", method = RequestMethod.GET)
+	public String updateFreeSetGet(HttpServletRequest request, ModelMap model, 
+								@PathVariable(value = "setId") int setId) {
+		Set set = setRepository.findById(setId).get();
+		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
+		
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		List<Language> languages = languageRepository.findByUser(user);
+		model.put("languages", languages);
+		
+		model.put("size", words.size());
+		model.put("words", words);
+		model.addAttribute("set", set);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("currentSetName", set.getName());
+		
+		if (set.getTargetSide().equals("left")) {
+			model.put("targetSide", "left");
+			model.put("srcSide", "right");
+		} else {
+			model.put("srcSide", "left");
+			model.put("targetSide", "right");
+		}
+		
+		return "update-free-set";
+	}
+	
+	@RequestMapping(value = "update-free-set-{setId}", method = RequestMethod.POST)
+	public String updateFreeSetPost(HttpServletRequest request, ModelMap model,  
+			@Valid Set set, BindingResult result, @PathVariable(value = "setId") int setId) {
+		
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		List<Set> sets = setRepository.findByUserAndIsFree(user, 1);
+		
+		HttpSession session = request.getSession();
+		String currentSetName = (String) session.getAttribute("currentSetName");
+		
+		// Prevents set name duplication, but allows to edit set
+		for (Set setIter : sets) {
+			if (setIter.getName().equals(set.getName())) {
+				if (!set.getName().equals(currentSetName)) {
+					result.rejectValue("name", "error.name", "This set already exists");
+				}
+			}
+		}
+		
+		if (Utils.isSetEmpty(request)) {
+			result.rejectValue("name", "error.name", "Set must contain at least one word");
+		}
+		
+		if (set.getSrcLanguage() != null && set.getTargetLanguage() != null) {
+			if (set.getSrcLanguage().equals(set.getTargetLanguage())) {
+				result.rejectValue("targetLanguage", "error.targetLanguage", "Languages must be different");
+			}
+		}
+		
+		if (result.hasErrors()) {
+			
+			List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
+			
+			List<Language> languages = languageRepository.findByUser(user);
+			model.put("languages", languages);
+			
+			model.put("size", words.size());
+			model.put("words", words);
+			model.addAttribute("set", set);
+			
+			if (set.getTargetSide().equals("left")) {
+				model.put("targetSide", "left");
+				model.put("srcSide", "right");
+			} else {
+				model.put("srcSide", "left");
+				model.put("targetSide", "right");
+			}
+			
+			return "update-free-set";
+		}
+		
+		set.setUser(user);
+		set.setIsFree(1);
+		
+		setRepository.save(set);
+		
+		// clean up old records
+		List<Word> words = wordRepository.findBySet(set);
+		for (Word word : words) {
+			wordRepository.delete(word);
+		} 
 		
 		java.util.Set<String>  params = request.getParameterMap().keySet();
 		

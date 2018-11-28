@@ -45,9 +45,7 @@
     var currCounter = "";
 
     function dropDown(counter) {
-        //console.log("Dropdown clicked... " + counter);
         currCounter = counter;
-        //console.log("my-dropdown-" + counter);
         document.getElementById("my-dropdown-" + counter).style.display = "block";
     }
 

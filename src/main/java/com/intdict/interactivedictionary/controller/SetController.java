@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
+import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.model.Set;
 import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.model.Word;
@@ -204,7 +205,11 @@ public class SetController {
 			setRepository.delete(set);
 		}
 		
-		return "redirect:/category-" + set.getCategory().getId();
+		if (set.getIsFree() == 1) {
+			return "redirect:/free-sets";
+		} else {
+			return "redirect:/category-" + set.getCategory().getId();
+		}
 	}
 	
 	@RequestMapping(value = "update-set-{setId}", method = RequestMethod.GET)
@@ -264,7 +269,8 @@ public class SetController {
 			} else {
 				model.put("srcSide", "left");
 			}
-			
+				
+			// TODO update-set????
 			return "add-set";
 		}
 		
