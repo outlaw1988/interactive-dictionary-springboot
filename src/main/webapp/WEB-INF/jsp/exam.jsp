@@ -1,7 +1,15 @@
 <%@ include file="common/header.jspf"%>
 <%@ include file="common/navigation.jspf"%>
 
-<h3>Exam is performing for category: ${sessionScope.category.name}, set: ${sessionScope.set.name}</h3>
+<c:choose>
+	<c:when test="${sessionScope.set.isFree == 1}">
+		<h3>Exam is performing for set: ${sessionScope.set.name}</h3>
+	</c:when>
+	<c:otherwise>
+		<h3>Exam is performing for category: ${sessionScope.category.name}, set: ${sessionScope.set.name}</h3>
+	</c:otherwise>
+</c:choose>
+
 <div class="container">
 	<br><br>
 
@@ -73,7 +81,6 @@ var checkWord = function () {
 	     dataType: "json",
 	     contentType: "application/json; charset=utf-8",
 	     success: function(response){
-	         console.log("Response message is: " + response.message);
 	         
 	         if (response.message == "OK") {
 	             document.getElementById("succ_or_fail").innerHTML = response.message;
@@ -92,7 +99,6 @@ var checkWord = function () {
 }
 
 var nextWord = function() {
-    console.log("Next word called from javascript...");
     stopTimeout();
     progress(countdownDuration, countdownDuration);
 
@@ -107,8 +113,6 @@ var nextWord = function() {
     }
 
     var json = JSON.stringify(data);
-    
-    console.log("Current word number: " + currWordNum);
 
 	if (currWordNum < (size - 1)) {
         
@@ -129,8 +133,6 @@ var nextWord = function() {
         });
         
     } else if (currWordNum == (size - 1)) {
-    	
-    	console.log("Last word called...");
         
         $.ajax ({
             url: "/exam-next",

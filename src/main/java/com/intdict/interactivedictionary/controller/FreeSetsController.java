@@ -15,38 +15,36 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.model.Set;
 import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.model.Word;
-import com.intdict.interactivedictionary.service.CategoryRepository;
+import com.intdict.interactivedictionary.service.LanguageRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
 import com.intdict.interactivedictionary.service.UserRepository;
 import com.intdict.interactivedictionary.service.WordRepository;
 import com.intdict.interactivedictionary.utils.Utils;
 
 @Controller
-public class SetController {
-
+public class FreeSetsController {
+	
 	@Autowired
 	SetRepository setRepository;
 	
 	@Autowired
-	CategoryRepository categoryRepository;
+	UserRepository userRepository;
+	
+	@Autowired
+	LanguageRepository languageRepository;
 	
 	@Autowired
 	WordRepository wordRepository;
-	
-	@Autowired
-	UserRepository userRepository;
-	
-	@RequestMapping(value = "/category-{id}", method=RequestMethod.GET)
-	public String showSets(ModelMap model, @PathVariable(value="id") int categoryId) {
-		model.put("categoryId", categoryId);
-	
-		Category category = categoryRepository.findById(categoryId).get();
-		List<Set> sets = setRepository.findByCategory(category);
+
+	@RequestMapping(value = "free-sets", method = RequestMethod.GET)
+	public String freeSetsInit(ModelMap model) {
+		
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		List<Set> sets = setRepository.findByUserAndIsFree(user, 1);
 		
 		List<Integer> wordCounters = new ArrayList<>();
 		List<Integer> lastResults = new ArrayList<>();
@@ -66,38 +64,35 @@ public class SetController {
 		model.put("targetLanguages", targetLanguages);
 		
 		model.put("sets", sets);
-		model.put("category", category);
 		
 		model.put("wordCounters", wordCounters);
 		model.put("lastResults", lastResults);
 		model.put("bestResults", bestResults);
 		
-		return "category-sets-list";
+		return "free-sets";
 	}
 	
-	@RequestMapping(value = "/add-set-{id}", method = RequestMethod.GET)
-	public String addSetShow(ModelMap model, @PathVariable(value="id") int categoryId) {
+	@RequestMapping(value = "add-free-set", method = RequestMethod.GET)
+	public String addFreeSetGet(ModelMap model) {
 		
-		Category category = categoryRepository.findById(categoryId).get();
 		model.addAttribute("set", new Set());
+		model.put("targetSide", "right");
+		model.put("srcSide", "left");
 		
-		model.put("category", category);
-		model.put("targetSide", category.getDefaultTargetSide());
-		if (category.getDefaultTargetSide().equals("left")) {
-			model.put("srcSide", "right");
-		} else {
-			model.put("srcSide", "left");
-		}
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		List<Language> languages = languageRepository.findByUser(user);
 		
-		return "add-set";
+		model.put("languages", languages);
+		
+		return "add-free-set";
 	}
 	
-	@RequestMapping(value = "/add-set-{id}", method = RequestMethod.POST)
-	public String addSetPost(HttpServletRequest request, ModelMap model, @PathVariable(value="id") int categoryId, 
+	@RequestMapping(value = "add-free-set", method = RequestMethod.POST)
+	public String addFreeSetPost(HttpServletRequest request, ModelMap model, 
 							@Valid Set set, BindingResult result) {
-
-		Category category = categoryRepository.findById(categoryId).get();
-		List<Set> sets = setRepository.findByCategory(category);
+		
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		List<Set> sets = setRepository.findByUserAndIsFree(user, 1);
 		
 		for (Set setIter : sets) {
 			if (setIter.getName().equals(set.getName())) {
@@ -108,34 +103,27 @@ public class SetController {
 		if (Utils.isSetEmpty(request)) {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
 		}
- 		
-		if (result.hasErrors()) {
-			
-			model.put("category", category);
-			model.put("targetSide", category.getDefaultTargetSide());
-			if (category.getDefaultTargetSide().equals("left")) {
-				model.put("srcSide", "right");
-			} else {
-				model.put("srcSide", "left");
+		
+		if (set.getSrcLanguage() != null && set.getTargetLanguage() != null) {
+			if (set.getSrcLanguage().equals(set.getTargetLanguage())) {
+				result.rejectValue("targetLanguage", "error.targetLanguage", "Languages must be different");
 			}
+		}
+				
+		if (result.hasErrors()) {
+					
+			model.put("targetSide", "right");
+			model.put("srcSide", "left");
 			
-			return "add-set";
+			List<Language> languages = languageRepository.findByUser(user);
+			
+			model.put("languages", languages);
+			
+			return "add-free-set";
 		}
 		
-		//Category category = categoryRepository.findById(categoryId).get();
-		set.setCategory(category);
-		
-		// case when target language has changed
-		if (set.getTargetLanguage().getId() != category.getDefaultTargetLanguage().getId()) {
-			set.setSrcLanguage(category.getDefaultTargetLanguage());
-		} else {
-			// target language not changed
-			set.setSrcLanguage(category.getDefaultSrcLanguage());
-		}
-		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
 		set.setUser(user);
-		set.setIsFree(0);
+		set.setIsFree(1);
 		
 		setRepository.save(set);
 		
@@ -164,60 +152,18 @@ public class SetController {
 			}
 		}
 		
-		return "redirect:/category-" + categoryId;
+		return "redirect:/free-sets";
 	}
 	
-	@RequestMapping(value = "/preview-{setId}", method = RequestMethod.GET)
-	public String wordsPreview(ModelMap model, @PathVariable(value="setId") int setId) {
-		
-		Set set = setRepository.findById(setId).get();
-		model.put("set", set);
-		
-		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
-		model.put("words", words);
-		
-		return "words-preview";
-	}
-	
-	@RequestMapping(value = "/remove-set-{setId}", method = RequestMethod.GET)
-	public String removeSet(ModelMap model, @PathVariable(value="setId") int setId) {
-		
-		Set set = setRepository.findById(setId).get();
-		model.put("set", set);
-		
-		return "remove-set";
-	}
-	
-	@RequestMapping(value = "/remove-set-{setId}", method = RequestMethod.POST)
-	public String removeSetPost(HttpServletRequest request, 
-									@PathVariable(value="setId") int setId) {
-		
-		java.util.Set<String> params = request.getParameterMap().keySet();
-		Set set = setRepository.findById(setId).get();
-		
-		if (params.contains("yes")) {
-			
-			List<Word> words = wordRepository.findBySet(set);
-			for (Word word : words) {
-				wordRepository.delete(word);
-			}
-			
-			setRepository.delete(set);
-		}
-		
-		if (set.getIsFree() == 1) {
-			return "redirect:/free-sets";
-		} else {
-			return "redirect:/category-" + set.getCategory().getId();
-		}
-	}
-	
-	@RequestMapping(value = "update-set-{setId}", method = RequestMethod.GET)
-	public String updateSetGet(HttpServletRequest request, ModelMap model, 
+	@RequestMapping(value = "update-free-set-{setId}", method = RequestMethod.GET)
+	public String updateFreeSetGet(HttpServletRequest request, ModelMap model, 
 								@PathVariable(value = "setId") int setId) {
-		
 		Set set = setRepository.findById(setId).get();
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
+		
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		List<Language> languages = languageRepository.findByUser(user);
+		model.put("languages", languages);
 		
 		model.put("size", words.size());
 		model.put("words", words);
@@ -234,15 +180,15 @@ public class SetController {
 			model.put("targetSide", "right");
 		}
 		
-		return "update-set";
+		return "update-free-set";
 	}
 	
-	@RequestMapping(value = "update-set-{setId}", method = RequestMethod.POST)
-	public String updateSetPost(HttpServletRequest request, ModelMap model,  
+	@RequestMapping(value = "update-free-set-{setId}", method = RequestMethod.POST)
+	public String updateFreeSetPost(HttpServletRequest request, ModelMap model,  
 			@Valid Set set, BindingResult result, @PathVariable(value = "setId") int setId) {
 		
-		Category category = setRepository.findById(setId).get().getCategory();
-		List<Set> sets = setRepository.findByCategory(category);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		List<Set> sets = setRepository.findByUserAndIsFree(user, 1);
 		
 		HttpSession session = request.getSession();
 		String currentSetName = (String) session.getAttribute("currentSetName");
@@ -255,34 +201,41 @@ public class SetController {
 				}
 			}
 		}
-			
+		
 		if (Utils.isSetEmpty(request)) {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
 		}
- 		
+		
+		if (set.getSrcLanguage() != null && set.getTargetLanguage() != null) {
+			if (set.getSrcLanguage().equals(set.getTargetLanguage())) {
+				result.rejectValue("targetLanguage", "error.targetLanguage", "Languages must be different");
+			}
+		}
+		
 		if (result.hasErrors()) {
 			
-			model.put("category", category);
-			model.put("targetSide", category.getDefaultTargetSide());
-			if (category.getDefaultTargetSide().equals("left")) {
+			List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
+			
+			List<Language> languages = languageRepository.findByUser(user);
+			model.put("languages", languages);
+			
+			model.put("size", words.size());
+			model.put("words", words);
+			model.addAttribute("set", set);
+			
+			if (set.getTargetSide().equals("left")) {
+				model.put("targetSide", "left");
 				model.put("srcSide", "right");
 			} else {
 				model.put("srcSide", "left");
+				model.put("targetSide", "right");
 			}
-				
-			// TODO update-set????
-			return "add-set";
+			
+			return "update-free-set";
 		}
 		
-		set.setCategory(category);
-		
-		// case when target language has changed
-		if (set.getTargetLanguage().getId() != category.getDefaultTargetLanguage().getId()) {
-			set.setSrcLanguage(category.getDefaultTargetLanguage());
-		} else {
-			// target language not changed
-			set.setSrcLanguage(category.getDefaultSrcLanguage());
-		}
+		set.setUser(user);
+		set.setIsFree(1);
 		
 		setRepository.save(set);
 		
@@ -317,6 +270,7 @@ public class SetController {
 			}
 		}
 		
-		return "redirect:/category-" + category.getId();
+		return "redirect:/free-sets";
 	}
+	
 }

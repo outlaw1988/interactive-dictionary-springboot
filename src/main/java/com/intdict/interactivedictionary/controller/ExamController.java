@@ -41,12 +41,12 @@ public class ExamController {
 		HttpSession session = request.getSession();
 		
 		Set set = setRepository.findById(setId).get();
-		//model.put("set", set);
 		session.setAttribute("set", set);
 		
-		Category category = categoryRepository.findById(set.getCategory().getId()).get();
-		//model.put("category", category);
-		session.setAttribute("category", category);
+		if (set.getIsFree() == 0) {
+			Category category = categoryRepository.findById(set.getCategory().getId()).get();
+			session.setAttribute("category", category);
+		}
 		
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		int size = words.size();
@@ -90,10 +90,6 @@ public class ExamController {
 		model.put("targetLanguage", set.getTargetLanguage());
 		
 		ArrayList<Integer> answersList = (ArrayList<Integer>) session.getAttribute("answersList");
-		
-		for (Integer item : answersList) {
-			System.out.println("answers list: " + item);
-		}
 		
 		List<Word> words = (List<Word>) session.getAttribute("words");
 		

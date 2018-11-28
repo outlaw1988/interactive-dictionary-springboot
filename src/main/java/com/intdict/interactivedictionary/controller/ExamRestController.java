@@ -26,8 +26,6 @@ public class ExamRestController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/exam-check", method = RequestMethod.POST)
 	public Response examCheck(HttpServletRequest request, @RequestBody Answer answer) {
-
-		System.out.println("Exam check called!!!!");
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("isCheckClicked", true);
@@ -40,8 +38,6 @@ public class ExamRestController {
 		Response response = new Response();
 		String currCorrAnswer = (String) session.getAttribute("currCorrAnswer");
 		
-		System.out.println("Current correct answer: " + currCorrAnswer);
-		
 		ArrayList<Integer> answersList = (ArrayList<Integer>) session.getAttribute("answersList");
 		
 		if (answer.answer.equals(currCorrAnswer)) {
@@ -49,7 +45,6 @@ public class ExamRestController {
 			response.setMessage("OK");
 			
 			int corrAnsNum = (int) session.getAttribute("corrAnsNum") + 1;
-			System.out.println("Correct answers num: " + corrAnsNum);
 			session.setAttribute("corrAnsNum", corrAnsNum);
 			answersList = Utils.assignValueToAnswersList(shuffledIdx, 1, answersList);
 			session.setAttribute("answersList", answersList);
@@ -80,8 +75,6 @@ public class ExamRestController {
 		// BEFORE - check not clicked
 		int currWordIdx = (int) session.getAttribute("currWordIdx");
 		
-		System.out.println("Current word idx BEFORE: " + currWordIdx);
-		
 		ArrayList<Integer> shuffledIdxes = (ArrayList<Integer>) session.getAttribute("shuffledIdxs");
 		int shuffledIdxBefore = shuffledIdxes.get(currWordIdx);
 		
@@ -90,28 +83,22 @@ public class ExamRestController {
 			ArrayList<Integer> answersList = (ArrayList<Integer>) session.getAttribute("answersList");
 			answersList = Utils.assignValueToAnswersList(shuffledIdxBefore, 0, answersList);
 			
-			System.out.println("Answers list: " + answersList);
-			
 			session.setAttribute("answersList", answersList);
 		}
 		
-		System.out.println("Check clicked? " + (boolean)session.getAttribute("isCheckClicked"));
 		session.setAttribute("isCheckClicked", false);
 		
 		/////////////////////////////
 		
 		currWordIdx += 1;
 		session.setAttribute("currWordIdx", currWordIdx);
-		System.out.println("Current word index: " + currWordIdx);
 		
 		int size = (int) session.getAttribute("size");
-		System.out.println("Size: " + size);
 		
 		List<Word> words = (List<Word>) session.getAttribute("words");
 		
 		if (currWordIdx < size) {
 			int shuffledIdx = shuffledIdxes.get(currWordIdx);
-			System.out.println("Shuffled index: " + shuffledIdx);
 			
 			ResponseNextWord response = new ResponseNextWord();
 			Word wordsToShow = words.get(shuffledIdx);
@@ -125,12 +112,8 @@ public class ExamRestController {
 			
 		} else if (currWordIdx == size) {
 			
-			System.out.println("Last word called... currWordIdx: " + currWordIdx);
-			
 			int corrAnsNum = (int) session.getAttribute("corrAnsNum");
 			int result = (int)(((float) corrAnsNum / (float) size) * 100.0);
-			
-			//System.out.println("Result is: " + result);
 			
 			Set set = setRepository.findById((int) session.getAttribute("setId")).get();
 			

@@ -1,5 +1,11 @@
 # Changelog - Interactive dictionary Spring Boot App
 
+## [0.5.0] - 2018-11-28
+
+### Added
+- Importing words from external file
+- Free sets not related to specific category
+
 ## [0.4.0] - 2018-11-26
 
 ### Added
