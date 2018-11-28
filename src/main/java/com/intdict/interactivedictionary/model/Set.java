@@ -37,6 +37,11 @@ public class Set {
 	private int bestResult;
 	
 	private int countdownDuration;
+	
+	private int isFree;
+	
+	@OneToOne
+	private User user;
 
 	public Set() {
 		//empty
@@ -44,7 +49,7 @@ public class Set {
 	
 	public Set(int id, @Size(min = 2, message = "Enter at least 2 characters...") String name, Category category,
 			Language srcLanguage, Language targetLanguage, String targetSide, int lastResult, int bestResult,
-			int countdownDuration) {
+			int countdownDuration, int isFree, User user) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -55,6 +60,8 @@ public class Set {
 		this.lastResult = lastResult;
 		this.bestResult = bestResult;
 		this.countdownDuration = countdownDuration;
+		this.isFree = isFree;
+		this.user = user;
 	}
 
 	public int getId() {
@@ -128,7 +135,21 @@ public class Set {
 	public void setCountdownDuration(int countdownDuration) {
 		this.countdownDuration = countdownDuration;
 	}
-	
-	
+
+	public int getIsFree() {
+		return isFree;
+	}
+
+	public void setIsFree(int isFree) {
+		this.isFree = isFree;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 }

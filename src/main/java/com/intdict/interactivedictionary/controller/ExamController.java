@@ -43,8 +43,10 @@ public class ExamController {
 		Set set = setRepository.findById(setId).get();
 		session.setAttribute("set", set);
 		
-		Category category = categoryRepository.findById(set.getCategory().getId()).get();
-		session.setAttribute("category", category);
+		if (set.getIsFree() == 0) {
+			Category category = categoryRepository.findById(set.getCategory().getId()).get();
+			session.setAttribute("category", category);
+		}
 		
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		int size = words.size();

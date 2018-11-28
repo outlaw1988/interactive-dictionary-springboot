@@ -1,7 +1,15 @@
 <%@ include file="common/header.jspf"%>
 <%@ include file="common/navigation.jspf"%>
 
-<h3>Exam is performing for category: ${sessionScope.category.name}, set: ${sessionScope.set.name}</h3>
+<c:choose>
+	<c:when test="${sessionScope.set.isFree == 1}">
+		<h3>Exam is performing for set: ${sessionScope.set.name}</h3>
+	</c:when>
+	<c:otherwise>
+		<h3>Exam is performing for category: ${sessionScope.category.name}, set: ${sessionScope.set.name}</h3>
+	</c:otherwise>
+</c:choose>
+
 <div class="container">
 	<br><br>
 

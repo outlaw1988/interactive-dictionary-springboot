@@ -31,7 +31,14 @@
 <br>
 
 <div style="text-align:center;">
-	<a type="button" class="btn btn-success" href="/category-${set.category.id}">Go back</a>
+	<c:choose>
+		<c:when test="${set.isFree == 1}">
+			<a type="button" class="btn btn-success" href="/free-sets">Go back</a>
+		</c:when>
+		<c:otherwise>
+			<a type="button" class="btn btn-success" href="/category-${set.category.id}">Go back</a>
+		</c:otherwise>
+	</c:choose>
 </div>
 
 <%@ include file="common/footer.jspf"%>

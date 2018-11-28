@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
 import com.intdict.interactivedictionary.model.Set;
+import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.model.Word;
 import com.intdict.interactivedictionary.service.CategoryRepository;
 import com.intdict.interactivedictionary.service.SetRepository;
+import com.intdict.interactivedictionary.service.UserRepository;
 import com.intdict.interactivedictionary.service.WordRepository;
 import com.intdict.interactivedictionary.utils.Utils;
 
@@ -34,6 +36,9 @@ public class SetController {
 	
 	@Autowired
 	WordRepository wordRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@RequestMapping(value = "/category-{id}", method=RequestMethod.GET)
 	public String showSets(ModelMap model, @PathVariable(value="id") int categoryId) {
@@ -50,7 +55,6 @@ public class SetController {
 		
 		for (Set set : sets) {
 			wordCounters.add(wordRepository.findBySet(set).size());
-			//Setup setup = setupRepository.findBySet(set);
 			lastResults.add(set.getLastResult());
 			bestResults.add(set.getBestResult());
 			srcLanguages.add(set.getSrcLanguage().getName());
@@ -127,6 +131,10 @@ public class SetController {
 			// target language not changed
 			set.setSrcLanguage(category.getDefaultSrcLanguage());
 		}
+		
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		set.setUser(user);
+		set.setIsFree(0);
 		
 		setRepository.save(set);
 		
