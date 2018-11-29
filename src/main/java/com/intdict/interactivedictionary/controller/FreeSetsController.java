@@ -158,6 +158,9 @@ public class FreeSetsController {
 		Set set = setRepository.findById(setId).get();
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		
+		HttpSession session = request.getSession();
+		session.setAttribute("hasErrorMode", false);
+		
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
 		List<Language> languages = languageRepository.findByUser(user);
 		model.put("languages", languages);
@@ -166,7 +169,6 @@ public class FreeSetsController {
 		model.put("words", words);
 		model.addAttribute("set", set);
 		
-		HttpSession session = request.getSession();
 		session.setAttribute("currentSetName", set.getName());
 		
 		if (set.getTargetSide().equals("left")) {
@@ -215,13 +217,16 @@ public class FreeSetsController {
 		
 		if (result.hasErrors()) {
 			
-			List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
+			session.setAttribute("hasErrorMode", true);
 			
 			List<Language> languages = languageRepository.findByUser(user);
 			model.put("languages", languages);
 			
-			model.put("size", words.size());
-			model.put("words", words);
+			List<List<String>> wordsList = new ArrayList<List<String>>();
+			wordsList = getWordsList(request, set);
+			
+			model.put("size", wordsList.size());
+			model.put("words", wordsList);
 			model.addAttribute("set", set);
 			
 			if (set.getTargetSide().equals("left")) {
