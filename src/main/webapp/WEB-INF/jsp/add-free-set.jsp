@@ -211,7 +211,7 @@
 		
 		<br/><br/>
 		
-		<a type="button" class="btn btn-success" href="/category-${category.id}">Go back</a>
+		<a type="button" class="btn btn-success" href="/free-sets">Go back</a>
 	</form:form>
 		
 </div>
