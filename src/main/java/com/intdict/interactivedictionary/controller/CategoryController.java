@@ -50,11 +50,9 @@ public class CategoryController {
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public String index(ModelMap model, HttpServletRequest request) {
 
-		// TODO Change finding by user
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
 		
 		List<Category> categories = repository.findByUser(user);
-//		List<Category> categories = repository.findAll();
 		model.put("categories", categories);
 		
 		List<Integer> setCounters = new ArrayList<>();
