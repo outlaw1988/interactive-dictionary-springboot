@@ -16,11 +16,26 @@
 		
 		<br/>
 		
-		<span>Target language:</span>
-		<form:select id="target-language" path="targetLanguage" >
-			<option value="${category.defaultTargetLanguage.id}" selected="selected">${category.defaultTargetLanguage}</option>
-			<option value="${category.defaultSrcLanguage.id}">${category.defaultSrcLanguage}</option>
-		</form:select>
+		<c:choose>
+			<c:when test="${sessionScope.hasErrorMode == true}">
+			
+				<span>Target language:</span>
+				<form:select id="target-language" path="targetLanguage" >
+					<option value="${set.targetLanguage.id}" selected="selected">${set.targetLanguage}</option>
+					<option value="${set.srcLanguage.id}">${set.srcLanguage}</option>
+				</form:select>
+			
+			</c:when>
+			<c:otherwise>
+			
+				<span>Target language:</span>
+				<form:select id="target-language" path="targetLanguage" >
+					<option value="${category.defaultTargetLanguage.id}" selected="selected">${category.defaultTargetLanguage}</option>
+					<option value="${category.defaultSrcLanguage.id}">${category.defaultSrcLanguage}</option>
+				</form:select>
+				
+			</c:otherwise>
+		</c:choose>
 		
 		<span>Target side:</span>
 		<form:select id="target-side" path="targetSide">
@@ -28,13 +43,35 @@
 			<option value="${srcSide}">${srcSide}</option>
 		</form:select>
 		
-		<span>Countdown duration:</span>
-		<form:select path="countdownDuration">
-			<option value="30" <c:if test="${category.defaultCountdownDuration == '30'}"> selected="selected" </c:if> >30</option>
-			<option value="20" <c:if test="${category.defaultCountdownDuration == '20'}"> selected="selected" </c:if> >20</option>
-			<option value="10" <c:if test="${category.defaultCountdownDuration == '10'}"> selected="selected" </c:if> >10</option>
-			<option value="5"  <c:if test="${category.defaultCountdownDuration == '5'}">  selected="selected" </c:if> >5</option>
-		</form:select>
+		<c:choose>
+		
+			<c:when test="${sessionScope.hasErrorMode == true}">
+			
+				<span>Countdown duration:</span>
+				<form:select path="countdownDuration">
+					<option value="30" <c:if test="${set.countdownDuration == '30'}"> selected="selected" </c:if> >30</option>
+					<option value="20" <c:if test="${set.countdownDuration == '20'}"> selected="selected" </c:if> >20</option>
+					<option value="10" <c:if test="${set.countdownDuration == '10'}"> selected="selected" </c:if> >10</option>
+					<option value="5"  <c:if test="${set.countdownDuration == '5'}">  selected="selected" </c:if> >5</option>
+				</form:select>
+			
+			</c:when>
+			
+			<c:otherwise>
+			
+				<span>Countdown duration:</span>
+				<form:select path="countdownDuration">
+					<option value="30" <c:if test="${category.defaultCountdownDuration == '30'}"> selected="selected" </c:if> >30</option>
+					<option value="20" <c:if test="${category.defaultCountdownDuration == '20'}"> selected="selected" </c:if> >20</option>
+					<option value="10" <c:if test="${category.defaultCountdownDuration == '10'}"> selected="selected" </c:if> >10</option>
+					<option value="5"  <c:if test="${category.defaultCountdownDuration == '5'}">  selected="selected" </c:if> >5</option>
+				</form:select>
+			
+			</c:otherwise>
+		
+		</c:choose>
+		
+		
 		
 		<input type="file" id="upload" name="upload" onchange='openFile(event)' style="visibility: hidden; width: 1px; height: 1px" multiple />
 		<a href="" onclick="document.getElementById('upload').click(); return false">Import words from txt</a>
@@ -81,41 +118,121 @@
 		    <tr>
 		        <th class="table-headers">
 			        <span id="left-lan">
+		          		
 		          		<c:choose>
-						    <c:when test="${targetSide == 'left'}">
-						        ${category.defaultTargetLanguage}
-						        <br />
-						    </c:when>    
-						    <c:otherwise>
-						        ${category.defaultSrcLanguage}
-						        <br />
-						    </c:otherwise>
-						</c:choose>
+		          		
+		          			<c:when test="${sessionScope.hasErrorMode == true}">
+		          			
+		          				<c:choose>
+								    <c:when test="${targetSide == 'left'}">
+								        ${set.targetLanguage}
+								        <br />
+								    </c:when>    
+								    <c:otherwise>
+								        ${set.srcLanguage}
+								        <br />
+								    </c:otherwise>
+								</c:choose>
+		          			
+		          			</c:when>
+		          			
+		          			<c:otherwise>
+		          			
+		          				<c:choose>
+								    <c:when test="${targetSide == 'left'}">
+								        ${category.defaultTargetLanguage}
+								        <br />
+								    </c:when>    
+								    <c:otherwise>
+								        ${category.defaultSrcLanguage}
+								        <br />
+								    </c:otherwise>
+								</c:choose>
+		          			
+		          			</c:otherwise>
+		          		
+		          		</c:choose>
+		          		
+		          		
 	          		</span>
 		        </th>
 		        <th class="table-headers">
 		        	<span id="right-lan">
-		          		<c:choose>
-						    <c:when test="${targetSide == 'left'}">
-						        ${category.defaultSrcLanguage}
-						        <br />
-						    </c:when>    
-						    <c:otherwise>
-						        ${category.defaultTargetLanguage}
-						        <br />
-						    </c:otherwise>
-						</c:choose>
+		        	
+		        		<c:choose>
+		          		
+		          			<c:when test="${sessionScope.hasErrorMode == true}">
+		          			
+		          				<c:choose>
+								    <c:when test="${targetSide == 'left'}">
+								        ${set.srcLanguage}
+								        <br />
+								    </c:when>    
+								    <c:otherwise>
+								        ${set.targetLanguage}
+								        <br />
+								    </c:otherwise>
+								</c:choose>
+		          			
+		          			</c:when>
+		          			
+		          			<c:otherwise>
+		          			
+		          				<c:choose>
+								    <c:when test="${targetSide == 'left'}">
+								        ${category.defaultSrcLanguage}
+								        <br />
+								    </c:when>    
+								    <c:otherwise>
+								        ${category.defaultTargetLanguage}
+								        <br />
+								    </c:otherwise>
+								</c:choose>
+		          			
+		          			</c:otherwise>
+		          		
+		          		</c:choose>
+		      
 	          		</span>
 		        </th>
 		    </tr>
 			
-			<c:forEach begin="1" end="10" varStatus="loop">
-			    <tr class="words-row">
-			    	<%-- <td>${loop.index}</td> --%>
-	                <td class="table-words"><input type="text" name="left_field_${loop.index}" id="left_field_${loop.index}"/></td>
-	                <td class="table-words"><input type="text" name="right_field_${loop.index}" id="right_field_${loop.index}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
-	            </tr>
-			</c:forEach>
+			<c:choose>
+				<c:when test="${sessionScope.hasErrorMode == true}">
+					<c:forEach items="${words}" var="word" varStatus="loop">
+		    
+				    	<c:choose>
+				    		<c:when test="${targetSide == 'left'}">
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(1)}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(0)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:when>
+				    		<c:otherwise>
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(0)}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(1)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:otherwise>
+				    	</c:choose>
+				    
+				    </c:forEach>
+				</c:when>
+				
+				<c:otherwise>
+				
+					<c:forEach begin="1" end="10" varStatus="loop">
+					    <tr class="words-row">
+			                <td class="table-words"><input type="text" name="left_field_${loop.index}" id="left_field_${loop.index}"/></td>
+			                <td class="table-words"><input type="text" name="right_field_${loop.index}" id="right_field_${loop.index}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+			            </tr>
+					</c:forEach>
+					
+				</c:otherwise>
+				
+			</c:choose>
+			
+			
 
 	    </table>
     
@@ -229,15 +346,11 @@
           var separator = document.getElementById("separator").value;
 
           for(var line = 0; line < lines.length; line++){
-              //console.log("The line: " + lines[line]);
               addWord();
              
         	  var arr = lines[line].split(separator);
         	  var srcWord = arr[0];
         	  var targetWord = arr[1];
-        	  //console.log("srcWord: " + srcWord + " targetWord: " + targetWord);
-        	  
-        	  //console.log("Line + 1: " + (line + 1));
         	  
         	  document.getElementById("left_field_" + (line + 1)).value = srcWord;
         	  document.getElementById("right_field_" + (line + 1)).value = targetWord;
