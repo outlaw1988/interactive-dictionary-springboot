@@ -148,6 +148,8 @@ public class SetController {
 		set.setUser(user);
 		set.setIsFree(0);
 		
+		setRepository.save(set);
+		
 		addWordsToDb(request, set);
 		
 		return "redirect:/category-" + categoryId;
