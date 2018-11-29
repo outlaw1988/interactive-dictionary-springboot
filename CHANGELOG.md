@@ -1,5 +1,10 @@
 # Changelog - Interactive dictionary Spring Boot App
 
+## [0.5.2] - 2018-11-29
+
+### Changed
+- Bugfix related to adding new set
+
 ## [0.5.1] - 2018-11-29
 
 ### Added
