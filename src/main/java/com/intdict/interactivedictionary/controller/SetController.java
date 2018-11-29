@@ -144,8 +144,6 @@ public class SetController {
 
 		set.setCategory(category);
 		
-		
-		
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
 		set.setUser(user);
 		set.setIsFree(0);
@@ -281,30 +279,7 @@ public class SetController {
 		// clean up old records
 		cleanUpWords(set);
 		
-		java.util.Set<String>  params = request.getParameterMap().keySet();
-		
-		for (String param : params) {
-			
-			if (param.startsWith("left_field_")) {
-				int number = Integer.parseInt(param.substring(11));
-				
-				String srcWord = "";
-				String targetWord = "";
-				
-				if (set.getTargetSide().equals("left")) {
-					srcWord = request.getParameter("right_field_" + number);
-					targetWord = request.getParameter("left_field_" + number);
-				} else if (set.getTargetSide().equals("right")) {
-					srcWord = request.getParameter("left_field_" + number);
-					targetWord = request.getParameter("right_field_" + number);
-				}
-				
-				if (srcWord.equals("") || targetWord.equals("")) continue;
-				
-				Word word = new Word(set, srcWord, targetWord);
-				wordRepository.save(word);
-			}
-		}
+		addWordsToDb(request, set);
 		
 		return "redirect:/category-" + category.getId();
 	}

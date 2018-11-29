@@ -73,7 +73,10 @@ public class FreeSetsController {
 	}
 	
 	@RequestMapping(value = "add-free-set", method = RequestMethod.GET)
-	public String addFreeSetGet(ModelMap model) {
+	public String addFreeSetGet(HttpServletRequest request, ModelMap model) {
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("hasErrorMode", false);
 		
 		model.addAttribute("set", new Set());
 		model.put("targetSide", "right");
@@ -93,6 +96,7 @@ public class FreeSetsController {
 		
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
 		List<Set> sets = setRepository.findByUserAndIsFree(user, 1);
+		HttpSession session = request.getSession();
 		
 		for (Set setIter : sets) {
 			if (setIter.getName().equals(set.getName())) {
@@ -113,13 +117,24 @@ public class FreeSetsController {
 				result.rejectValue("targetLanguage", "error.targetLanguage", "Languages must be different");
 			}
 		}
-		
-		// TODO check source language is not empty cause not possible to validate in entity
 				
 		if (result.hasErrors()) {
 					
-			model.put("targetSide", "right");
-			model.put("srcSide", "left");
+			session.setAttribute("hasErrorMode", true);
+			
+			// keep cache data in ArrayList and pass to model
+			List<List<String>> wordsList = new ArrayList<List<String>>();
+			wordsList = getWordsList(request, set);
+			model.put("words", wordsList);
+			
+			// TODO change
+			if (set.getTargetSide().equals("left")) {
+				model.put("targetSide", "left");
+				model.put("srcSide", "right");
+			} else {
+				model.put("srcSide", "left");
+				model.put("targetSide", "right");
+			}
 			
 			List<Language> languages = languageRepository.findByUser(user);
 			
@@ -133,30 +148,7 @@ public class FreeSetsController {
 		
 		setRepository.save(set);
 		
-		java.util.Set<String>  params = request.getParameterMap().keySet();
-		
-		for (String param : params) {
-			
-			if (param.startsWith("left_field_")) {
-				int number = Integer.parseInt(param.substring(11));
-				
-				String srcWord = "";
-				String targetWord = "";
-				
-				if (set.getTargetSide().equals("left")) {
-					srcWord = request.getParameter("right_field_" + number);
-					targetWord = request.getParameter("left_field_" + number);
-				} else if (set.getTargetSide().equals("right")) {
-					srcWord = request.getParameter("left_field_" + number);
-					targetWord = request.getParameter("right_field_" + number);
-				}
-				
-				if (srcWord.equals("") || targetWord.equals("")) continue;
-				
-				Word word = new Word(set, srcWord, targetWord);
-				wordRepository.save(word);
-			}
-		}
+		addWordsToDb(request, set);
 		
 		return "redirect:/free-sets";
 	}
@@ -250,11 +242,16 @@ public class FreeSetsController {
 		setRepository.save(set);
 		
 		// clean up old records
-		List<Word> words = wordRepository.findBySet(set);
-		for (Word word : words) {
-			wordRepository.delete(word);
-		} 
+		cleanUpWords(set);
 		
+		addWordsToDb(request, set);
+		
+		return "redirect:/free-sets";
+	}
+	
+	///////////////////// AUXILIARY METHODS \\\\\\\\\\\\\\\\\\\\
+	
+	public void addWordsToDb(HttpServletRequest request, Set set) {
 		java.util.Set<String>  params = request.getParameterMap().keySet();
 		
 		for (String param : params) {
@@ -280,7 +277,45 @@ public class FreeSetsController {
 			}
 		}
 		
-		return "redirect:/free-sets";
 	}
+	
+	public List<List<String>> getWordsList(HttpServletRequest request, Set set) {
+		java.util.Set<String>  params = request.getParameterMap().keySet();
+		
+		List<List<String>> result = new ArrayList<List<String>>();
+		
+		for (String param : params) {
+			if (param.startsWith("left_field_")) {
+				int number = Integer.parseInt(param.substring(11));
+				String srcWord = "";
+				String targetWord = "";
+				
+				if (set.getTargetSide().equals("left")) {
+					srcWord = request.getParameter("right_field_" + number);
+					targetWord = request.getParameter("left_field_" + number);
+				} else if (set.getTargetSide().equals("right")) {
+					srcWord = request.getParameter("left_field_" + number);
+					targetWord = request.getParameter("right_field_" + number);
+				}
+				
+				if (srcWord.equals("") || targetWord.equals("")) continue;
+				
+				List<String> arr = new ArrayList<String>();
+				arr.add(srcWord);
+				arr.add(targetWord);
+				result.add(arr);
+			}
+		}
+		
+		return result;
+	}
+	
+	public void cleanUpWords(Set set) {
+		List<Word> words = wordRepository.findBySet(set);
+		for (Word word : words) {
+			wordRepository.delete(word);
+		} 
+	}
+		
 	
 }
