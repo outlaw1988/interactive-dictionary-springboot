@@ -100,25 +100,53 @@
 		        </th>
 		    </tr>
 		    
-		    <c:forEach items="${words}" var="word" varStatus="loop">
+		    <c:choose>
+				<c:when test="${sessionScope.hasErrorMode == true}">
+					<c:forEach items="${words}" var="word" varStatus="loop">
 		    
-		    	<c:choose>
-		    		<c:when test="${targetSide == 'left'}">
-		    			<tr>
-		    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.targetWord}"/></td>
-                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.srcWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
-		    			</tr>
-		    		</c:when>
-		    		<c:otherwise>
-		    			<tr>
-		    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.srcWord}"/></td>
-                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.targetWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
-		    			</tr>
-		    		</c:otherwise>
-		    	</c:choose>
+				    	<c:choose>
+				    		<c:when test="${targetSide == 'left'}">
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(1)}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(0)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:when>
+				    		<c:otherwise>
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(0)}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(1)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:otherwise>
+				    	</c:choose>
+				    
+				    </c:forEach>
+				</c:when>
+				
+				<c:otherwise>
+				
+					<c:forEach items="${words}" var="word" varStatus="loop">
 		    
-		    </c:forEach>
-
+				    	<c:choose>
+				    		<c:when test="${targetSide == 'left'}">
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.targetWord}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.srcWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:when>
+				    		<c:otherwise>
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.srcWord}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.targetWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:otherwise>
+				    	</c:choose>
+				    
+				    </c:forEach>
+					
+				</c:otherwise>
+				
+			</c:choose>
+		    
 		</table>
 		
 		<br/><br/>
@@ -141,8 +169,8 @@
 
 	var idx = ${size};
 	var currTargetSide = "${targetSide}";
-    var currTargetLan = "${category.defaultTargetLanguage}";
-    var currSourceLan = "${category.defaultSrcLanguage}";
+    var currTargetLan = "${set.targetLanguage}";
+    var currSourceLan = "${set.srcLanguage}";
 
 	function addWord() {
 	    idx += 1;
@@ -176,9 +204,7 @@
     }
 
     $('#target-language').on('change', function (e) {
-    	
-        console.log("Target language changed!!");
-        
+    	   
         var temp = currTargetLan;
         currTargetLan = currSourceLan;
         currSourceLan = temp;
@@ -196,8 +222,6 @@
     });
 
     $('#target-side').on('change', function (e) {
-    	
-    	console.log("Target side changed!!");
     	
         currTargetSide = this.value;
 

@@ -1,5 +1,14 @@
 # Changelog - Interactive dictionary Spring Boot App
 
+## [0.5.1] - 2018-11-29
+
+### Added
+
+### Changed
+- Words fields clearing removal
+- Update set bugfix
+- Trying to remove css displaying after first login
+
 ## [0.5.0] - 2018-11-28
 
 ### Added

@@ -26,7 +26,6 @@ public class Set {
 	private Category category;
 	
 	@OneToOne
-	@NotNull
 	private Language srcLanguage;
 	
 	@OneToOne
