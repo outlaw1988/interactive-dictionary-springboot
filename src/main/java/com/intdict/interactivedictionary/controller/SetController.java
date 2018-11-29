@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
-import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.model.Set;
 import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.model.Word;
@@ -76,7 +75,11 @@ public class SetController {
 	}
 	
 	@RequestMapping(value = "/add-set-{id}", method = RequestMethod.GET)
-	public String addSetShow(ModelMap model, @PathVariable(value="id") int categoryId) {
+	public String addSetShow(ModelMap model, HttpServletRequest request, 
+							@PathVariable(value="id") int categoryId) {
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("hasErrorMode", false);
 		
 		Category category = categoryRepository.findById(categoryId).get();
 		model.addAttribute("set", new Set());
@@ -98,6 +101,7 @@ public class SetController {
 
 		Category category = categoryRepository.findById(categoryId).get();
 		List<Set> sets = setRepository.findByCategory(category);
+		HttpSession session = request.getSession();
 		
 		for (Set setIter : sets) {
 			if (setIter.getName().equals(set.getName())) {
@@ -108,22 +112,6 @@ public class SetController {
 		if (Utils.isSetEmpty(request)) {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
 		}
- 		
-		if (result.hasErrors()) {
-			
-			model.put("category", category);
-			model.put("targetSide", category.getDefaultTargetSide());
-			if (category.getDefaultTargetSide().equals("left")) {
-				model.put("srcSide", "right");
-			} else {
-				model.put("srcSide", "left");
-			}
-			
-			return "add-set";
-		}
-		
-		//Category category = categoryRepository.findById(categoryId).get();
-		set.setCategory(category);
 		
 		// case when target language has changed
 		if (set.getTargetLanguage().getId() != category.getDefaultTargetLanguage().getId()) {
@@ -133,36 +121,34 @@ public class SetController {
 			set.setSrcLanguage(category.getDefaultSrcLanguage());
 		}
 		
+		if (result.hasErrors()) {
+			
+			session.setAttribute("hasErrorMode", true);
+			
+			// keep cache data in ArrayList and pass to model
+			List<List<String>> wordsList = new ArrayList<List<String>>();
+			wordsList = getWordsList(request, set);
+			model.put("words", wordsList);
+			
+			model.put("category", category);
+			model.put("targetSide", set.getTargetSide());
+			if (set.getTargetSide().equals("left")) {
+				model.put("srcSide", "right");
+			} else {
+				model.put("srcSide", "left");
+			}
+			
+			return "add-set";
+		}
+		
+
+		set.setCategory(category);
+		
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
 		set.setUser(user);
 		set.setIsFree(0);
 		
-		setRepository.save(set);
-		
-		java.util.Set<String>  params = request.getParameterMap().keySet();
-		
-		for (String param : params) {
-			
-			if (param.startsWith("left_field_")) {
-				int number = Integer.parseInt(param.substring(11));
-				
-				String srcWord = "";
-				String targetWord = "";
-				
-				if (set.getTargetSide().equals("left")) {
-					srcWord = request.getParameter("right_field_" + number);
-					targetWord = request.getParameter("left_field_" + number);
-				} else if (set.getTargetSide().equals("right")) {
-					srcWord = request.getParameter("left_field_" + number);
-					targetWord = request.getParameter("right_field_" + number);
-				}
-				
-				if (srcWord.equals("") || targetWord.equals("")) continue;
-				
-				Word word = new Word(set, srcWord, targetWord);
-				wordRepository.save(word);
-			}
-		}
+		addWordsToDb(request, set);
 		
 		return "redirect:/category-" + categoryId;
 	}
@@ -219,11 +205,13 @@ public class SetController {
 		Set set = setRepository.findById(setId).get();
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		
+		HttpSession session = request.getSession();
+		session.setAttribute("hasErrorMode", false);
+		
 		model.put("size", words.size());
 		model.put("words", words);
 		model.addAttribute("set", set);
 		
-		HttpSession session = request.getSession();
 		session.setAttribute("currentSetName", set.getName());
 		
 		if (set.getTargetSide().equals("left")) {
@@ -260,20 +248,6 @@ public class SetController {
 			result.rejectValue("name", "error.name", "Set must contain at least one word");
 		}
  		
-		if (result.hasErrors()) {
-			
-			model.put("category", category);
-			model.put("targetSide", category.getDefaultTargetSide());
-			if (category.getDefaultTargetSide().equals("left")) {
-				model.put("srcSide", "right");
-			} else {
-				model.put("srcSide", "left");
-			}
-				
-			// TODO update-set????
-			return "add-set";
-		}
-		
 		set.setCategory(category);
 		
 		// case when target language has changed
@@ -284,14 +258,39 @@ public class SetController {
 			set.setSrcLanguage(category.getDefaultSrcLanguage());
 		}
 		
+		if (result.hasErrors()) {
+			
+			session.setAttribute("hasErrorMode", true);
+			List<List<String>> wordsList = new ArrayList<List<String>>();
+			wordsList = getWordsList(request, set);
+			
+			model.put("size", wordsList.size());
+			model.put("words", wordsList);
+			model.addAttribute("set", set);
+			
+			if (set.getTargetSide().equals("left")) {
+				model.put("targetSide", "left");
+				model.put("srcSide", "right");
+			} else {
+				model.put("srcSide", "left");
+				model.put("targetSide", "right");
+			}
+			return "update-set";
+		}
+		
 		setRepository.save(set);
 		
 		// clean up old records
-		List<Word> words = wordRepository.findBySet(set);
-		for (Word word : words) {
-			wordRepository.delete(word);
-		} 
+		cleanUpWords(set);
 		
+		addWordsToDb(request, set);
+		
+		return "redirect:/category-" + category.getId();
+	}
+	
+	///////////////////// AUXILIARY METHODS \\\\\\\\\\\\\\\\\\\\
+	
+	public void addWordsToDb(HttpServletRequest request, Set set) {
 		java.util.Set<String>  params = request.getParameterMap().keySet();
 		
 		for (String param : params) {
@@ -317,6 +316,43 @@ public class SetController {
 			}
 		}
 		
-		return "redirect:/category-" + category.getId();
+	}
+	
+	public List<List<String>> getWordsList(HttpServletRequest request, Set set) {
+		java.util.Set<String>  params = request.getParameterMap().keySet();
+		
+		List<List<String>> result = new ArrayList<List<String>>();
+		
+		for (String param : params) {
+			if (param.startsWith("left_field_")) {
+				int number = Integer.parseInt(param.substring(11));
+				String srcWord = "";
+				String targetWord = "";
+				
+				if (set.getTargetSide().equals("left")) {
+					srcWord = request.getParameter("right_field_" + number);
+					targetWord = request.getParameter("left_field_" + number);
+				} else if (set.getTargetSide().equals("right")) {
+					srcWord = request.getParameter("left_field_" + number);
+					targetWord = request.getParameter("right_field_" + number);
+				}
+				
+				if (srcWord.equals("") || targetWord.equals("")) continue;
+				
+				List<String> arr = new ArrayList<String>();
+				arr.add(srcWord);
+				arr.add(targetWord);
+				result.add(arr);
+			}
+		}
+		
+		return result;
+	}
+	
+	public void cleanUpWords(Set set) {
+		List<Word> words = wordRepository.findBySet(set);
+		for (Word word : words) {
+			wordRepository.delete(word);
+		} 
 	}
 }
