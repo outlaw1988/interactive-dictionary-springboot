@@ -205,11 +205,13 @@ public class SetController {
 		Set set = setRepository.findById(setId).get();
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		
+		HttpSession session = request.getSession();
+		session.setAttribute("hasErrorMode", false);
+		
 		model.put("size", words.size());
 		model.put("words", words);
 		model.addAttribute("set", set);
 		
-		HttpSession session = request.getSession();
 		session.setAttribute("currentSetName", set.getName());
 		
 		if (set.getTargetSide().equals("left")) {
@@ -258,10 +260,12 @@ public class SetController {
 		
 		if (result.hasErrors()) {
 			
-			List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
+			session.setAttribute("hasErrorMode", true);
+			List<List<String>> wordsList = new ArrayList<List<String>>();
+			wordsList = getWordsList(request, set);
 			
-			model.put("size", words.size());
-			model.put("words", words);
+			model.put("size", wordsList.size());
+			model.put("words", wordsList);
 			model.addAttribute("set", set);
 			
 			if (set.getTargetSide().equals("left")) {

@@ -100,25 +100,53 @@
 		        </th>
 		    </tr>
 		    
-		    <c:forEach items="${words}" var="word" varStatus="loop">
+		    <c:choose>
+				<c:when test="${sessionScope.hasErrorMode == true}">
+					<c:forEach items="${words}" var="word" varStatus="loop">
 		    
-		    	<c:choose>
-		    		<c:when test="${targetSide == 'left'}">
-		    			<tr>
-		    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.targetWord}"/></td>
-                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.srcWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
-		    			</tr>
-		    		</c:when>
-		    		<c:otherwise>
-		    			<tr>
-		    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.srcWord}"/></td>
-                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.targetWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
-		    			</tr>
-		    		</c:otherwise>
-		    	</c:choose>
+				    	<c:choose>
+				    		<c:when test="${targetSide == 'left'}">
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(1)}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(0)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:when>
+				    		<c:otherwise>
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(0)}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(1)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:otherwise>
+				    	</c:choose>
+				    
+				    </c:forEach>
+				</c:when>
+				
+				<c:otherwise>
+				
+					<c:forEach items="${words}" var="word" varStatus="loop">
 		    
-		    </c:forEach>
-
+				    	<c:choose>
+				    		<c:when test="${targetSide == 'left'}">
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.targetWord}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.srcWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:when>
+				    		<c:otherwise>
+				    			<tr>
+				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.srcWord}"/></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.targetWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+				    			</tr>
+				    		</c:otherwise>
+				    	</c:choose>
+				    
+				    </c:forEach>
+					
+				</c:otherwise>
+				
+			</c:choose>
+		    
 		</table>
 		
 		<br/><br/>

@@ -127,7 +127,6 @@ public class FreeSetsController {
 			wordsList = getWordsList(request, set);
 			model.put("words", wordsList);
 			
-			// TODO change
 			if (set.getTargetSide().equals("left")) {
 				model.put("targetSide", "left");
 				model.put("srcSide", "right");
