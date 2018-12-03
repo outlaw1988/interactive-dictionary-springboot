@@ -10,7 +10,7 @@
 				required="required" />
 			<form:errors path="name" cssClass="text-warning" />
 		</fieldset>
-		<button type="submit" class="btn btn-success">Add</button>
+		<button id="add-language" type="submit" class="btn btn-success">Add</button>
 	</form:form>
 </div>
 

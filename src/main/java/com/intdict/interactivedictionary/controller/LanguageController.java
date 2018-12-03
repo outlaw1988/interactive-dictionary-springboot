@@ -36,7 +36,7 @@ public class LanguageController {
 	@RequestMapping(value = "/languages", method = RequestMethod.GET)
 	public String showLanguages(ModelMap model) {
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		
 //		List<Language> languages = repository.findAll();
 		List<Language> languages = repository.findByUser(user);
@@ -59,7 +59,7 @@ public class LanguageController {
 			return "add-language";
 		}
 
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		language.setUser(user);
 		
 		repository.save(language);

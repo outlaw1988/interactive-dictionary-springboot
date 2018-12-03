@@ -144,7 +144,7 @@ public class SetController {
 
 		set.setCategory(category);
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		set.setUser(user);
 		set.setIsFree(0);
 		

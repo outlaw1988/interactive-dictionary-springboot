@@ -14,5 +14,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 	List<Category> findByDefaultTargetLanguage(Language language);
 	List<Category> findByName(String name);
 	List<Category> findByUser(User user);
+	List<Category> findByNameAndUser(String name, User user);
 	
 }

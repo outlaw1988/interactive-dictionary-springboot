@@ -6,23 +6,23 @@
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="/index">Categories</a>
+        <a id="categories" class="nav-link" href="/index">Categories</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/languages">Languages</a>
+        <a id="languages" class="nav-link" href="/languages">Languages</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/free-sets">Freesets</a>
+        <a id="free-sets" class="nav-link" href="/free-sets">Freesets</a>
       </li>
     </ul>
   </div>
   <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
        <ul class="navbar-nav ml-auto">
        	   <li class="nav-item">
-       	       <a class="nav-link">${sessionScope.username}</a>
+       	       <a id="user" class="nav-link">${sessionScope.username}</a>
        	   </li>
            <li class="nav-item">
-               <a class="nav-link" href="/logout">Log out</a>
+               <a id="logout" class="nav-link" href="/logout">Log out</a>
            </li>
        </ul>
    </div>

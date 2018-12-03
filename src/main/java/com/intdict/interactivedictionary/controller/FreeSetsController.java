@@ -43,7 +43,7 @@ public class FreeSetsController {
 	@RequestMapping(value = "free-sets", method = RequestMethod.GET)
 	public String freeSetsInit(ModelMap model) {
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		List<Set> sets = setRepository.findByUserAndIsFree(user, 1);
 		
 		List<Integer> wordCounters = new ArrayList<>();
@@ -82,7 +82,7 @@ public class FreeSetsController {
 		model.put("targetSide", "right");
 		model.put("srcSide", "left");
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		List<Language> languages = languageRepository.findByUser(user);
 		
 		model.put("languages", languages);
@@ -94,7 +94,7 @@ public class FreeSetsController {
 	public String addFreeSetPost(HttpServletRequest request, ModelMap model, 
 							@Valid Set set, BindingResult result) {
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		List<Set> sets = setRepository.findByUserAndIsFree(user, 1);
 		HttpSession session = request.getSession();
 		
@@ -161,7 +161,7 @@ public class FreeSetsController {
 		HttpSession session = request.getSession();
 		session.setAttribute("hasErrorMode", false);
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		List<Language> languages = languageRepository.findByUser(user);
 		model.put("languages", languages);
 		
@@ -186,7 +186,7 @@ public class FreeSetsController {
 	public String updateFreeSetPost(HttpServletRequest request, ModelMap model,  
 			@Valid Set set, BindingResult result, @PathVariable(value = "setId") int setId) {
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		List<Set> sets = setRepository.findByUserAndIsFree(user, 1);
 		
 		HttpSession session = request.getSession();

@@ -50,7 +50,7 @@ public class CategoryController {
 	@RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 	public String index(ModelMap model, HttpServletRequest request) {
 
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		
 		List<Category> categories = repository.findByUser(user);
 		model.put("categories", categories);
@@ -73,7 +73,7 @@ public class CategoryController {
 		model.put("wordCounters", wordCounters);
 		
 		HttpSession session = request.getSession();
-		session.setAttribute("username", Utils.getLoggedInUserName(model));
+		session.setAttribute("username", Utils.getLoggedInUserName());
 
 		return "index";
 	}
@@ -83,7 +83,7 @@ public class CategoryController {
 		
 		model.addAttribute("category", new Category(""));
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		List<Language> languages = languageRepository.findByUser(user);
 		
 		model.put("languages", languages);
@@ -95,7 +95,7 @@ public class CategoryController {
 	public String addCategoryPost(ModelMap model, @Validated({CreateGroup.class}) Category category, BindingResult result) {
 
 		if (result.hasErrors()) {
-			User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+			User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 			List<Language> languages = languageRepository.findByUser(user);
 			
 			model.put("languages", languages);
@@ -103,7 +103,7 @@ public class CategoryController {
 			return "add-category";
 		}
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		category.setUser(user);
 
 		repository.save(category);
@@ -151,7 +151,7 @@ public class CategoryController {
 		Category category = repository.findById(categoryId).get();
 		model.addAttribute("category", category);
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		List<Language> languages = languageRepository.findByUser(user);
 		
 		model.put("languages", languages);
@@ -163,7 +163,7 @@ public class CategoryController {
 	public String updateCategoryPost(ModelMap model, @Valid Category category, BindingResult result) {
 		
 		if (result.hasErrors()) {
-			User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+			User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 			List<Language> languages = languageRepository.findByUser(user);
 			
 			model.put("languages", languages);
@@ -171,7 +171,7 @@ public class CategoryController {
 			return "update-category";
 		}
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName(model)).get(0);
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		category.setUser(user);
 		
 		repository.save(category);
