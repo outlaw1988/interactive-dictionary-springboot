@@ -25,8 +25,8 @@
 	        </div>
 			
 			<br><span>words: <span id="words-num">${wordCounters[loop.index]}</span></span>
-	        <br><span>last result: ${lastResults[loop.index]}%</span>
-	        <br><span>best result: ${bestResults[loop.index]}%</span>
+	        <br><span>last result: <span id="last-result-${loop.index}">${lastResults[loop.index]}%</span></span>
+	        <br><span>best result: <span id="best-result-${loop.index}">${bestResults[loop.index]}%</span></span>
 	        <br><span>${srcLanguages[loop.index]} -> ${targetLanguages[loop.index]}</span>
 		</div>
 	
