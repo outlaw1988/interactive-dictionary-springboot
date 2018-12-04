@@ -22,11 +22,11 @@
 	          <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
 	        </p>
 				<input name="_csrf" type="hidden" value="21720837-cb10-4314-9350-76e2dc4660fa" />
-	        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	        <button id="sign-in" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 	      </form>
 	      
 	      <p style="text-align: center;">
-	      		<a href="/registration">Sign up</a>
+	      		<a id="sign-up" href="/registration">Sign up</a>
 	      </p>
 	      
       </div>

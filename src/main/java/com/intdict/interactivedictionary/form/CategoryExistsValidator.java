@@ -1,6 +1,9 @@
 package com.intdict.interactivedictionary.form;
 
+import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.service.CategoryRepository;
+import com.intdict.interactivedictionary.service.UserRepository;
+import com.intdict.interactivedictionary.utils.Utils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -15,6 +18,9 @@ public class CategoryExistsValidator implements ConstraintValidator<CategoryExis
     
     @Autowired
     private CategoryRepository categoryRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public void initialize(final CategoryExists constraintAnnotation) {
@@ -29,8 +35,9 @@ public class CategoryExistsValidator implements ConstraintValidator<CategoryExis
         try
         {
             final Object categoryObj = BeanUtils.getProperty(value, category);
-            int size = categoryRepository.findByName((String)categoryObj).size();
-            //System.out.println("Size: " + size);
+            User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
+            
+            int size = categoryRepository.findByNameAndUser((String)categoryObj, user).size();
             
             if (size > 0) {
             	valid = false;

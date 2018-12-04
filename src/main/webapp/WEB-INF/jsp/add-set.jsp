@@ -71,8 +71,6 @@
 		
 		</c:choose>
 		
-		
-		
 		<input type="file" id="upload" name="upload" onchange='openFile(event)' style="visibility: hidden; width: 1px; height: 1px" multiple />
 		<a href="" onclick="document.getElementById('upload').click(); return false">Import words from txt</a>
 				
@@ -203,13 +201,13 @@
 		    
 				    	<c:choose>
 				    		<c:when test="${targetSide == 'left'}">
-				    			<tr>
+				    			<tr class="words-row">
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(1)}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(0)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
 				    		</c:when>
 				    		<c:otherwise>
-				    			<tr>
+				    			<tr class="words-row">
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(0)}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(1)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
@@ -238,15 +236,15 @@
     
     	<br/><br/>
     
-    	<button type="button" class="btn btn-success" onclick="addWord()">Add word</button>
+    	<button id="add-word" type="button" class="btn btn-success" onclick="addWord()">Add word</button>
     	
     	<br/><br/>
 
-		<button type="submit" class="btn btn-success">Add</button>
+		<button id="add-set" type="submit" class="btn btn-success">Add</button>
 		
 		<br/><br/>
 		
-		<a type="button" class="btn btn-success" href="/category-${category.id}">Go back</a>
+		<a id="go-back" type="button" class="btn btn-success" href="/category-${category.id}">Go back</a>
 	</form:form>
 		
 </div>

@@ -36,6 +36,15 @@
 			<option value="5"  <c:if test="${set.countdownDuration == '5'}">  selected="selected" </c:if> >5</option>
 		</form:select>
 		
+		<input type="file" id="upload" name="upload" onchange='openFile(event)' style="visibility: hidden; width: 1px; height: 1px" multiple />
+		<a href="" onclick="document.getElementById('upload').click(); return false">Import words from txt</a>
+				
+		<span>Separator:</span>
+		<select id="separator">
+		    <option value=";">;</option>
+		    <option value=",">,</option>
+		</select>
+		
 		<br/><br/>
 		
 		<table id="set_def_table" class="table-add-set">
@@ -106,13 +115,13 @@
 		    
 				    	<c:choose>
 				    		<c:when test="${targetSide == 'left'}">
-				    			<tr>
+				    			<tr class="words-row">
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(1)}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(0)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
 				    		</c:when>
 				    		<c:otherwise>
-				    			<tr>
+				    			<tr class="words-row">
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(0)}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(1)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
@@ -128,13 +137,13 @@
 		    
 				    	<c:choose>
 				    		<c:when test="${targetSide == 'left'}">
-				    			<tr>
+				    			<tr class="words-row">
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.targetWord}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.srcWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
 				    		</c:when>
 				    		<c:otherwise>
-				    			<tr>
+				    			<tr class="words-row">
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.srcWord}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.targetWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
@@ -242,6 +251,32 @@
 
         swapFields();
     });
+    
+    var openFile = function(event) {
+        var input = event.target;
+
+        var reader = new FileReader();
+        reader.onload = function(){
+          var text = reader.result;        
+          var lines = text.split('\n');
+          
+          $('.words-row').remove();
+          idx = 0;
+          var separator = document.getElementById("separator").value;
+
+          for(var line = 0; line < lines.length; line++){
+              addWord();
+             
+        	  var arr = lines[line].split(separator);
+        	  var srcWord = arr[0];
+        	  var targetWord = arr[1];
+        	  
+        	  document.getElementById("left_field_" + (line + 1)).value = srcWord;
+        	  document.getElementById("right_field_" + (line + 1)).value = targetWord;
+          }
+        };
+        reader.readAsText(input.files[0]);
+      };
 	
 </script>
 

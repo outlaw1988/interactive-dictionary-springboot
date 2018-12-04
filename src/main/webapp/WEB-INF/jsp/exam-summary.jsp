@@ -15,8 +15,8 @@
 <div class="container">
 
 	<div class="center">
-		<p>Your current result: ${lastResult}%</p>
-		<p>Your best result: ${bestResult}%</p>
+		<p>Your current result: <span id="last-result">${lastResult}%</span></p>
+		<p>Your best result: <span id="best-result">${bestResult}%</span></p>
 	</div>
 	
 	<table class="table-add-set">
@@ -61,10 +61,10 @@
 	
 	<c:choose>
 		<c:when test="${set.isFree == 1}">
-			<a type="button" class="btn btn-success" href="/free-sets">Go back</a>
+			<a id="go-back" type="button" class="btn btn-success" href="/free-sets">Go back</a>
 		</c:when>
 		<c:otherwise>
-			<a type="button" class="btn btn-success" href="/category-${sessionScope.category.id}">Go back</a>
+			<a id="go-back" type="button" class="btn btn-success" href="/category-${sessionScope.category.id}">Go back</a>
 		</c:otherwise>
 	</c:choose>
 

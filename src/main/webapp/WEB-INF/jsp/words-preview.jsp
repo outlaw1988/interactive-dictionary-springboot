@@ -25,7 +25,7 @@
 <br>
 
 <div style="text-align:center;">
-	<a type="button" class="btn btn-success" href="/exam-${set.id}">Perform exam</a>
+	<a id="perform-exam" type="button" class="btn btn-success" href="/exam-${set.id}">Perform exam</a>
 </div>
 
 <br>
@@ -33,10 +33,10 @@
 <div style="text-align:center;">
 	<c:choose>
 		<c:when test="${set.isFree == 1}">
-			<a type="button" class="btn btn-success" href="/free-sets">Go back</a>
+			<a id="go-back" type="button" class="btn btn-success" href="/free-sets">Go back</a>
 		</c:when>
 		<c:otherwise>
-			<a type="button" class="btn btn-success" href="/category-${set.category.id}">Go back</a>
+			<a id="go-back" type="button" class="btn btn-success" href="/category-${set.category.id}">Go back</a>
 		</c:otherwise>
 	</c:choose>
 </div>

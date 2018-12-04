@@ -39,13 +39,13 @@
 		
 		<br/><br/>
 		
-		<button type="submit" class="btn btn-success">Apply</button>
+		<button id="apply" type="submit" class="btn btn-success">Apply</button>
 		
 	</form:form>
 	
-	<span>${successMessage}</span>
+	<span id="success-message">${successMessage}</span>
 	
-	<a type="button" href="/login" class="btn btn-success">Go to login page</a>
+	<a id="go-back" type="button" href="/login" class="btn btn-success">Go to login page</a>
 	
 </div>
 

@@ -64,7 +64,7 @@ public class Utils {
 		return answersList;
 	}
 
-	public static String getLoggedInUserName(ModelMap model) {
+	public static String getLoggedInUserName() {
 		Object principal = SecurityContextHolder.getContext()
 				.getAuthentication().getPrincipal();
 

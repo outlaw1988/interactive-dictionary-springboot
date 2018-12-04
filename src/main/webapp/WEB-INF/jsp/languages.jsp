@@ -20,7 +20,7 @@
 		</tbody>
 	</table>
 	<div style="text-align:center;">
-		<a type="button" class="btn btn-success" href="/add-language">Add a language</a>
+		<a id="add-language" type="button" class="btn btn-success" href="/add-language">Add a language</a>
 	</div>
 </div>
 

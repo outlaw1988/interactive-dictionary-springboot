@@ -34,7 +34,7 @@
 </div>
 
 <div style="text-align:center;">
-	<a type="button" class="btn btn-success" href="/add-category">Add a category</a>
+	<a id="add-category" type="button" class="btn btn-success" href="/add-category">Add a category</a>
 </div>
 
 <script language="javascript" type="text/javascript">
