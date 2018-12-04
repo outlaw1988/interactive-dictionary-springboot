@@ -1,5 +1,12 @@
 # Changelog - Interactive dictionary Spring Boot App
 
+## [0.5.3] - 2018-12-04
+
+### Changed
+- Bugfix - category exists
+- Language show by id asc
+- Added ids - selenium tests
+
 ## [0.5.2] - 2018-11-29
 
 ### Changed
