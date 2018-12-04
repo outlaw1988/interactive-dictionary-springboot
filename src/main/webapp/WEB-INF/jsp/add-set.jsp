@@ -236,15 +236,15 @@
     
     	<br/><br/>
     
-    	<button type="button" class="btn btn-success" onclick="addWord()">Add word</button>
+    	<button id="add-word" type="button" class="btn btn-success" onclick="addWord()">Add word</button>
     	
     	<br/><br/>
 
-		<button type="submit" class="btn btn-success">Add</button>
+		<button id="add-set" type="submit" class="btn btn-success">Add</button>
 		
 		<br/><br/>
 		
-		<a type="button" class="btn btn-success" href="/category-${category.id}">Go back</a>
+		<a id="go-back" type="button" class="btn btn-success" href="/category-${category.id}">Go back</a>
 	</form:form>
 		
 </div>

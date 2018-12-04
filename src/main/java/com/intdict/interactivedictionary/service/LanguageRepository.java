@@ -9,5 +9,6 @@ import com.intdict.interactivedictionary.model.User;
 public interface LanguageRepository extends JpaRepository<Language, Integer> {
 
 	List<Language> findByUser(User user);
+	List<Language> findByUserOrderByIdAsc(User user);
 	
 }

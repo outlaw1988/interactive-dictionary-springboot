@@ -38,8 +38,7 @@ public class LanguageController {
 		
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		
-//		List<Language> languages = repository.findAll();
-		List<Language> languages = repository.findByUser(user);
+		List<Language> languages = repository.findByUserOrderByIdAsc(user);
 		
 		model.put("languages", languages);
 		
