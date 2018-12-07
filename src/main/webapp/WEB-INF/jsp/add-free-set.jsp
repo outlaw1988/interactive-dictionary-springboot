@@ -109,14 +109,20 @@
 		
 		</c:choose>
 		
-		<input type="file" id="upload" name="upload" onchange='openFile(event)' style="visibility: hidden; width: 1px; height: 1px" multiple />
-		<a href="" onclick="document.getElementById('upload').click(); return false">Import words</a>
+		<br/><br/>
+		
+		<p>
+		<input type="file" id="upload" name="upload" onchange='openFile(event)'/> <!-- visibility: hidden;  -->
+		<!-- style="width: 1px; height: 1px" multiple -->
+		<!-- <a href="" onclick="document.getElementById('upload').click(); return false">Import words</a> -->
 				
 		<span>Separator:</span>
 		<select id="separator">
 		    <option value=";">;</option>
 		    <option value=",">,</option>
 		</select>
+		
+		</p>
 				
 		<br/><br/>
 		
@@ -203,15 +209,15 @@
     
     	<br/><br/>
     
-    	<button type="button" class="btn btn-success" onclick="addWord()">Add word</button>
+    	<button id="add-word" type="button" class="btn btn-success" onclick="addWord()">Add word</button>
     	
     	<br/><br/>
 
-		<button type="submit" class="btn btn-success">Add</button>
+		<button id="add-set" type="submit" class="btn btn-success">Add</button>
 		
 		<br/><br/>
 		
-		<a type="button" class="btn btn-success" href="/free-sets">Go back</a>
+		<a id="go-back" type="button" class="btn btn-success" href="/free-sets">Go back</a>
 	</form:form>
 		
 </div>

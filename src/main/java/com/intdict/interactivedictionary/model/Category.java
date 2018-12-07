@@ -10,21 +10,21 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.intdict.interactivedictionary.form.CategoryExists;
-import com.intdict.interactivedictionary.form.FieldMatch;
+//import com.intdict.interactivedictionary.form.CategoryExists;
+//import com.intdict.interactivedictionary.form.FieldMatch;
 
 @Entity
 @Table(name = "Category")
-@FieldMatch(first = "defaultSrcLanguage", second = "defaultTargetLanguage", message = "Languages must be different")
-@CategoryExists(category="name", message="Category already exists", groups={CreateGroup.class})
+//@FieldMatch(first = "defaultSrcLanguage", second = "defaultTargetLanguage", message = "Languages must be different")
+//@CategoryExists(category="name", message="Category already exists", groups={CreateGroup.class})
 public class Category {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@Size(min=2, message="Enter at least 2 characters...")
 	@Column(name = "name")
+	@Size(min = 1, max = 100)
 	private String name;
 	
 	@OneToOne

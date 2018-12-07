@@ -9,7 +9,7 @@
 	
 		<div class="box">
 			<div class="box-name">
-				<a href="/preview-${set.id}">${set.name}</a>
+				<a href="/preview-${set.id}"><span style="width:100px; word-wrap:break-word; display:inline-block; text-align:center">${set.name}</span></a>
 			</div>
 			
 			<div class="dropdown" onclick="dropDown(${loop.index})">
@@ -24,9 +24,9 @@
 	            <!-- It should be empty -->
 	        </div>
 			
-			<br><span>words: ${wordCounters[loop.index]}</span>
-	        <br><span>last result: ${lastResults[loop.index]}%</span>
-	        <br><span>best result: ${bestResults[loop.index]}%</span>
+			<br><span>words: <span>${wordCounters[loop.index]}</span></span>
+	        <br><span>last result: <span>${lastResults[loop.index]}%</span></span>
+	        <br><span>best result: <span>${bestResults[loop.index]}%</span></span>
 	        <br><span>${srcLanguages[loop.index]} -> ${targetLanguages[loop.index]}</span>
 		</div>
 	
@@ -35,9 +35,9 @@
 </div>
 
 <div style="text-align:center;">
-	<a type="button" class="btn btn-success" href="/add-free-set">Add a free set</a>
+	<a id="add-free-set" type="button" class="btn btn-success" href="/add-free-set">Add a free set</a>
 	<br/><br/>
-	<a type="button" class="btn btn-success" href="/index">Go back</a>
+	<a id="go-back" type="button" class="btn btn-success" href="/index">Go back</a>
 </div>
 
 <script language="javascript" type="text/javascript">

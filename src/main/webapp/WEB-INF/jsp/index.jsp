@@ -9,7 +9,7 @@
 	
 		<div class="box">
 			<div class="box-name">
-				<a href="/category-${category.id}">${category.name}</a>
+				<a href="/category-${category.id}"><span style="width:100px; word-wrap:break-word; display:inline-block; text-align:center">${category.name}</span></a>
 			</div>
 			
 			<div class="dropdown" onclick="dropDown(${loop.index})">

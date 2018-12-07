@@ -18,8 +18,8 @@ public class Set {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@Size(min=2, message="Enter at least 2 characters...")
 	@Column(name = "name")
+	@Size(min = 1, max = 100)
 	private String name;
 	
 	@OneToOne

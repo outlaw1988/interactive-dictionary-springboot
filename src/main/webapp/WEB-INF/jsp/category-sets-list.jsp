@@ -9,7 +9,7 @@
 	
 		<div class="box">
 			<div class="box-name">
-				<a href="/preview-${set.id}">${set.name}</a>
+				<a href="/preview-${set.id}"><span style="width:100px; word-wrap:break-word; display:inline-block; text-align:center">${set.name}</span></a>
 			</div>
 			
 			<div class="dropdown" onclick="dropDown(${loop.index})">

@@ -71,14 +71,20 @@
 		
 		</c:choose>
 		
-		<input type="file" id="upload" name="upload" onchange='openFile(event)' style="visibility: hidden; width: 1px; height: 1px" multiple />
-		<a href="" onclick="document.getElementById('upload').click(); return false">Import words from txt</a>
+		<br/><br/>
+		<!-- <input type="file" id="upload" name="upload" onchange='openFile(event)' style="visibility: hidden; width: 1px; height: 1px" multiple />
+		<a href="" onclick="document.getElementById('upload').click(); return false">Import words from txt</a> -->
+				
+		<p>
+		<input type="file" id="upload" name="upload" onchange='openFile(event)'/> <!-- visibility: hidden;  -->
 				
 		<span>Separator:</span>
 		<select id="separator">
 		    <option value=";">;</option>
 		    <option value=",">,</option>
 		</select>
+		
+		</p>
 				
 		<br/><br/>
 		
