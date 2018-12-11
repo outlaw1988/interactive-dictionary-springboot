@@ -19,7 +19,8 @@
 		<p>Your best result: <span id="best-result">${bestResult}%</span></p>
 	</div>
 	
-	<table class="table table-striped table-hover">
+	<table class="table table-striped table-hover" 
+	style="border-collapse:collapse; table-layout:fixed; width:60vw; margin: 0 auto;">
 		<thead>
 			<tr>
 			     <th class="table-headers">Source language</th>
@@ -45,10 +46,10 @@
 			    for (var i = 0; i < arrayLength; i++) {
 			
 			        if (answersList[i] == 1){
-			            tableHtml += "<tr> <td align='center' style='color: #008000;'>" + srcWords[i].toString() + "</td> <td align='center' style='color: #008000;'>" + targetWords[i].toString() + "</td> </tr>";
+			            tableHtml += "<tr> <td align='center' style='color: #008000; word-wrap:break-word;'>" + srcWords[i].toString() + "</td> <td align='center' style='color: #008000; word-wrap:break-word;'>" + targetWords[i].toString() + "</td> </tr>";
 			        }
 			        else if (answersList[i] == 0) {
-			            tableHtml += "<tr> <td align='center' style='color: #ff0000;'>" + srcWords[i].toString() + "</td> <td align='center' style='color: #ff0000;'>" + targetWords[i].toString() + "</td> </tr>";
+			            tableHtml += "<tr> <td align='center' style='color: #ff0000; word-wrap:break-word;'>" + srcWords[i].toString() + "</td> <td align='center' style='color: #ff0000; word-wrap:break-word;'>" + targetWords[i].toString() + "</td> </tr>";
 			        }
 			    }
 			
