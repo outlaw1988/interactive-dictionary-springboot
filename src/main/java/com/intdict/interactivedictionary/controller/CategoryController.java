@@ -91,11 +91,27 @@ public class CategoryController {
 		return "add-category";
 	}
 
+	// @Validated({CreateGroup.class})
 	@RequestMapping(value = "/add-category", method = RequestMethod.POST)
-	public String addCategoryPost(ModelMap model, @Validated({CreateGroup.class}) Category category, BindingResult result) {
+	public String addCategoryPost(ModelMap model, @Valid Category category, BindingResult result) {
 
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
+		List<Category> categoriesToCheck = repository.findByNameAndUser(category.getName(), user);
+		
+		if (categoriesToCheck.size() > 0) {
+			result.rejectValue("name", "error.name", "This category already exists");
+		}
+		
+		if ((category.getDefaultSrcLanguage() != null) && (category.getDefaultTargetLanguage() != null)) {
+			
+			if (category.getDefaultSrcLanguage().equals(category.getDefaultTargetLanguage())) {
+				result.rejectValue("defaultTargetLanguage", 
+									"error.defaultTargetLanguage", "Languages must be different");
+			}
+		}
+		
 		if (result.hasErrors()) {
-			User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
+			System.out.println("Has errors!!!!!!!");
 			List<Language> languages = languageRepository.findByUser(user);
 			
 			model.put("languages", languages);
@@ -103,7 +119,6 @@ public class CategoryController {
 			return "add-category";
 		}
 		
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		category.setUser(user);
 
 		repository.save(category);
@@ -161,6 +176,8 @@ public class CategoryController {
 	
 	@RequestMapping(value = "/update-category-{categoryId}", method = RequestMethod.POST)
 	public String updateCategoryPost(ModelMap model, @Valid Category category, BindingResult result) {
+		
+		// TODO validation category exists etc.
 		
 		if (result.hasErrors()) {
 			User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);

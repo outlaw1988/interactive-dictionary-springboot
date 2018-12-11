@@ -71,19 +71,31 @@
 		
 		</c:choose>
 		
-		<input type="file" id="upload" name="upload" onchange='openFile(event)' style="visibility: hidden; width: 1px; height: 1px" multiple />
-		<a href="" onclick="document.getElementById('upload').click(); return false">Import words from txt</a>
-				
-		<span>Separator:</span>
-		<select id="separator">
-		    <option value=";">;</option>
-		    <option value=",">,</option>
-		</select>
+		<br/><br/>
+		
+		<div class="import-words">
+			<p>
+			
+			<span>Import words from file:</span>
+			
+			<br/>
+			
+			<input type="file" id="upload" name="upload" onchange='openFile(event)'/>
+					
+			<span>Separator:</span>
+			<select id="separator">
+			    <option value=";">;</option>
+			    <option value=",">,</option>
+			</select>
+			
+			</p>
+		</div>
 				
 		<br/><br/>
 		
 		<table id="set_def_table" class="table-add-set">
 	      	<tr>
+	      		<th></th>
 	        	<th class="table-headers">
 	          		<span id="left-label">
 		          		<c:choose>
@@ -114,6 +126,7 @@
 		        </th>
 	      	</tr>
 		    <tr>
+		    	<th></th>
 		        <th class="table-headers">
 			        <span id="left-lan">
 		          		
@@ -202,12 +215,14 @@
 				    	<c:choose>
 				    		<c:when test="${targetSide == 'left'}">
 				    			<tr class="words-row">
+				    				<td>${loop.index + 1}</td>
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(1)}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(0)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
 				    		</c:when>
 				    		<c:otherwise>
 				    			<tr class="words-row">
+				    				<td>${loop.index + 1}</td>
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(0)}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(1)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
@@ -221,6 +236,7 @@
 				
 					<c:forEach begin="1" end="10" varStatus="loop">
 					    <tr class="words-row">
+					    	<td><span>${loop.index}</span></td>
 			                <td class="table-words"><input type="text" name="left_field_${loop.index}" id="left_field_${loop.index}"/></td>
 			                <td class="table-words"><input type="text" name="right_field_${loop.index}" id="right_field_${loop.index}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 			            </tr>
@@ -236,8 +252,9 @@
     
     	<br/><br/>
     
-    	<button id="add-word" type="button" class="btn btn-success" onclick="addWord()">Add word</button>
-    	
+    	<div style="text-align:center;">
+    		<button id="add-word" type="button" class="btn btn-success" onclick="addWord()">Add word</button>
+    	</div>
     	<br/><br/>
 
 		<button id="add-set" type="submit" class="btn btn-success">Add</button>
@@ -261,18 +278,29 @@
 	
 	    var table = document.getElementById("set_def_table");
 	    var row = table.insertRow(-1);
-	    var cell1 = row.insertCell(0);
-	    var cell2 = row.insertCell(1);
+	    var cell0 = row.insertCell(0);
+	    var cell1 = row.insertCell(1);
+	    var cell2 = row.insertCell(2);
 	    cell1.innerHTML = "<input type='text' name='left_field_" + idx + "' id='left_field_" + idx + "'/>";
 	    cell1.align = "center";
 	    cell2.innerHTML = "<input type='text' name='right_field_" + idx + "' id='right_field_" + idx + "'/>";
 	    cell2.innerHTML += " <img src='images/remove_icon_res.png' onclick='removeWords(this)'>"
 	    cell2.align = "center";
+	    
+	    generateIndexes();
+	}
+	
+	function generateIndexes() {
+		var table = document.getElementById("set_def_table");
+		for (var i = 2, row; row = table.rows[i]; i++) {
+		   row.cells[0].innerHTML = (i - 1);
+		}
 	}
 
 	function removeWords(btn) {
 	    var row = btn.parentNode.parentNode;
 	    row.parentNode.removeChild(row);
+	    generateIndexes();
 	}
 	
 	function swapFields() {

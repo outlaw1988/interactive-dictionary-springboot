@@ -62,6 +62,7 @@
 		
 		<table id="set_def_table" class="table-add-set">
 	      	<tr>
+	      		<th></th>
 	        	<th class="table-headers">
 	          		<span id="left-label">
 		          		<c:choose>
@@ -111,12 +112,14 @@
 				    	<c:choose>
 				    		<c:when test="${targetSide == 'left'}">
 				    			<tr class="words-row">
+				    				<td>${loop.index + 1}</td>
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(1)}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(0)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
 				    		</c:when>
 				    		<c:otherwise>
 				    			<tr class="words-row">
+				    				<td>${loop.index + 1}</td>
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(0)}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(1)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
@@ -133,12 +136,14 @@
 				    	<c:choose>
 				    		<c:when test="${targetSide == 'left'}">
 				    			<tr class="words-row">
+				    				<td>${loop.index + 1}</td>
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.targetWord}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.srcWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
 				    		</c:when>
 				    		<c:otherwise>
 				    			<tr class="words-row">
+				    				<td>${loop.index + 1}</td>
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.srcWord}"/></td>
 		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.targetWord}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
@@ -155,7 +160,9 @@
     
     	<br/><br/>
     
-    	<button type="button" class="btn btn-success" onclick="addWord()">Add word</button>
+    	<div style="text-align:center;">
+    		<button type="button" class="btn btn-success" onclick="addWord()">Add word</button>
+    	</div>
     	
     	<br/><br/>
 
@@ -180,18 +187,29 @@
 	
 	    var table = document.getElementById("set_def_table");
 	    var row = table.insertRow(-1);
-	    var cell1 = row.insertCell(0);
-	    var cell2 = row.insertCell(1);
+	    var cell0 = row.insertCell(0);
+	    var cell1 = row.insertCell(1);
+	    var cell2 = row.insertCell(2);
 	    cell1.innerHTML = "<input type='text' name='left_field_" + idx + "' id='left_field_" + idx + "'/>";
 	    cell1.align = "center";
 	    cell2.innerHTML = "<input type='text' name='right_field_" + idx + "' id='right_field_" + idx + "'/>";
 	    cell2.innerHTML += " <img src='images/remove_icon_res.png' onclick='removeWords(this)'>"
 	    cell2.align = "center";
+	    
+	    generateIndexes();
+	}
+	
+	function generateIndexes() {
+		var table = document.getElementById("set_def_table");
+		for (var i = 1, row; row = table.rows[i]; i++) {
+		   row.cells[0].innerHTML = i;
+		}
 	}
 
 	function removeWords(btn) {
 	    var row = btn.parentNode.parentNode;
 	    row.parentNode.removeChild(row);
+	    generateIndexes();
 	}
 	
 	function swapFields() {

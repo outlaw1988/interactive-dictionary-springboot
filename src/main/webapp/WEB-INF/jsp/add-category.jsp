@@ -41,8 +41,8 @@
 		<form:label path="defaultTargetSide">Default target side:</form:label>
 		<br/>
 		<form:select path="defaultTargetSide">
-			<option value="left">left</option>
 			<option value="right">right</option>
+			<option value="left">left</option>
 		</form:select>
 		
 		<br/><br/>

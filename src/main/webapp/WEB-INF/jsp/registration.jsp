@@ -43,9 +43,11 @@
 		
 	</form:form>
 	
-	<span id="success-message">${successMessage}</span>
-	
 	<a id="go-back" type="button" href="/login" class="btn btn-success">Go to login page</a>
+	
+	<br/>
+	
+	<span id="success-message">${successMessage}</span>
 	
 </div>
 
