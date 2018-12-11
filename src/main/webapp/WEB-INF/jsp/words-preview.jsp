@@ -7,7 +7,7 @@
 
 <div class="container">
 	<table id="words-preview-table" class="table table-striped table-hover" 
-	style="border-collapse:collapse; table-layout:fixed; width:1100px;">
+	style="border-collapse:collapse; table-layout:fixed; width:60vw; margin: 0 auto; ">
 		<thead>
 		  	<tr>
 		    	<th class="table-headers">Source language</th>
@@ -22,8 +22,8 @@
 	  	<tbody>
 		  	<c:forEach items="${words}" var="word">
 		  		<tr>
-		        	<td class="table-words" style="width:450px; word-wrap:break-word;">${word.srcWord}</td>
-		        	<td class="table-words" style="width:450px; word-wrap:break-word;">${word.targetWord}</td>
+		        	<td class="table-words" style="word-wrap:break-word;">${word.srcWord}</td>
+		        	<td class="table-words" style="word-wrap:break-word;">${word.targetWord}</td>
 		      	</tr>
 		  	</c:forEach>
 		</tbody>

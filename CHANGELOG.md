@@ -1,5 +1,13 @@
 # Changelog - Interactive dictionary Spring Boot App
 
+## [0.5.4] - 2018-12-11
+
+### Added
+- Indexes in set add
+
+### Changed
+- Layout change, added well printed tables
+
 ## [0.5.3] - 2018-12-04
 
 ### Changed
