@@ -19,41 +19,46 @@
 		<p>Your best result: <span id="best-result">${bestResult}%</span></p>
 	</div>
 	
-	<table class="table-add-set">
-	  <tr>
-	      <th class="table-headers">Source language</th>
-	      <th class="table-headers">Target language</th>
-	  </tr>
-	    <tr>
-	      <th class="table-headers">${srcLanguage}</th>
-	      <th class="table-headers">${targetLanguage}</th>
-	  </tr>
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+			     <th class="table-headers">Source language</th>
+			     <th class="table-headers">Target language</th>
+			</tr>
+			<tr>
+			     <th class="table-headers">${srcLanguage}</th>
+			     <th class="table-headers">${targetLanguage}</th>
+			</tr>
+		</thead>
 	  
-	<script language="javascript" type="text/javascript">
+	    <tbody>
+			<script language="javascript" type="text/javascript">
+		
+			    var answersList = ${sessionScope.answersList};
+			    var arrayLength = answersList.length;
+			    
+			    var srcWords = ${srcWords};
+			    var targetWords = ${targetWords};
+			
+			    var tableHtml = "";
+			
+			    for (var i = 0; i < arrayLength; i++) {
+			
+			        if (answersList[i] == 1){
+			            tableHtml += "<tr> <td align='center' style='color: #008000;'>" + srcWords[i].toString() + "</td> <td align='center' style='color: #008000;'>" + targetWords[i].toString() + "</td> </tr>";
+			        }
+			        else if (answersList[i] == 0) {
+			            tableHtml += "<tr> <td align='center' style='color: #ff0000;'>" + srcWords[i].toString() + "</td> <td align='center' style='color: #ff0000;'>" + targetWords[i].toString() + "</td> </tr>";
+			        }
+			    }
+			
+			    tableHtml += "</table>"
+			
+			    document.write(tableHtml);
 	
-	    var answersList = ${sessionScope.answersList};
-	    var arrayLength = answersList.length;
-	    
-	    var srcWords = ${srcWords};
-	    var targetWords = ${targetWords};
-	
-	    var tableHtml = "";
-	
-	    for (var i = 0; i < arrayLength; i++) {
-	
-	        if (answersList[i] == 1){
-	            tableHtml += "<tr> <td align='center' style='color: #008000;'>" + srcWords[i].toString() + "</td> <td align='center' style='color: #008000;'>" + targetWords[i].toString() + "</td> </tr>";
-	        }
-	        else if (answersList[i] == 0) {
-	            tableHtml += "<tr> <td align='center' style='color: #ff0000;'>" + srcWords[i].toString() + "</td> <td align='center' style='color: #ff0000;'>" + targetWords[i].toString() + "</td> </tr>";
-	        }
-	    }
-	
-	    tableHtml += "</table>"
-	
-	    document.write(tableHtml);
-	
-	</script>
+			</script>
+	  
+	  	</tbody>
 	  
 	</table>
 	
