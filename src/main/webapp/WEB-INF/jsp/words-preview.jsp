@@ -1,7 +1,8 @@
 <%@ include file="common/header.jspf"%>
 <%@ include file="common/navigation.jspf"%>
 
-<h1>Words list for set: ${set.name}</h1>
+<h3>Words list for set:</h3>
+<h3><span class="category-set-name">${set.name}</span></h3>
 
 <br>
 

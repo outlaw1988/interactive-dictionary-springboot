@@ -1,7 +1,7 @@
 <%@ include file="common/header.jspf"%>
 <%@ include file="common/navigation.jspf"%>
 
-<h1>Categories available:</h1>
+<h3>Categories available:</h3>
 
 <div class="boxes">
 

@@ -53,6 +53,13 @@ h3 {
 	overflow: auto;
 }
 
+.category-set-name {
+	width: 60vw;
+	word-wrap: break-word;
+	display:inline-block; 
+	text-align:center; 
+}
+
 .dropdown {
     float: right;
     width: 20px;
