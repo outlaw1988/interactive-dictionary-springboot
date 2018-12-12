@@ -8,9 +8,15 @@
 			<form:label path="name">Language name</form:label>
 			<form:input path="name" type="text" class="form-control"
 				required="required" />
-			<form:errors path="name" cssClass="text-warning" />
+			<form:errors path="name" class="error" />
 		</fieldset>
-		<button id="add-language" type="submit" class="btn btn-success">Add</button>
+		<div style="text-align:center;">
+			<button id="add-language" type="submit" class="btn btn-success">Add</button>
+		</div>
+		<br/>
+		<div style="text-align:center;">
+			<a id="go-back" type="button" class="btn btn-success" href="/languages">Go back</a>
+		</div>
 	</form:form>
 </div>
 

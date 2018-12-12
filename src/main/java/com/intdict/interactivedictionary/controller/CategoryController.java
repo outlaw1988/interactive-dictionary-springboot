@@ -111,7 +111,6 @@ public class CategoryController {
 		}
 		
 		if (result.hasErrors()) {
-			System.out.println("Has errors!!!!!!!");
 			List<Language> languages = languageRepository.findByUser(user);
 			
 			model.put("languages", languages);

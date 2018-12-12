@@ -54,11 +54,17 @@ public class LanguageController {
 	@RequestMapping(value = "/add-language", method = RequestMethod.POST)
 	public String addLanguagePost(ModelMap model, @Valid Language language, BindingResult result) {
 
+		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
+		
+		List<Language> languageToCheck = repository.findByUserAndName(user, language.getName());
+		if (languageToCheck.size() > 0) {
+			result.rejectValue("name", "error.name", "This language already exists");
+		}
+		
 		if (result.hasErrors()) {
 			return "add-language";
 		}
 
-		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		language.setUser(user);
 		
 		repository.save(language);

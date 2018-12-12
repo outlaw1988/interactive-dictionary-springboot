@@ -10,5 +10,6 @@ public interface LanguageRepository extends JpaRepository<Language, Integer> {
 
 	List<Language> findByUser(User user);
 	List<Language> findByUserOrderByIdAsc(User user);
+	List<Language> findByUserAndName(User user, String name);
 	
 }

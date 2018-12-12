@@ -38,9 +38,19 @@ h3 {
 .box-name {
     display: inline-block;
     margin: 0 auto;
-    width: 100px;
-    height: 20px;
+    width: 150px;
+    height: auto;
     /* background: #00ff00; */
+}
+
+.box-label {
+	width:150px; 
+	word-wrap:break-word; 
+	display:inline-block; 
+	text-align:center; 
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	overflow: auto;
 }
 
 .dropdown {
@@ -90,9 +100,8 @@ h3 {
 }
 
 .table-add-set {
-    width: 50%;
-    margin-left: 25%;
-    margin-right: 25%;
+	width: 30vw;
+	margin: 0 auto;
 }
 
 .table-headers {

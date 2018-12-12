@@ -9,7 +9,7 @@
 	
 		<div class="box">
 			<div class="box-name">
-				<a href="/preview-${set.id}"><span style="width:100px; word-wrap:break-word; display:inline-block; text-align:center">${set.name}</span></a>
+				<a href="/preview-${set.id}"><span class="box-label">${set.name}</span></a>
 			</div>
 			
 			<div class="dropdown" onclick="dropDown(${loop.index})">
@@ -24,10 +24,12 @@
 	            <!-- It should be empty -->
 	        </div>
 			
-			<br><span>words: <span>${wordCounters[loop.index]}</span></span>
-	        <br><span>last result: <span>${lastResults[loop.index]}%</span></span>
-	        <br><span>best result: <span>${bestResults[loop.index]}%</span></span>
-	        <br><span>${srcLanguages[loop.index]} -> ${targetLanguages[loop.index]}</span>
+			<div>
+				<span>words: <span>${wordCounters[loop.index]}</span></span>
+		        <br><span>last result: <span>${lastResults[loop.index]}%</span></span>
+		        <br><span>best result: <span>${bestResults[loop.index]}%</span></span>
+		        <br><span>${srcLanguages[loop.index]} -> ${targetLanguages[loop.index]}</span>
+	        </div>
 		</div>
 	
 	</c:forEach>
