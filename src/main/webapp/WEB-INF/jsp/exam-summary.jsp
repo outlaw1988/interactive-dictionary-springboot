@@ -3,14 +3,16 @@
 
 <c:choose>
 		<c:when test="${set.isFree == 1}">
-			<h3>Exam summary for set: ${sessionScope.set.name}</h3>
+			<h3>Exam summary for set: </h3>
+			<h3><span class="category-set-name">${sessionScope.set.name}</span></h3>
 		</c:when>
 		<c:otherwise>
-			<h3>Exam summary for category: ${sessionScope.category.name}, set: ${sessionScope.set.name}</h3>
+			<h3>Exam summary for category: </h3>
+			<h3><span class="category-set-name">${sessionScope.category.name}</span></h3>
+			<h3>set:</h3>
+			<h3><span class="category-set-name">${sessionScope.set.name}</span></h3>
 		</c:otherwise>
 	</c:choose>
-
-
 
 <div class="container">
 

@@ -1,7 +1,8 @@
 <%@ include file="common/header.jspf"%>
 <%@ include file="common/navigation.jspf"%>
 
-<h1>Sets list for category: ${category.name}</h1>
+<h3>Sets list for category:</h3>
+<h3><span class="category-set-name">${category.name}</span></h3>
 
 <div class="boxes">
 
