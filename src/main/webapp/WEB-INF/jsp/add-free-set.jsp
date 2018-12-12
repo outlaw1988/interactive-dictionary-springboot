@@ -162,6 +162,7 @@
 						</c:choose>
 	          		</span>
 		        </th>
+		        <th></th>
 	      	</tr>
 		    <!-- <tr>
 		        <th class="table-headers">
@@ -185,14 +186,16 @@
 				    			<tr>
 				    				<td>${loop.index + 1}</td>
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(1)}"/></td>
-		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(0)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(0)}"/></td>
+		                			<td><img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
 				    		</c:when>
 				    		<c:otherwise>
 				    			<tr>
 				    				<td>${loop.index + 1}</td>
 				    				<td class="table-words"><input type="text" name="left_field_${loop.index + 1}" id="left_field_${loop.index + 1}" value="${word.get(0)}"/></td>
-		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(1)}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+		                			<td class="table-words"><input type="text" name="right_field_${loop.index + 1}" id="right_field_${loop.index + 1}" value="${word.get(1)}"/></td>
+		                			<td><img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 				    			</tr>
 				    		</c:otherwise>
 				    	</c:choose>
@@ -206,7 +209,8 @@
 					    <tr class="words-row">
 					    	<td><span>${loop.index}</span></td>
 			                <td class="table-words"><input type="text" name="left_field_${loop.index}" id="left_field_${loop.index}"/></td>
-			                <td class="table-words"><input type="text" name="right_field_${loop.index}" id="right_field_${loop.index}"/> <img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
+			                <td class="table-words"><input type="text" name="right_field_${loop.index}" id="right_field_${loop.index}"/></td>
+			                <td><img src="images/remove_icon_res.png" onclick="removeWords(this)"></td>
 			            </tr>
 					</c:forEach>
 					
@@ -248,11 +252,12 @@
 	    var cell0 = row.insertCell(0);
 	    var cell1 = row.insertCell(1);
 	    var cell2 = row.insertCell(2);
+	    var cell3 = row.insertCell(3);
 	    cell1.innerHTML = "<input type='text' name='left_field_" + idx + "' id='left_field_" + idx + "'/>";
 	    cell1.align = "center";
 	    cell2.innerHTML = "<input type='text' name='right_field_" + idx + "' id='right_field_" + idx + "'/>";
-	    cell2.innerHTML += " <img src='images/remove_icon_res.png' onclick='removeWords(this)'>"
 	    cell2.align = "center";
+	    cell3.innerHTML = "<img src='images/remove_icon_res.png' onclick='removeWords(this)'>";
 	    
 	    generateIndexes();
 	}

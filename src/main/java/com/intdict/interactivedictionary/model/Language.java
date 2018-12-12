@@ -17,7 +17,7 @@ public class Language {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@Size(min=2, message="Enter at least 2 characters...")
+	@Size(min=1, max=100)
 	@Column(name = "name")
 	private String name;
 	
@@ -28,7 +28,7 @@ public class Language {
 		//empty
 	}
 
-	public Language(@Size(min = 2, message = "Enter at least 2 characters...") String name) {
+	public Language(String name) {
 		super();
 		this.name = name;
 	}

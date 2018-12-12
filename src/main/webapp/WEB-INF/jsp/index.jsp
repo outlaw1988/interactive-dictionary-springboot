@@ -8,8 +8,8 @@
 	<c:forEach items="${categories}" var="category" varStatus="loop">
 	
 		<div class="box">
-			<div class="box-name">
-				<a href="/category-${category.id}"><span style="width:100px; word-wrap:break-word; display:inline-block; text-align:center">${category.name}</span></a>
+			<div class="box-name" >
+				<a href="/category-${category.id}"><span class="box-label">${category.name}</span></a>
 			</div>
 			
 			<div class="dropdown" onclick="dropDown(${loop.index})">
@@ -24,9 +24,11 @@
 	            <!-- It should be empty -->
 	        </div>
 			
-			<br><span>sets: ${setCounters[loop.index]}</span>
-	        <br><span>words: ${wordCounters[loop.index]}</span>
-	        <br><span>${category.defaultSrcLanguage} <-> ${category.defaultTargetLanguage}</span>
+			<div>
+				<span>sets: ${setCounters[loop.index]}</span>
+		        <br><span>words: ${wordCounters[loop.index]}</span>
+		        <br><span>${category.defaultSrcLanguage} <-> ${category.defaultTargetLanguage}</span>
+		    </div>
 		</div>
 	
 	</c:forEach>
