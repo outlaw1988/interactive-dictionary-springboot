@@ -1,5 +1,15 @@
 # Changelog - Interactive dictionary Spring Boot App
 
+## [0.6.0] - 2018-12-13
+
+### Added
+- Forget password feature
+
+### Changed
+- Info about invalid credentials
+- Front-end for mobile devices
+- Info - language exists
+
 ## [0.5.4] - 2018-12-11
 
 ### Added
