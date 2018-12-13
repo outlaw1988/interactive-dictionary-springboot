@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.intdict.interactivedictionary.model.User;
 import com.intdict.interactivedictionary.service.UserService;
@@ -78,8 +79,15 @@ public class AuthenticationController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public String login() {
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(@RequestParam(name="error",required=false) String error, 
+						ModelMap model) {
+		
+		if(error != null) {
+			model.put("credentialsError", "Invalid credentials");
+			return "login";
+		}
+		
 		return "login";
 	}
 	

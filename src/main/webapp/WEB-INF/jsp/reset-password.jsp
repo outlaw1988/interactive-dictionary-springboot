@@ -7,7 +7,10 @@
 		
 		<div style="text-align:center;">
 			<span>Invalid token</span>
+			<br/><br/>
+			<a id="go-back" type="button" class="btn btn-success" href="/login">Go to login page</a>
 		</div>
+		
 		
 	</c:when>
 	<c:otherwise>
@@ -28,7 +31,13 @@
 				<br/>
 				<button id="change-password" type="submit" class="btn btn-success">Change</button>
 			</form:form>
+			<div style="text-align:center;">
+				<a id="go-back" type="button" class="btn btn-success" href="/login">Go to login page</a>
+			</div>
 		</div>
+		<p style="text-align: center;">
+	      	<span id="success-message">${successMessage}</span>
+	    </p>
 	
 	</c:otherwise>
 </c:choose>

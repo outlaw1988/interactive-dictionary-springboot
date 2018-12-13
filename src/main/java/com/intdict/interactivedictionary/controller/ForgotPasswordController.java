@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +26,9 @@ public class ForgotPasswordController {
 	
 	@Autowired
 	private EmailServiceImpl emailService;
+	
+	@Value("${main.url}")
+	private String mainUrl;
 	
 	@RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
 	public String displayForgotPasswordPage() {
@@ -49,16 +53,12 @@ public class ForgotPasswordController {
 		
 		userService.saveUser(user, true);
 		
-		String appUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getLocalPort();
-		
-		//System.out.println("App url: " + appUrl);
-		
 		// Email message
 		SimpleMailMessage passwordResetEmail = new SimpleMailMessage();
 		passwordResetEmail.setFrom("support@demo.com");
 		passwordResetEmail.setTo(user.getEmail());
 		passwordResetEmail.setSubject("Interactive dictionary - Password Reset Request");
-		passwordResetEmail.setText("To reset your password, click the link below:\n" + appUrl
+		passwordResetEmail.setText("To reset your password, click the link below:\n" + mainUrl
 				+ "/reset?token=" + user.getResetToken());
 		
 		emailService.sendEmail(passwordResetEmail);
@@ -105,7 +105,8 @@ public class ForgotPasswordController {
 			
 	        userService.saveUser(user, true);
 	        
-	        return "redirect:/login";
+	        model.put("successMessage", "Password has been changed successfully");
+	        return "reset-password";
 		}
 		
 		return "reset-password";
