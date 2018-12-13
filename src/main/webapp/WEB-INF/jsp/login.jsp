@@ -25,6 +25,14 @@
 	        <button id="sign-in" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 	      </form>
 	      
+	      <p style="text-align: center; color: red;">
+	      		<span class="error">${credentialsError}</span>
+	      </p>
+	      
+	      <p style="text-align: center;">
+	      		<a id="sign-up" href="/forgot-password">Forget password?</a>
+	      </p>
+	      
 	      <p style="text-align: center;">
 	      		<a id="sign-up" href="/registration">Sign up</a>
 	      </p>

@@ -31,17 +31,24 @@ public class UserService {
     	return userRepository.findByEmail(email);
     }
     
-    public void saveUser(User user) {
+    public List<User> findUserByResetToken(String resetToken) {
+    	return userRepository.findByResetToken(resetToken);
+    }
+    
+    public void saveUser(User user, boolean updateMode) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setPasswordConfirm(new BCryptPasswordEncoder().encode(user.getPasswordConfirm()));
         user.setEnable(1);
         User userReturned = userRepository.save(user);
         
-        Role role = new Role();
-        role.setUsername(userReturned.getUsername());
-        role.setAuthority("ROLE_USER");
+        if (!updateMode) {
+        	Role role = new Role();
+            role.setUsername(userReturned.getUsername());
+            role.setAuthority("ROLE_USER");
+            
+            roleRepository.save(role);
+        }
         
-        roleRepository.save(role);
     }
     
 }
