@@ -59,7 +59,7 @@ public class AuthenticationController {
 			return "registration";
 		}
 		
-		userService.saveUser(user);
+		userService.saveUser(user, false);
 		
 		model.addAttribute("user", new User());
 		model.put("successMessage", "User has been registered successfully");

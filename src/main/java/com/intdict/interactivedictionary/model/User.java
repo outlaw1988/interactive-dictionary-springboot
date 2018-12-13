@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
@@ -26,6 +27,7 @@ public class User {
     private String username;
 	
 	@Column(name = "email")
+	@Email(message = "Please provide a valid e-mail")
 	@NotNull
 	private String email;
 	
@@ -39,6 +41,9 @@ public class User {
     
     @Column(name = "enabled")
     private int enable;
+    
+    @Column(name = "reset_token")
+	private String resetToken;
     
     public User() {
     	// empty
@@ -96,6 +101,14 @@ public class User {
 
 	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
+	}
+
+	public String getResetToken() {
+		return resetToken;
+	}
+
+	public void setResetToken(String resetToken) {
+		this.resetToken = resetToken;
 	}
     
 }

@@ -26,6 +26,10 @@
 	      </form>
 	      
 	      <p style="text-align: center;">
+	      		<a id="sign-up" href="/forgot-password">Forget password?</a>
+	      </p>
+	      
+	      <p style="text-align: center;">
 	      		<a id="sign-up" href="/registration">Sign up</a>
 	      </p>
 	      

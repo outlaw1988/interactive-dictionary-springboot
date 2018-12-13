@@ -37,6 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.permitAll()
 			.antMatchers("/registration")
 			.permitAll()
+			.antMatchers("/forgot-password", "/reset**")
+			.permitAll()
 			.antMatchers("/**")
 			.access("hasRole('ROLE_USER')")
 			.and()
