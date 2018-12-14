@@ -76,7 +76,7 @@
 		<div class="import-words">
 			<p>
 			
-			<span>Import words from file:</span>
+			<span>Import words from txt file (UTF-8 coding):</span>
 			
 			<br/>
 			
