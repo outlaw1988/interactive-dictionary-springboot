@@ -283,6 +283,7 @@
 	
 	    var table = document.getElementById("set_def_table");
 	    var row = table.insertRow(-1);
+	    row.className = "words-row";
 	    var cell0 = row.insertCell(0);
 	    var cell1 = row.insertCell(1);
 	    var cell2 = row.insertCell(2);
