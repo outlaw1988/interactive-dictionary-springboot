@@ -188,13 +188,14 @@ function progress(timeleft, timetotal) {
     var percentStr = percent.toString() + "%";
     document.getElementById("progress-bar").style.width = percentStr;
     document.getElementById("secs-left").innerHTML = timeleft.toString() + " second(s) left";
+    timeleft -= 1;
     if(timeleft >= 0) {
         timeOutControl = setTimeout(function() {
-            progress(timeleft - 1, timetotal);
+            progress(timeleft, timetotal);
         }, 1000);
     }
     else {
-        nextWord();
+        checkWord();
     }
 };
 
