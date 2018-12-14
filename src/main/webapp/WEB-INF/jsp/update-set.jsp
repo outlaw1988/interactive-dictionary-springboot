@@ -34,6 +34,7 @@
 			<option value="20" <c:if test="${set.countdownDuration == '20'}"> selected="selected" </c:if> >20</option>
 			<option value="10" <c:if test="${set.countdownDuration == '10'}"> selected="selected" </c:if> >10</option>
 			<option value="5"  <c:if test="${set.countdownDuration == '5'}">  selected="selected" </c:if> >5</option>
+			<option value="0"  <c:if test="${set.countdownDuration == '0'}">  selected="selected" </c:if> >off</option>
 		</form:select>
 		
 		<br/><br/>

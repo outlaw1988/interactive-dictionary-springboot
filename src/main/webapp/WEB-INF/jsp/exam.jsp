@@ -13,17 +13,24 @@
 <div class="container">
 	<br><br>
 
-	<div class="progress">
-	  <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-	    <span class="sr-only">70% Complete</span>
-	  </div>
-	</div>
+	<c:if test="${sessionScope.countdownDuration != '0'}">
+		
+		<div class="progress">
+		  <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+		    <span class="sr-only">70% Complete</span>
+		  </div>
+		</div>
+		
+		<div class="center">
+			<span id="secs-left">5 second(s) left</span>
+		</div>
+	
+	</c:if>
+
+	<br><br>
 	
 	<div class="center">
-	    <span id="secs-left">5 second(s) left</span>
-	
-		<br><br>
-		
+	    
 		<span id="curr_word_num">${sessionScope.currWordIdxToShow}</span>/${sessionScope.size}
 		
 		<br><br>
@@ -53,7 +60,7 @@
 var currWordNum = 0;
 var size = ${sessionScope.size};
 var timeOutControl;
-var countdownDuration = "${sessionScope.countdownDuration}";
+var countdownDuration = ${sessionScope.countdownDuration};
 
 $(function () {
     var token = $("meta[name='_csrf']").attr("content");
@@ -100,7 +107,9 @@ var checkWord = function () {
 
 var nextWord = function() {
     stopTimeout();
-    progress(countdownDuration, countdownDuration);
+    if (countdownDuration != 0) {
+    	progress(countdownDuration, countdownDuration);
+    }
 
     document.getElementById("answer").disabled = false;
     document.getElementById("succ_or_fail").innerHTML = "";
@@ -199,7 +208,10 @@ function progress(timeleft, timetotal) {
     }
 };
 
-progress(countdownDuration, countdownDuration);
+if (countdownDuration != 0) {
+	progress(countdownDuration, countdownDuration);
+}
+
 
 function stopTimeout() {
     clearTimeout(timeOutControl);
