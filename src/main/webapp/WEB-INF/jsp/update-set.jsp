@@ -41,7 +41,7 @@
 		<div class="import-words">
 			<p>
 			
-			<span>Import words from file:</span>
+			<span>Import words from txt file (UTF-8 coding):</span>
 			
 			<br/>
 			
@@ -199,7 +199,7 @@
 	
 </div>
 
-<script language="javascript" type="text/javascript">
+<script language="javascript" type="text/javascript" charset="utf-8">
 
 	var idx = ${size};
 	var currTargetSide = "${targetSide}";
