@@ -271,7 +271,7 @@
 		
 </div>
 
-<script language="javascript" type="text/javascript">
+<script language="javascript" type="text/javascript" charset="utf-8">
 
 	var idx = 10;
 	var currTargetSide = "${targetSide}";
