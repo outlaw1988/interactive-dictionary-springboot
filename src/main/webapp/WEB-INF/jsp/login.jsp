@@ -30,7 +30,7 @@
 	      </p>
 	      
 	      <p style="text-align: center;">
-	      		<a id="sign-up" href="/forgot-password">Forget password?</a>
+	      		<a id="forgot-password" href="/forgot-password">Forget password?</a>
 	      </p>
 	      
 	      <p style="text-align: center;">
