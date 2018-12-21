@@ -45,6 +45,11 @@ public class SetController {
 		model.put("categoryId", categoryId);
 	
 		Category category = categoryRepository.findById(categoryId).get();
+		
+		if (!category.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		List<Set> sets = setRepository.findByCategory(category);
 		
 		List<Integer> wordCounters = new ArrayList<>();
@@ -82,6 +87,11 @@ public class SetController {
 		session.setAttribute("hasErrorMode", false);
 		
 		Category category = categoryRepository.findById(categoryId).get();
+		
+		if (!category.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		model.addAttribute("set", new Set());
 		
 		model.put("category", category);
@@ -100,6 +110,11 @@ public class SetController {
 							@Valid Set set, BindingResult result) {
 
 		Category category = categoryRepository.findById(categoryId).get();
+		
+		if (!category.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		List<Set> sets = setRepository.findByCategory(category);
 		HttpSession session = request.getSession();
 		
@@ -159,6 +174,11 @@ public class SetController {
 	public String wordsPreview(ModelMap model, @PathVariable(value="setId") int setId) {
 		
 		Set set = setRepository.findById(setId).get();
+		
+		if (!set.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		model.put("set", set);
 		
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
@@ -171,6 +191,11 @@ public class SetController {
 	public String removeSet(ModelMap model, @PathVariable(value="setId") int setId) {
 		
 		Set set = setRepository.findById(setId).get();
+		
+		if (!set.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		model.put("set", set);
 		
 		return "remove-set";
@@ -182,6 +207,10 @@ public class SetController {
 		
 		java.util.Set<String> params = request.getParameterMap().keySet();
 		Set set = setRepository.findById(setId).get();
+		
+		if (!set.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
 		
 		if (params.contains("yes")) {
 			
@@ -205,6 +234,11 @@ public class SetController {
 								@PathVariable(value = "setId") int setId) {
 		
 		Set set = setRepository.findById(setId).get();
+		
+		if (!set.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		
 		HttpSession session = request.getSession();
@@ -232,6 +266,11 @@ public class SetController {
 			@Valid Set set, BindingResult result, @PathVariable(value = "setId") int setId) {
 		
 		Category category = setRepository.findById(setId).get().getCategory();
+		
+		if (!set.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		List<Set> sets = setRepository.findByCategory(category);
 		
 		HttpSession session = request.getSession();

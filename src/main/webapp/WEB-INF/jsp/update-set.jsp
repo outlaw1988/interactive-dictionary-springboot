@@ -6,6 +6,7 @@
 	<form:form method="post" modelAttribute="set">
 	
 		<form:hidden path="id" />
+		<form:hidden path="user" />
 		
 		<fieldset class="form-group">
 			<form:label path="name">Set name:</form:label>

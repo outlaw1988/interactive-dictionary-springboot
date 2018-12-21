@@ -75,6 +75,11 @@ public class LanguageController {
 	public String removeLanguage(ModelMap model, @PathVariable(value="languageId") int languageId) {
 		
 		Language language = repository.findById(languageId).get();
+		
+		if (!language.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		List<Category> categoriesWithSrcLan = categoryRepository.findByDefaultSrcLanguage(language);
 		List<Category> categoriesWithTargetLan = categoryRepository.findByDefaultTargetLanguage(language);
 		
@@ -96,6 +101,10 @@ public class LanguageController {
 		
 		java.util.Set<String> params = request.getParameterMap().keySet();
 		Language language = repository.findById(languageId).get();
+		
+		if (!language.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
 		
 		if (params.contains("yes")) {
 			repository.delete(language);
