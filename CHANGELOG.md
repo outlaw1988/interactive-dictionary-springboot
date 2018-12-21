@@ -1,5 +1,15 @@
 # Changelog - Interactive dictionary Spring Boot App
 
+## [0.7.0] - 2018-12-21
+
+### Added
+- Countdown turn off
+
+### Changed
+- After countdown - check clicked
+- Removed unnecessary fields after import txt file twice
+- Access denied from other accounts to resources
+
 ## [0.6.0] - 2018-12-13
 
 ### Added
