@@ -11,13 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.intdict.interactivedictionary.model.Category;
-import com.intdict.interactivedictionary.model.CreateGroup;
 import com.intdict.interactivedictionary.model.Language;
 import com.intdict.interactivedictionary.model.Set;
 import com.intdict.interactivedictionary.model.User;
@@ -126,8 +124,13 @@ public class CategoryController {
 	
 	@RequestMapping(value = "/remove-category-{categoryId}", method = RequestMethod.GET)
 	public String removeCategory(ModelMap model, @PathVariable(value="categoryId") int categoryId) {
-		
+
 		Category category = repository.findById(categoryId).get();
+		
+		if (!category.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		model.put("category", category);
 		
 		return "remove-category";
@@ -139,8 +142,14 @@ public class CategoryController {
 		
 		java.util.Set<String> params = request.getParameterMap().keySet();
 		
+		Category category = repository.findById(categoryId).get();
+		
+		if (!category.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		if (params.contains("yes")) {
-			Category category = repository.findById(categoryId).get();
+			
 			List<Set> sets = setRepository.findByCategory(category);
 			
 			for (Set set : sets) {
@@ -163,6 +172,11 @@ public class CategoryController {
 	public String updateCategoryGet(ModelMap model, @PathVariable(value="categoryId") int categoryId) {
 		
 		Category category = repository.findById(categoryId).get();
+		
+		if (!category.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		model.addAttribute("category", category);
 		
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
@@ -176,7 +190,9 @@ public class CategoryController {
 	@RequestMapping(value = "/update-category-{categoryId}", method = RequestMethod.POST)
 	public String updateCategoryPost(ModelMap model, @Valid Category category, BindingResult result) {
 		
-		// TODO validation category exists etc.
+		if (!category.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
 		
 		if (result.hasErrors()) {
 			User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);

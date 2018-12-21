@@ -2,13 +2,11 @@ package com.intdict.interactivedictionary.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.ui.ModelMap;
 
 public class Utils {
 

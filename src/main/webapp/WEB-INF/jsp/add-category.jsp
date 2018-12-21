@@ -54,6 +54,7 @@
 			<option value="20" selected="selected">20</option>
 			<option value="10">10</option>
 			<option value="5">5</option>
+			<option value="0">off</option>
 		</form:select>
 		
 		<br/><br/>
