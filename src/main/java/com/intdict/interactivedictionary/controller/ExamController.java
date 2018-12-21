@@ -43,6 +43,10 @@ public class ExamController {
 		Set set = setRepository.findById(setId).get();
 		session.setAttribute("set", set);
 		
+		if (!set.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		if (set.getIsFree() == 0) {
 			Category category = categoryRepository.findById(set.getCategory().getId()).get();
 			session.setAttribute("category", category);

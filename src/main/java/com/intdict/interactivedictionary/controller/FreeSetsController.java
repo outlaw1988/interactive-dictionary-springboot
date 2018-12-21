@@ -156,6 +156,11 @@ public class FreeSetsController {
 	public String updateFreeSetGet(HttpServletRequest request, ModelMap model, 
 								@PathVariable(value = "setId") int setId) {
 		Set set = setRepository.findById(setId).get();
+		
+		if (!set.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
+		
 		List<Word> words = wordRepository.findBySetOrderByIdAsc(set);
 		
 		HttpSession session = request.getSession();
@@ -185,6 +190,10 @@ public class FreeSetsController {
 	@RequestMapping(value = "update-free-set-{setId}", method = RequestMethod.POST)
 	public String updateFreeSetPost(HttpServletRequest request, ModelMap model,  
 			@Valid Set set, BindingResult result, @PathVariable(value = "setId") int setId) {
+		
+		if (!set.getUser().getUsername().equals(Utils.getLoggedInUserName())) {
+			return "forbidden";
+		}
 		
 		User user = userRepository.findByUsername(Utils.getLoggedInUserName()).get(0);
 		List<Set> sets = setRepository.findByUserAndIsFree(user, 1);
