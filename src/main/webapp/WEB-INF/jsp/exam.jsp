@@ -39,14 +39,28 @@
 		
 		<br><br>
 		
-		<input type="text" name="answer" id="answer" autofocus/>
-		<button type="button" onclick="checkWord()" id="check-button">Check</button>
-		<button type="button" onclick="nextWord()" id="next-button">Next</button>
+		<div class="answer">
+			<input type="text" name="answer" id="answer" size="40" autofocus/>
+		</div>
+	
+		<br>
+		
+		<div class="button-exam"> 
+			<button type="button" onclick="checkWord()" id="check-button">Check</button>
+			<br>
+			<span>[Enter]</span>
+		</div>
+		
+		<div class="button-exam">
+			<button type="button" onclick="nextWord()" id="next-button">Next</button>
+			<br>
+			<span>[Ctrl]</span>
+		</div>
 		
 		<br><br>
 		
-		<div id="succ_or_fail" class="answer_list" ></div>
-		
+		<div style="height: 10px;" id="succ_or_fail" class="answer_list" ></div>
+
 		<br><br>
 		
 		<a type="button" class="btn btn-success" href="/category-${sessionScope.category.id}">Cancel</a>
@@ -74,6 +88,7 @@ var checkWord = function () {
 	 //console.log("Check word called from javascript...");
 	 stopTimeout();
 	 document.getElementById("answer").disabled = true;
+	 document.getElementById("check-button").focus();
 	 
 	 var data = {
 	     "answer": $("#answer").val()

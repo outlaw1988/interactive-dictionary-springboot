@@ -30,6 +30,14 @@ h3 {
     position: relative;
 }
 
+.button-exam {
+	display: inline-block;
+}
+
+.answer {
+	margin: 0 auto;
+}
+
 .import-words {
 	border: 1px solid #000;
 	width: 500px;
